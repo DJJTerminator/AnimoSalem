@@ -2,13 +2,15 @@
 using System.Collections;
 using UnityEngine.UI; 
 
-public class Pause : MonoBehaviour {
+public class PauseMenu2 : MonoBehaviour {
 
 	public float FMV = 5;
 	public float soundVolume = .65f;
 	public float musicVolume = .65f;
 	public bool canUnPause = true;
-	public GameObject DialogueBox;
+    public int selectionIndicator;
+
+    public GameObject DialogueBox;
 	[HideInInspector]
 	//*bools
 	public bool pause = false;
@@ -60,15 +62,56 @@ public class Pause : MonoBehaviour {
 			PlayerPrefs.SetFloat ("Music Volume", musicVolume);
 		}
 
-//		Color c = selection [0].color;
-//		c.a = 1.0f;
-//		selection [0].color = c;
+       /* selectionIndicator = 0;
 
-	}
+        Color c = selection[0].color;
+        c.a = 1.0f;
+        selection[0].color = c;
+
+        for (int i = 1; i < selection.Length; i++)
+        {
+            c.a = .3f;
+            selection[i].color = c;
+        }
+
+        for (int i = 1; i < optionSection.Length; i++)
+        {
+            c.a = .3f;
+            optionSection[i].color = c;
+        }
+
+        for (int i = 1; i < audioSection.Length; i++)
+        {
+            c.a = .3f;
+            audioSection[i].color = c;
+        }
+
+        for (int i = 1; i < videoSection.Length; i++)
+        {
+            c.a = .3f;
+            videoSection[i].color = c;
+        }
+
+        for (int i = 1; i < controlSection.Length; i++)
+        {
+            c.a = .3f;
+            controlSection[i].color = c;
+        }
+        */
+
+        //		Color c = selection [0].color;
+        //		c.a = 1.0f;
+        //		selection [0].color = c;
+
+    }
 
 	void Update()
 	{
-		if (Input.GetKeyDown (KeyCode.Escape) && canUnPause == true) 
+        //Unlocks the (Mouse)Cursor and makes it visible
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
+
+        if (Input.GetKeyDown (KeyCode.Escape) && canUnPause == true) 
 		{
 			if (!pause) 
 			{
@@ -98,7 +141,7 @@ public class Pause : MonoBehaviour {
 		}
 	}
 	//resuming the game from basic menus
-	public void Resume()
+	public void Resume(bool Open)
 	{
 		for (int i = 0; i < everythingElse.Length; i++)
 		{
@@ -111,7 +154,7 @@ public class Pause : MonoBehaviour {
 	}
 
 	//entering advance options
-	public void Options()
+	public void Options(bool Open)
 	{
 		for (int i = 0; i < basicMenus.Length; i++) 
 		{
@@ -125,7 +168,7 @@ public class Pause : MonoBehaviour {
 	}
 
 	//entering vdieos
-	public void Videos()
+	public void Videos(bool Open)
 	{
 		for (int i = 0; i < advanceMenus.Length; i++) 
 		{
@@ -137,7 +180,7 @@ public class Pause : MonoBehaviour {
 		}
 	}
 	//entering audios
-	public void Audio()
+	public void Audio(bool Open)
 	{
 		for (int i = 0; i < advanceMenus.Length; i++) 
 		{
@@ -149,7 +192,7 @@ public class Pause : MonoBehaviour {
 		}
 	}
 	//entering controls
-	public void Controls()
+	public void Controls(bool Open)
 	{
 		for (int i = 0; i < advanceMenus.Length; i++) 
 		{
@@ -162,7 +205,7 @@ public class Pause : MonoBehaviour {
 	}
 
 	//returning from certain options
-	public void Return()
+	public void Return(bool Open)
 	{
 		//returning from advance menus
 		if (advanceMenus [0].activeSelf) 
@@ -188,7 +231,7 @@ public class Pause : MonoBehaviour {
 				advanceMenus[j].SetActive (true);
 			}
 		}
-
+        
 		//returning from audio
 		else if (soundMenus[0].activeSelf) 
 		{
@@ -215,5 +258,9 @@ public class Pause : MonoBehaviour {
 
 	}
 
-
+    // Quit to leave Game
+    public void Quit()
+    {
+        Application.Quit();
+    }
 }
