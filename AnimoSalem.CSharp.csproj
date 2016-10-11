@@ -77,6 +77,7 @@
     <Compile Include="Assets\Scripts\Menus\ItemShop\UpgradeItems.cs" />
     <Compile Include="Assets\Scripts\Menus\MainMenu.cs" />
     <Compile Include="Assets\Scripts\Menus\Pause.cs" />
+    <Compile Include="Assets\Scripts\Menus\PauseMenu2.cs" />
     <Compile Include="Assets\Scripts\Menus\SaveLoadManager.cs" />
     <Compile Include="Assets\Scripts\Menus\VideoManager.cs" />
     <Compile Include="Assets\Scripts\Objects\Canvas\ScreenFade.cs" />
