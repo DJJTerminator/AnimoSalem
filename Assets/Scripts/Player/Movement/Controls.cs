@@ -11,7 +11,6 @@ public class Controls : MonoBehaviour {
 	[Range(0,10)]
 	public float speed = 4f;
 
-	private float wait = 0f;    //The player cannot move until the animation is completely done turning. 
 	//In other words, it is the length that a player must wait before he can move.
 
 	// Use this for initialization

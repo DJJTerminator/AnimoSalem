@@ -37,7 +37,7 @@ public class ShopUpkeep : MonoBehaviour {
 		if (Time.time > _GameManager.GetComponent<DataStorage> ().shopKeepTimer) 
 		{
 			RandomUpKeep ();
-			_GameManager.GetComponent<DataStorage> ().shopKeepTimer += Random.RandomRange (Time.time + 100, Time.time + 120);
+			_GameManager.GetComponent<DataStorage> ().shopKeepTimer += Random.Range (Time.time + 100, Time.time + 120);
 		}
 	}
 	

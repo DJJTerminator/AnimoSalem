@@ -12,14 +12,14 @@ public class PlayerShadow : MonoBehaviour {
 	public float myBrightness;
 
 	public Transform shadowPivot1;
-	public Transform shadowPivot2;
+	public Transform shadowPivot2; 
 
 
 	GameObject[] gos;
 	float[] distance;
 
 	float closestDistance = 999, secondClosest = 999;
-	int closestIndex, secondIndex;
+
 
 	Vector3 diff;
 	Vector3 position;
@@ -52,7 +52,6 @@ public class PlayerShadow : MonoBehaviour {
 			if (distance [i] <= closestDistance) 
 			{
 				closestDistance = distance [i]; 
-				closestIndex = i; // remember which one in the array is closest
 
 				diff = gos [i].transform.position - position; //returning the one with the closest transform
 				curDistance = diff.sqrMagnitude;
@@ -74,7 +73,7 @@ public class PlayerShadow : MonoBehaviour {
 			else if (distance [i] <= secondClosest) 
 			{
 				secondClosest = distance [i]; 
-				secondIndex = i;
+
 		
 				diff2 = gos [i].transform.position - position; //returning the one with the closest transform
 				curDistance2 = diff2.sqrMagnitude;
