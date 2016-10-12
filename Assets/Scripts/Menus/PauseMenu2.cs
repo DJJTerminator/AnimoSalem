@@ -14,10 +14,7 @@ public class PauseMenu2 : MonoBehaviour {
 	[HideInInspector]
 	//*bools
 	public bool pause = false;
-	bool options = false;
-	bool videoS = false;
-	bool audioS = false;
-	bool controls = false;
+
 
 
 	//image buttons
@@ -141,20 +138,21 @@ public class PauseMenu2 : MonoBehaviour {
 		}
 	}
 	//resuming the game from basic menus
-	public void Resume(bool Open)
+	public void Resume()
 	{
+		pause = false;
 		for (int i = 0; i < everythingElse.Length; i++)
 		{
 			everythingElse [i].SetActive (true);
 		}
 		for (int j = 0; j < basicMenus.Length; j++) 
 		{
-			basicMenus [j].SetActive (true);
+			basicMenus [j].SetActive (false);
 		}
 	}
 
 	//entering advance options
-	public void Options(bool Open)
+	public void Options()
 	{
 		for (int i = 0; i < basicMenus.Length; i++) 
 		{
@@ -168,7 +166,7 @@ public class PauseMenu2 : MonoBehaviour {
 	}
 
 	//entering vdieos
-	public void Videos(bool Open)
+	public void Videos()
 	{
 		for (int i = 0; i < advanceMenus.Length; i++) 
 		{
@@ -180,7 +178,7 @@ public class PauseMenu2 : MonoBehaviour {
 		}
 	}
 	//entering audios
-	public void Audio(bool Open)
+	public void Audio()
 	{
 		for (int i = 0; i < advanceMenus.Length; i++) 
 		{
@@ -192,7 +190,7 @@ public class PauseMenu2 : MonoBehaviour {
 		}
 	}
 	//entering controls
-	public void Controls(bool Open)
+	public void Controls()
 	{
 		for (int i = 0; i < advanceMenus.Length; i++) 
 		{
@@ -205,7 +203,7 @@ public class PauseMenu2 : MonoBehaviour {
 	}
 
 	//returning from certain options
-	public void Return(bool Open)
+	public void Return()
 	{
 		//returning from advance menus
 		if (advanceMenus [0].activeSelf) 
