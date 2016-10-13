@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
-using UnityEngine.UI; 
+using UnityEngine.UI;
+using UnityEngine.EventSystems;
 
 public class PauseMenu2 : MonoBehaviour {
 
@@ -11,7 +12,8 @@ public class PauseMenu2 : MonoBehaviour {
     public int selectionIndicator;
 
     public GameObject DialogueBox;
-	[HideInInspector]
+   
+    [HideInInspector]
 	//*bools
 	public bool pause = false;
 
@@ -28,11 +30,8 @@ public class PauseMenu2 : MonoBehaviour {
 	//basic menus
 	public GameObject[] basicMenus;
 
-	
-	public GameObject selectorAnimation;
-
-	//advance menus
-	public GameObject[] advanceMenus;
+    //advance menus
+    public GameObject[] advanceMenus;
 
 	//video settings
 	public GameObject[] videoMenus;
@@ -172,7 +171,7 @@ public class PauseMenu2 : MonoBehaviour {
 		{
 			advanceMenus [i].SetActive (false);
 		}
-		for (int j = 0; j < advanceMenus.Length; j++) 
+		for (int j = 0; j < videoMenus.Length; j++) 
 		{
 			videoMenus [j].SetActive (true);
 		}
@@ -184,9 +183,9 @@ public class PauseMenu2 : MonoBehaviour {
 		{
 			advanceMenus [i].SetActive (false);
 		}
-		for (int j = 0; j < advanceMenus.Length; j++) 
+		for (int j = 0; j < soundMenus.Length; j++) 
 		{
-			videoMenus [j].SetActive (true);
+            soundMenus [j].SetActive (true);
 		}
 	}
 	//entering controls
@@ -255,6 +254,12 @@ public class PauseMenu2 : MonoBehaviour {
 		}
 
 	}
+
+    // Allows navigation with "W,S,Up, and Down Keys" between buttons
+    public void SelectNewButton(GameObject button)
+    {
+        EventSystem.current.SetSelectedGameObject(button);
+    }
 
     // Quit to leave Game
     public void Quit()
