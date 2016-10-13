@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using UnityEngine.SceneManagement;
+using UnityEngine.EventSystems;
 
 public class MainMenu : MonoBehaviour
 {
@@ -209,6 +210,12 @@ public class MainMenu : MonoBehaviour
     public void LoadLevel(string _levelName)
     {
         SceneManager.LoadScene(_levelName);
+    }
+
+    // Allows navigation with "W,S,Up, and Down Keys" between buttons
+    public void SelectNewButton(GameObject button)
+    {
+        EventSystem.current.SetSelectedGameObject(button);
     }
 
     // Quit to leave Game
