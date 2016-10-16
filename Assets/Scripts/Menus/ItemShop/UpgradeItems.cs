@@ -25,6 +25,14 @@ public class UpgradeItems : MonoBehaviour {
 	[SerializeField]
 	Texture[] curWeapon;
 
+	//sounds
+
+	public AudioSource upgradeSuccessful;
+	public AudioSource noMoney;
+	public AudioSource maxedOut;
+	public AudioSource hoverOver;
+
+
 	//cycling weapons to the left
 	public void WeaponCycleLeft()
 	{
@@ -108,6 +116,9 @@ public class UpgradeItems : MonoBehaviour {
 	//these are the hover over functions
 	public void HoverOverDamage()
 	{
+		if (!upgradeSuccessful.isPlaying)
+			hoverOver.Play();
+		
 		if (_GameManager.GetComponent<DataStorage> ().curDamage [_GameManager.GetComponent<DataStorage> ().curWeapon] > 0) 
 		{
 			myIndex = _GameManager.GetComponent<DataStorage> ().curDamage [_GameManager.GetComponent<DataStorage> ().curWeapon] -1;
@@ -123,7 +134,6 @@ public class UpgradeItems : MonoBehaviour {
 
 		//display current upgrade and next upgrade
 		curText.GetComponent<Text> ().text = "Damage: " + _GameManager.GetComponent<DataStorage> ().weaponDamage [_GameManager.GetComponent<DataStorage> ().curWeapon];
-		//upgradeSelect.GetComponent<RawImage>().texture = _damage;
 		if (_GameManager.GetComponent<DataStorage> ().curDamage [_GameManager.GetComponent<DataStorage> ().curWeapon] < 5)
 			nextText.GetComponent<Text> ().text = "Next Level: " + (_GameManager.GetComponent<DataStorage> ().weaponDamage [_GameManager.GetComponent<DataStorage> ().curWeapon] + 1);
 		else
@@ -138,6 +148,8 @@ public class UpgradeItems : MonoBehaviour {
 	}
 	public void HoverOverReload()
 	{
+		if (!upgradeSuccessful.isPlaying)
+			hoverOver.Play();
 		//updates current upgrade
 		if (_GameManager.GetComponent<DataStorage> ().curReload [_GameManager.GetComponent<DataStorage> ().curWeapon] > 0) 
 		{
@@ -153,14 +165,13 @@ public class UpgradeItems : MonoBehaviour {
 		else
 			nextText.GetComponent<Text> ().text = " ";	
 
-		//upgradeSelect.GetComponent<RawImage>().texture = _reload;
-
 		curMoney.GetComponent<Text> ().text = "$" + _GameManager.GetComponent<DataStorage> ().money;
 		price.GetComponent<Text> ().text = "Cost: $" + _GameManager.GetComponent<DataStorage> ().reloadCost[_GameManager.GetComponent<DataStorage> ().curWeapon];
 	}
 	public void HoverOverCapacity()
 	{
-
+		if (!upgradeSuccessful.isPlaying)
+			hoverOver.Play();
 		//updates current upgrade
 		if (_GameManager.GetComponent<DataStorage> ().curCapacity [_GameManager.GetComponent<DataStorage> ().curWeapon] > 0) 
 		{
@@ -176,14 +187,14 @@ public class UpgradeItems : MonoBehaviour {
 		else
 			nextText.GetComponent<Text> ().text = " ";	
 
-		//upgradeSelect.GetComponent<RawImage>().texture = _capacity;
-
 		//display current money and price
 		curMoney.GetComponent<Text> ().text = "$" + _GameManager.GetComponent<DataStorage> ().money;
 		price.GetComponent<Text> ().text = "Cost: $" + _GameManager.GetComponent<DataStorage> ().capacityCost[_GameManager.GetComponent<DataStorage> ().curWeapon];
 	}
 	public void HoverOverFireRate()
 	{
+		if (!upgradeSuccessful.isPlaying)
+			hoverOver.Play();
 		//updates current upgrade
 		if (_GameManager.GetComponent<DataStorage> ().curFireRate [_GameManager.GetComponent<DataStorage> ().curWeapon] > 0) 
 		{
@@ -199,14 +210,14 @@ public class UpgradeItems : MonoBehaviour {
 		else
 			nextText.GetComponent<Text> ().text = " ";	
 
-		//upgradeSelect.GetComponent<RawImage>().texture = _fireRate;
-
 		//display current money and price
 		curMoney.GetComponent<Text> ().text = "$" + _GameManager.GetComponent<DataStorage> ().money;
 		price.GetComponent<Text> ().text = "Cost: $" + _GameManager.GetComponent<DataStorage> ().frCost[_GameManager.GetComponent<DataStorage> ().curWeapon];
 	}
 	public void HoverOverCritical()
 	{
+		if (!upgradeSuccessful.isPlaying)
+			hoverOver.Play();
 		//updates current upgrade
 		if (_GameManager.GetComponent<DataStorage> ().curCrit [_GameManager.GetComponent<DataStorage> ().curWeapon] > 0) 
 		{
@@ -229,6 +240,8 @@ public class UpgradeItems : MonoBehaviour {
 	}
 	public void HoverOverAccuracy()
 	{
+		if (!upgradeSuccessful.isPlaying)
+			hoverOver.Play();
 		//updates current upgrade
 		if (_GameManager.GetComponent<DataStorage> ().curAccuracy [_GameManager.GetComponent<DataStorage> ().curWeapon] > 0) 
 		{
@@ -252,6 +265,8 @@ public class UpgradeItems : MonoBehaviour {
 	}
 	public void HoverOverRange()
 	{
+		if (!upgradeSuccessful.isPlaying)
+			hoverOver.Play();
 		//updates current upgrade
 		if (_GameManager.GetComponent<DataStorage> ().curRange [_GameManager.GetComponent<DataStorage> ().curWeapon] > 0) {
 			myIndex = _GameManager.GetComponent<DataStorage> ().curRange [_GameManager.GetComponent<DataStorage> ().curWeapon] - 1;
@@ -292,7 +307,7 @@ public class UpgradeItems : MonoBehaviour {
 			//adding stats
 			_GameManager.GetComponent<DataStorage> ().moneySpent += _GameManager.GetComponent<DataStorage> ().damageCost [_GameManager.GetComponent<DataStorage> ().curWeapon];
 			//play sound
-
+			upgradeSuccessful.Play();
 			//display current upgrade and next upgrade
 			curText.GetComponent<Text> ().text = "Damage: " + _GameManager.GetComponent<DataStorage> ().weaponDamage [_GameManager.GetComponent<DataStorage> ().curWeapon];
 			if (_GameManager.GetComponent<DataStorage> ().curDamage[_GameManager.GetComponent<DataStorage> ().curWeapon] < 5)
@@ -308,17 +323,21 @@ public class UpgradeItems : MonoBehaviour {
 		} 
 		else 
 		{
-			print ("You have no money, stranger");
 			//play sound
+			noMoney.Play();
 		}
+	else 
+	{
+			print ("Maxed");
+			//play sound
+			maxedOut.Play();
+	}
 	}
 
 
 	//Upgrade Reload of current equiped weapon
 	public void UpReload()
 	{
-		GetComponent<AudioSource>().Play();
-
 		//checking to see if weapon is not fully maxed
 		if (_GameManager.GetComponent<DataStorage> ().curReload[_GameManager.GetComponent<DataStorage> ().curWeapon] < 5)
 		if (_GameManager.GetComponent<DataStorage> ().money > _GameManager.GetComponent<DataStorage> ().reloadCost[_GameManager.GetComponent<DataStorage> ().curWeapon]) {
@@ -329,7 +348,7 @@ public class UpgradeItems : MonoBehaviour {
 			//adding stats
 			_GameManager.GetComponent<DataStorage> ().moneySpent += _GameManager.GetComponent<DataStorage> ().reloadCost [_GameManager.GetComponent<DataStorage> ().curWeapon];
 			//play sound
-
+			upgradeSuccessful.Play();
 
 			//display current upgrade and next upgrade
 			_GameManager.GetComponent<DataStorage> ().curReload [_GameManager.GetComponent<DataStorage> ().curWeapon] +=1;
@@ -347,6 +366,13 @@ public class UpgradeItems : MonoBehaviour {
 		{
 			print ("You have no money, stranger");
 			//play sound
+			noMoney.Play();
+		}
+		else 
+		{
+			print ("Maxed");
+			//play sound
+			maxedOut.Play();
 		}
 	}
 
@@ -354,8 +380,6 @@ public class UpgradeItems : MonoBehaviour {
 	//Upgrade Damage of current equiped weapon
 	public void UpCapacity()
 	{
-		GetComponent<AudioSource>().Play();
-
 		//checking to see if weapon is not fully maxed
 		if (_GameManager.GetComponent<DataStorage> ().curCapacity[_GameManager.GetComponent<DataStorage> ().curWeapon] < 5)
 		if (_GameManager.GetComponent<DataStorage> ().money > _GameManager.GetComponent<DataStorage> ().capacityCost [_GameManager.GetComponent<DataStorage> ().curWeapon]) {
@@ -366,7 +390,7 @@ public class UpgradeItems : MonoBehaviour {
 			//adding stats
 			_GameManager.GetComponent<DataStorage> ().moneySpent += _GameManager.GetComponent<DataStorage> ().capacityCost [_GameManager.GetComponent<DataStorage> ().curWeapon];
 			//play sound
-
+			upgradeSuccessful.Play();
 			//display current upgrade and next upgrade
 			_GameManager.GetComponent<DataStorage> ().curCapacity [_GameManager.GetComponent<DataStorage> ().curWeapon] +=1;
 			curText.GetComponent<Text> ().text = "Capacity: " + _GameManager.GetComponent<DataStorage> ().capacity [_GameManager.GetComponent<DataStorage> ().curWeapon];
@@ -383,14 +407,19 @@ public class UpgradeItems : MonoBehaviour {
 		{
 			print ("You have no money, stranger");
 			//play sound
+			noMoney.Play();
+		}
+		else 
+		{
+			print ("Maxed");
+			//play sound
+			maxedOut.Play();
 		}
 	}
 
 	//Upgrade Fire Rate of current equiped weapon
 	public void UpFireRate()
 	{
-		GetComponent<AudioSource>().Play();
-
 		//checking to see if weapon is not fully maxed
 		if (_GameManager.GetComponent<DataStorage> ().curFireRate[_GameManager.GetComponent<DataStorage> ().curWeapon] < 5)
 		if (_GameManager.GetComponent<DataStorage> ().money > _GameManager.GetComponent<DataStorage> ().frCost[_GameManager.GetComponent<DataStorage> ().curWeapon]) {
@@ -401,7 +430,7 @@ public class UpgradeItems : MonoBehaviour {
 			//adding stats
 			_GameManager.GetComponent<DataStorage> ().moneySpent += _GameManager.GetComponent<DataStorage> ().frCost [_GameManager.GetComponent<DataStorage> ().curWeapon];
 			//play sound
-
+			upgradeSuccessful.Play();
 			//display current upgrade and next upgrade
 			_GameManager.GetComponent<DataStorage> ().curFireRate [_GameManager.GetComponent<DataStorage> ().curWeapon] +=1;
 			curText.GetComponent<Text> ().text = "Fire Rate: " + _GameManager.GetComponent<DataStorage> ().fireRate [_GameManager.GetComponent<DataStorage> ().curWeapon];
@@ -419,6 +448,13 @@ public class UpgradeItems : MonoBehaviour {
 		{
 			print ("You have no money, stranger");
 			//play sound
+			noMoney.Play();
+		}
+		else 
+		{
+			print ("Maxed");
+			//play sound
+			maxedOut.Play();
 		}
 	}
 
@@ -427,8 +463,6 @@ public class UpgradeItems : MonoBehaviour {
 	//Upgrade accuracy of current equiped weapon
 	public void UpAccuracy()
 	{
-		GetComponent<AudioSource>().Play();
-
 		//checking to see if weapon is not fully maxed
 		if (_GameManager.GetComponent<DataStorage> ().curAccuracy[_GameManager.GetComponent<DataStorage> ().curWeapon] < 5)
 		if (_GameManager.GetComponent<DataStorage> ().money > _GameManager.GetComponent<DataStorage> ().acCost[_GameManager.GetComponent<DataStorage> ().curWeapon]) 
@@ -440,7 +474,7 @@ public class UpgradeItems : MonoBehaviour {
 			//adding stats
 			_GameManager.GetComponent<DataStorage> ().moneySpent += _GameManager.GetComponent<DataStorage> ().acCost [_GameManager.GetComponent<DataStorage> ().curWeapon];
 			//play sound
-
+			upgradeSuccessful.Play();
 			//display current upgrade and next upgrade
 			_GameManager.GetComponent<DataStorage> ().curAccuracy [_GameManager.GetComponent<DataStorage> ().curWeapon] +=1;
 			curText.GetComponent<Text> ().text = "Accuracy: " + _GameManager.GetComponent<DataStorage> ().accuracy[_GameManager.GetComponent<DataStorage> ().curWeapon];
@@ -457,6 +491,13 @@ public class UpgradeItems : MonoBehaviour {
 		{
 			print ("You have no money, stranger");
 			//play sound
+			noMoney.Play();
+		}
+		else 
+		{
+			print ("Maxed");
+			//play sound
+			maxedOut.Play();
 		}
 	}
 
@@ -464,8 +505,6 @@ public class UpgradeItems : MonoBehaviour {
 	//Upgrade accuracy of current equiped weapon
 	public void UpRange()
 	{
-		GetComponent<AudioSource>().Play();
-
 		//checking to see if weapon is not fully maxed
 		if (_GameManager.GetComponent<DataStorage> ().curRange[_GameManager.GetComponent<DataStorage> ().curWeapon] < 5)
 		if (_GameManager.GetComponent<DataStorage> ().money > _GameManager.GetComponent<DataStorage> ().rangeCost[_GameManager.GetComponent<DataStorage> ().curWeapon]) {
@@ -476,7 +515,7 @@ public class UpgradeItems : MonoBehaviour {
 			//adding stats
 			_GameManager.GetComponent<DataStorage> ().moneySpent += _GameManager.GetComponent<DataStorage> ().rangeCost [_GameManager.GetComponent<DataStorage> ().curWeapon];
 			//play sound
-
+			upgradeSuccessful.Play();
 			//display current upgrade and next upgrade
 			_GameManager.GetComponent<DataStorage> ().curRange [_GameManager.GetComponent<DataStorage> ().curWeapon] +=1;
 			curText.GetComponent<Text> ().text = "Range: " + _GameManager.GetComponent<DataStorage> ().range [_GameManager.GetComponent<DataStorage> ().curWeapon];
@@ -493,13 +532,20 @@ public class UpgradeItems : MonoBehaviour {
 		{
 			print ("You have no money, stranger");
 			//play sound
+			noMoney.Play();
+		}
+		else 
+		{
+			print ("Maxed");
+			//play sound
+			maxedOut.Play();
 		}
 	}
 
 	//Upgrade accuracy of current equiped weapon
 	public void UpCritical()
 	{
-		GetComponent<AudioSource>().Play();
+		
 		//display current upgrade and next upgrade
 
 		//checking to see if weapon is not fully maxed
@@ -513,6 +559,7 @@ public class UpgradeItems : MonoBehaviour {
 			//adding stats
 			_GameManager.GetComponent<DataStorage> ().moneySpent += _GameManager.GetComponent<DataStorage> ().CCCost [_GameManager.GetComponent<DataStorage> ().curWeapon];
 			//play sound
+			upgradeSuccessful.Play();
 
 			//display current upgrade and next upgrade
 			_GameManager.GetComponent<DataStorage> ().curCrit [_GameManager.GetComponent<DataStorage> ().curWeapon] +=1;
@@ -531,6 +578,13 @@ public class UpgradeItems : MonoBehaviour {
 		{
 			print ("You have no money, stranger");
 			//play sound
+			noMoney.Play();
+		}
+		else 
+		{
+			print ("Maxed");
+			//play sound
+			maxedOut.Play();
 		}
 	}
 
