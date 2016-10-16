@@ -8,7 +8,16 @@ public class PurchaseItems : MonoBehaviour {
 	public ShopUpkeep _shop;
 	[SerializeField]
 	Text curMoney;
+	public AudioSource itemBought;
+	public AudioSource noMoney;
+	public AudioSource outOfStock;
+	public AudioSource hoverOver;
 
+	public void HoverOverItems()
+	{
+		if (!itemBought.isPlaying)
+			hoverOver.Play();
+	}
 
 	public void HGAmmo()
 	{
@@ -22,17 +31,19 @@ public class PurchaseItems : MonoBehaviour {
 			//display current money and price
 			curMoney.GetComponent<Text> ().text = "$" + _GameManager.GetComponent<DataStorage> ().money;
 				//play sound
+				itemBought.Play();
 				
 				//subtracting from the shop
 				_GameManager.GetComponent<DataStorage> ().shopHandgunAmmo -= 1;
 			if (_GameManager.GetComponent<DataStorage> ().shopHandgunAmmo < 1)
 				_shop.HGAmmoSoldOut ();
-				print ("Thank you, stranger!");
+
 			} 
 			else 
 			{
 			print ("You have no money, stranger");
 			//play sound
+			noMoney.Play();
 		}
 		else 
 		{
@@ -52,7 +63,7 @@ public class PurchaseItems : MonoBehaviour {
 			_GameManager.GetComponent<DataStorage> ().moneySpent += 10;
 			//display current money and price
 			curMoney.GetComponent<Text> ().text = "$" + _GameManager.GetComponent<DataStorage> ().money;
-			//play sound
+			itemBought.Play();
 
 			//subtracting from the shop
 			_GameManager.GetComponent<DataStorage> ().shopShotgunAmmo -= 1;
@@ -64,6 +75,7 @@ public class PurchaseItems : MonoBehaviour {
 		{
 			print ("You have no money, stranger");
 			//play sound
+			noMoney.Play();
 		}
 		else 
 		{
@@ -82,7 +94,7 @@ public class PurchaseItems : MonoBehaviour {
 			_GameManager.GetComponent<DataStorage> ().moneySpent += 5;
 			//display current money and price
 			curMoney.GetComponent<Text> ().text = "$" + _GameManager.GetComponent<DataStorage> ().money;
-			//play sound
+			itemBought.Play();
 
 			//subtracting from the shop
 			_GameManager.GetComponent<DataStorage> ().shopMachinegunAmmo -= 1;
@@ -94,6 +106,7 @@ public class PurchaseItems : MonoBehaviour {
 		{
 			print ("You have no money, stranger");
 			//play sound
+			noMoney.Play();
 		}
 	else 
 	{
@@ -113,7 +126,7 @@ public class PurchaseItems : MonoBehaviour {
 			_GameManager.GetComponent<DataStorage> ().moneySpent += 10;
 			//display current money and price
 			curMoney.GetComponent<Text> ().text = "$" + _GameManager.GetComponent<DataStorage> ().money;
-			//play sound
+			itemBought.Play();
 
 			//subtracting frmo the shop
 			_GameManager.GetComponent<DataStorage> ().shopRifleAmmo -= 1;
@@ -125,6 +138,7 @@ public class PurchaseItems : MonoBehaviour {
 		{
 			print ("You have no money, stranger");
 			//play sound
+			noMoney.Play();
 		}
 	else 
 	{
@@ -144,7 +158,7 @@ public class PurchaseItems : MonoBehaviour {
 			_GameManager.GetComponent<DataStorage> ().moneySpent += 10;
 			//display current money and price
 			curMoney.GetComponent<Text> ().text = "$" + _GameManager.GetComponent<DataStorage> ().money;
-			//play sound
+			itemBought.Play();
 
 			//subtracting frmo the shop
 			_GameManager.GetComponent<DataStorage> ().shopMagnumAmmo -= 1;
@@ -156,6 +170,7 @@ public class PurchaseItems : MonoBehaviour {
 		{
 			print ("You have no money, stranger");
 			//play sound
+			noMoney.Play();
 		}
 	else 
 	{
