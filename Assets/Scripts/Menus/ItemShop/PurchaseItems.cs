@@ -21,21 +21,21 @@ public class PurchaseItems : MonoBehaviour {
 
 	public void HGAmmo()
 	{
-		if (_GameManager.GetComponent<DataStorage> ().shopHandgunAmmo > 0)
-			if (_GameManager.GetComponent<DataStorage> ().money > 10)
+		if (DataStorage.shopHandgunAmmo > 0)
+			if (DataStorage.money > 10)
 			{
-				_GameManager.GetComponent<DataStorage> ().money -= 10;
-				_GameManager.GetComponent<DataStorage> ().HGAmmo += 5;
+				DataStorage.money -= 10;
+				DataStorage.HGAmmo += 5;
 				//adding stats
-				_GameManager.GetComponent<DataStorage> ().moneySpent += 10;
+				DataStorage.moneySpent += 10;
 			//display current money and price
-			curMoney.GetComponent<Text> ().text = "$" + _GameManager.GetComponent<DataStorage> ().money;
+			curMoney.GetComponent<Text> ().text = "$" + DataStorage.money;
 				//play sound
 				itemBought.Play();
 				
 				//subtracting from the shop
-				_GameManager.GetComponent<DataStorage> ().shopHandgunAmmo -= 1;
-			if (_GameManager.GetComponent<DataStorage> ().shopHandgunAmmo < 1)
+				DataStorage.shopHandgunAmmo -= 1;
+			if (DataStorage.shopHandgunAmmo < 1)
 				_shop.HGAmmoSoldOut ();
 
 			} 
@@ -55,21 +55,21 @@ public class PurchaseItems : MonoBehaviour {
 
 	public void SGAmmo()
 	{
-	if (_GameManager.GetComponent<DataStorage> ().shopShotgunAmmo > 0)
-		if (_GameManager.GetComponent<DataStorage> ().money > 10) {
-			_GameManager.GetComponent<DataStorage> ().money -= 10;
-			_GameManager.GetComponent<DataStorage> ().SGAmmo += 2;
+	if (DataStorage.shopShotgunAmmo > 0)
+		if (DataStorage.money > 10) {
+			DataStorage.money -= 10;
+			DataStorage.SGAmmo += 2;
 			//adding stats
-			_GameManager.GetComponent<DataStorage> ().moneySpent += 10;
+			DataStorage.moneySpent += 10;
 			//display current money and price
-			curMoney.GetComponent<Text> ().text = "$" + _GameManager.GetComponent<DataStorage> ().money;
+			curMoney.GetComponent<Text> ().text = "$" + DataStorage.money;
 			itemBought.Play();
 
 			//subtracting from the shop
-			_GameManager.GetComponent<DataStorage> ().shopShotgunAmmo -= 1;
-			if (_GameManager.GetComponent<DataStorage> ().shopShotgunAmmo < 1)
+			DataStorage.shopShotgunAmmo -= 1;
+			if (DataStorage.shopShotgunAmmo < 1)
 			_shop.SGAmmoSoldOut ();
-			print (_GameManager.GetComponent<DataStorage> ().shopShotgunAmmo);
+			print (DataStorage.shopShotgunAmmo);
 		} 
 		else 
 		{
@@ -85,22 +85,22 @@ public class PurchaseItems : MonoBehaviour {
 	}
 	public void MGAmmo()
 	{
-	if (_GameManager.GetComponent<DataStorage> ().shopMachinegunAmmo > 0)
-		if (_GameManager.GetComponent<DataStorage> ().money > 5)
+	if (DataStorage.shopMachinegunAmmo > 0)
+		if (DataStorage.money > 5)
 		{
-			_GameManager.GetComponent<DataStorage> ().money -= 5;
-			_GameManager.GetComponent<DataStorage> ().MGAmmo += 10;
+			DataStorage.money -= 5;
+			DataStorage.MGAmmo += 10;
 			//adding stats
-			_GameManager.GetComponent<DataStorage> ().moneySpent += 5;
+			DataStorage.moneySpent += 5;
 			//display current money and price
-			curMoney.GetComponent<Text> ().text = "$" + _GameManager.GetComponent<DataStorage> ().money;
+			curMoney.GetComponent<Text> ().text = "$" + DataStorage.money;
 			itemBought.Play();
 
 			//subtracting from the shop
-			_GameManager.GetComponent<DataStorage> ().shopMachinegunAmmo -= 1;
-			if (_GameManager.GetComponent<DataStorage> ().shopMachinegunAmmo < 1)
+			DataStorage.shopMachinegunAmmo -= 1;
+			if (DataStorage.shopMachinegunAmmo < 1)
 				_shop.MGAmmoSoldOut ();
-			print (_GameManager.GetComponent<DataStorage> ().shopMachinegunAmmo);
+			print (DataStorage.shopMachinegunAmmo);
 		} 
 		else 
 		{
@@ -117,22 +117,22 @@ public class PurchaseItems : MonoBehaviour {
 
 	public void RifleAmmo()
 	{
-	if (_GameManager.GetComponent<DataStorage> ().shopRifleAmmo > 0)
-		if (_GameManager.GetComponent<DataStorage> ().money > 10) 
+	if (DataStorage.shopRifleAmmo > 0)
+		if (DataStorage.money > 10) 
 		{
-			_GameManager.GetComponent<DataStorage> ().money -= 10;
-			_GameManager.GetComponent<DataStorage> ().rifleAmmo += 2;
+			DataStorage.money -= 10;
+			DataStorage.rifleAmmo += 2;
 			//adding stats
-			_GameManager.GetComponent<DataStorage> ().moneySpent += 10;
+			DataStorage.moneySpent += 10;
 			//display current money and price
-			curMoney.GetComponent<Text> ().text = "$" + _GameManager.GetComponent<DataStorage> ().money;
+			curMoney.GetComponent<Text> ().text = "$" + DataStorage.money;
 			itemBought.Play();
 
 			//subtracting frmo the shop
-			_GameManager.GetComponent<DataStorage> ().shopRifleAmmo -= 1;
-			if (_GameManager.GetComponent<DataStorage> ().shopRifleAmmo < 1)
+			DataStorage.shopRifleAmmo -= 1;
+			if (DataStorage.shopRifleAmmo < 1)
 				_shop.RifleAmmoSoldOut ();
-			print (_GameManager.GetComponent<DataStorage> ().shopRifleAmmo);
+			print (DataStorage.shopRifleAmmo);
 		} 
 		else 
 		{
@@ -149,22 +149,22 @@ public class PurchaseItems : MonoBehaviour {
 
 	public void MagnumAmmo()
 	{
-	if (_GameManager.GetComponent<DataStorage> ().shopMagnumAmmo > 0)
-		if (_GameManager.GetComponent<DataStorage> ().money > 10) 
+	if (DataStorage.shopMagnumAmmo > 0)
+		if (DataStorage.money > 10) 
 		{
-			_GameManager.GetComponent<DataStorage> ().money -= 10;
-			_GameManager.GetComponent<DataStorage> ().magnumAmmo += 1;
+			DataStorage.money -= 10;
+			DataStorage.magnumAmmo += 1;
 			//adding stats
-			_GameManager.GetComponent<DataStorage> ().moneySpent += 10;
+			DataStorage.moneySpent += 10;
 			//display current money and price
-			curMoney.GetComponent<Text> ().text = "$" + _GameManager.GetComponent<DataStorage> ().money;
+			curMoney.GetComponent<Text> ().text = "$" + DataStorage.money;
 			itemBought.Play();
 
 			//subtracting frmo the shop
-			_GameManager.GetComponent<DataStorage> ().shopMagnumAmmo -= 1;
-			if (_GameManager.GetComponent<DataStorage> ().shopMagnumAmmo < 1)
+			DataStorage.shopMagnumAmmo -= 1;
+			if (DataStorage.shopMagnumAmmo < 1)
 				_shop.MagnumAmmoSoldOut ();
-			print (_GameManager.GetComponent<DataStorage> ().shopMagnumAmmo);
+			print (DataStorage.shopMagnumAmmo);
 		} 
 		else 
 		{
