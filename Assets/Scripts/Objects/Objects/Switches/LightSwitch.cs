@@ -7,7 +7,6 @@ public class LightSwitch : MonoBehaviour {
 	public AudioSource switchSound;
     public AudioSource dyingLight;
 	public GameObject exclamation;
-	float wait;
 
 
 	public void LightsOnOff()
@@ -65,9 +64,8 @@ public class LightSwitch : MonoBehaviour {
 	void OnTriggerStay (Collider other)
 	{
 		if (other.tag =="Player")
-		if (Input.GetKeyDown ("return") && Time.time > wait) 
+		if (Input.GetKeyDown ("return")) 
 		{
-			wait = Time.time + .2f;
 			LightsOnOff ();
 
 		}
