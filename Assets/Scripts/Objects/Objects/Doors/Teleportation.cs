@@ -39,6 +39,6 @@ public class Teleportation : MonoBehaviour {
 		player.GetComponent<Controls>().enabled=true;
 		otherTeleporter.GetComponent<Teleportation>().active = true;
 		player.transform.position = new Vector3 (otherTeleporter.transform.position.x,otherTeleporter.transform.position.y,otherTeleporter.transform.position.z);
-		myPause.GetComponent<Pause>().canUnPause = true;
+		myPause.GetComponent<PauseMenu2>().canUnPause = true;
 		}
 }
