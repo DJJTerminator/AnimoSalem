@@ -44,18 +44,17 @@ public class EnterDybbukShop : MonoBehaviour {
 
     
     }
-	
-		void OnTriggerEnter(Collider other)
-		{
-          
-            if (other.tag == "Player")
-            {
-               gameObject.GetComponent<EnterDybbukShop>().enabled = true;
-               exclamation.SetActive(true);
-            }
-        
+
+    void OnTriggerEnter(Collider other)
+    {
+
+        if (other.tag == "Player")
+        {
+            gameObject.GetComponent<EnterDybbukShop>().enabled = true;
+            exclamation.SetActive(true);
+        }
+    }
          
-		}
 		void OnTriggerExit(Collider other)
 		{
             if (other.tag == "Player")
