@@ -16,10 +16,11 @@ public class Teleportation : MonoBehaviour {
 	}
 	 void OnTriggerEnter(Collider other)
 	{
-		if (!active && other.tag == ("Player")) {
-			myPause.GetComponent<Pause>().canUnPause = false;
+		if (!active && other.tag == ("Player"))
+        {
+			myPause.GetComponent<PauseMenu2>().canUnPause = false;
 			active = true;
-			GameObject.Find("Player").GetComponent<Controls>().enabled=false;
+			player.GetComponent<Controls>().enabled=false;
 			if (transition == true)
 			StartCoroutine(WaitAndSpawn(4.0F));
 		}
@@ -35,9 +36,9 @@ public class Teleportation : MonoBehaviour {
 	IEnumerator WaitAndSpawn(float waitTime) {
 		fade.GetComponent<ScreenFade>().anim.SetTrigger("FadeOut");
 		yield return new WaitForSeconds(waitTime);
-		GameObject.Find("Player").GetComponent<Controls>().enabled=true;
+		player.GetComponent<Controls>().enabled=true;
 		otherTeleporter.GetComponent<Teleportation>().active = true;
 		player.transform.position = new Vector3 (otherTeleporter.transform.position.x,otherTeleporter.transform.position.y,otherTeleporter.transform.position.z);
-		myPause.GetComponent<Pause>().canUnPause = true;
+		myPause.GetComponent<PauseMenu2>().canUnPause = true;
 		}
 }

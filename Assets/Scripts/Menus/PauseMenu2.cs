@@ -12,7 +12,7 @@ public class PauseMenu2 : MonoBehaviour
     public bool canUnPause = true;
     public int selectionIndicator;
 
-    public GameObject DialogueBox;
+    public GameObject dialogueBox;
 
     [HideInInspector]
     //*bools
@@ -112,7 +112,7 @@ public class PauseMenu2 : MonoBehaviour
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
 
-        if (Input.GetKeyDown(KeyCode.Escape) && canUnPause == true)
+        if (Input.GetKeyDown(KeyCode.Escape) && canUnPause == true && !dialogueBox.activeSelf)
         {
             if (!pause)
             {

@@ -36,35 +36,35 @@ public class UpgradeItems : MonoBehaviour {
 	//cycling weapons to the left
 	public void WeaponCycleLeft()
 	{
-		if (_GameManager.GetComponent<DataStorage> ().curWeapon <= 0)
-			_GameManager.GetComponent<DataStorage> ().curWeapon = _GameManager.GetComponent<DataStorage> ().obtainedWeapons.Length - 1;
+		if (DataStorage.curWeapon <= 0)
+			DataStorage.curWeapon = DataStorage.obtainedWeapons.Length - 1;
 		else
-			_GameManager.GetComponent<DataStorage> ().curWeapon -= 1;
+			DataStorage.curWeapon -= 1;
 
-		int i = _GameManager.GetComponent<DataStorage> ().obtainedWeapons.Length - 1;
+		int i = DataStorage.obtainedWeapons.Length - 1;
 
 		while (i > 0) 
 		{
 			//looping through the weapons to see which have been obtained and which have not
-			if (_GameManager.GetComponent<DataStorage> ().obtainedWeapons[_GameManager.GetComponent<DataStorage> ().curWeapon] != 1) 
+			if (DataStorage.obtainedWeapons[DataStorage.curWeapon] != 1) 
 			{
 				//No weapon has been found so I am pushing through the loop
-				if (_GameManager.GetComponent<DataStorage> ().curWeapon > 0) 
+				if (DataStorage.curWeapon > 0) 
 				{
-					_GameManager.GetComponent<DataStorage> ().curWeapon -= 1;
+					DataStorage.curWeapon -= 1;
 					i--;
 				} 
 				else 
 				{
-					_GameManager.GetComponent<DataStorage> ().curWeapon = _GameManager.GetComponent<DataStorage> ().obtainedWeapons.Length - 1;
+					DataStorage.curWeapon = DataStorage.obtainedWeapons.Length - 1;
 					i--;
 				}
 			} 
 			else 
 			{
 				//A weapon has been found so I am breaking the while loop
-				_weaponName.GetComponent<Text> ().text = _GameManager.GetComponent<DataStorage> ().weaponName [_GameManager.GetComponent<DataStorage> ().curWeapon];
-				upgradeSelect.GetComponent<RawImage> ().texture = curWeapon [_GameManager.GetComponent<DataStorage> ().curWeapon];
+				_weaponName.GetComponent<Text> ().text = DataStorage.weaponName [DataStorage.curWeapon];
+				upgradeSelect.GetComponent<RawImage> ().texture = curWeapon [DataStorage.curWeapon];
 				HoverOverDamage ();
 				break;
 			}
@@ -74,36 +74,36 @@ public class UpgradeItems : MonoBehaviour {
 	//cycling weapons to the right
 	public void WeaponCycleRight()
 	{
-		if (_GameManager.GetComponent<DataStorage> ().curWeapon >= _GameManager.GetComponent<DataStorage> ().obtainedWeapons.Length - 1)
-			_GameManager.GetComponent<DataStorage> ().curWeapon = 0;
+		if (DataStorage.curWeapon >= DataStorage.obtainedWeapons.Length - 1)
+			DataStorage.curWeapon = 0;
 		else
-			_GameManager.GetComponent<DataStorage> ().curWeapon += 1;
+			DataStorage.curWeapon += 1;
 
-		int i = _GameManager.GetComponent<DataStorage> ().obtainedWeapons.Length - 1;
+		int i = DataStorage.obtainedWeapons.Length - 1;
 
 		while (i > 0) 
 		{
 			//looping through the weapons to see which have been obtained and which have not
 
-			if (_GameManager.GetComponent<DataStorage> ().obtainedWeapons[_GameManager.GetComponent<DataStorage> ().curWeapon] != 1) 
+			if (DataStorage.obtainedWeapons[DataStorage.curWeapon] != 1) 
 			{
 				//No weapon has been found so I am pushing through the loop
-				if (_GameManager.GetComponent<DataStorage> ().curWeapon < _GameManager.GetComponent<DataStorage> ().obtainedWeapons.Length - 1) 
+				if (DataStorage.curWeapon < DataStorage.obtainedWeapons.Length - 1) 
 				{
-					_GameManager.GetComponent<DataStorage> ().curWeapon += 1;
+					DataStorage.curWeapon += 1;
 					i--;
 				} 
 				else 
 				{
-					_GameManager.GetComponent<DataStorage> ().curWeapon = 0;
+					DataStorage.curWeapon = 0;
 					i--;
 				}
 			} 
 			else 
 			{
 				//A weapon has been found so I am breaking the while loop
-				_weaponName.GetComponent<Text> ().text = _GameManager.GetComponent<DataStorage> ().weaponName [_GameManager.GetComponent<DataStorage> ().curWeapon];
-				upgradeSelect.GetComponent<RawImage> ().texture = curWeapon [_GameManager.GetComponent<DataStorage> ().curWeapon];
+				_weaponName.GetComponent<Text> ().text = DataStorage.weaponName [DataStorage.curWeapon];
+				upgradeSelect.GetComponent<RawImage> ().texture = curWeapon [DataStorage.curWeapon];
 				HoverOverDamage ();
 				break;
 			}
@@ -119,165 +119,165 @@ public class UpgradeItems : MonoBehaviour {
 		if (!upgradeSuccessful.isPlaying)
 			hoverOver.Play();
 		
-		if (_GameManager.GetComponent<DataStorage> ().curDamage [_GameManager.GetComponent<DataStorage> ().curWeapon] > 0) 
+		if (DataStorage.curDamage [DataStorage.curWeapon] > 0) 
 		{
-			myIndex = _GameManager.GetComponent<DataStorage> ().curDamage [_GameManager.GetComponent<DataStorage> ().curWeapon] -1;
+			myIndex = DataStorage.curDamage [DataStorage.curWeapon] -1;
 			ActivateUpgrade (myIndex);
 		}else
 			DeactivateUpgrades ();
 
 		//display image
-		upgradeSelect.GetComponent<RawImage> ().texture = curWeapon [_GameManager.GetComponent<DataStorage> ().curWeapon];
+		upgradeSelect.GetComponent<RawImage> ().texture = curWeapon [DataStorage.curWeapon];
 
 		//display weapon name
-		_weaponName.GetComponent<Text> ().text = _GameManager.GetComponent<DataStorage> ().weaponName [_GameManager.GetComponent<DataStorage> ().curWeapon];
+		_weaponName.GetComponent<Text> ().text = DataStorage.weaponName [DataStorage.curWeapon];
 
 		//display current upgrade and next upgrade
-		curText.GetComponent<Text> ().text = "Damage: " + _GameManager.GetComponent<DataStorage> ().weaponDamage [_GameManager.GetComponent<DataStorage> ().curWeapon];
-		if (_GameManager.GetComponent<DataStorage> ().curDamage [_GameManager.GetComponent<DataStorage> ().curWeapon] < 5)
-			nextText.GetComponent<Text> ().text = "Next Level: " + (_GameManager.GetComponent<DataStorage> ().weaponDamage [_GameManager.GetComponent<DataStorage> ().curWeapon] + 1);
+		curText.GetComponent<Text> ().text = "Damage: " + DataStorage.weaponDamage [DataStorage.curWeapon];
+		if (DataStorage.curDamage [DataStorage.curWeapon] < 5)
+            nextText.GetComponent<Text>().text = "Next Level: " + (DataStorage.weaponDamage[DataStorage.curWeapon] + DataStorage.upDamage[DataStorage.curWeapon]);
 		else
 			nextText.GetComponent<Text> ().text = " ";	
 
 			
 
 		//display current money and price
-		curMoney.GetComponent<Text> ().text = "$" + _GameManager.GetComponent<DataStorage> ().money;
-		if (_GameManager.GetComponent<DataStorage> ().curDamage[_GameManager.GetComponent<DataStorage> ().curWeapon] < 5)
-		price.GetComponent<Text> ().text = "Cost: $" + _GameManager.GetComponent<DataStorage> ().damageCost[_GameManager.GetComponent<DataStorage> ().curWeapon];
+		curMoney.GetComponent<Text> ().text = "$" + DataStorage.money;
+		if (DataStorage.curDamage[DataStorage.curWeapon] < 5)
+		price.GetComponent<Text> ().text = "Cost: $" + DataStorage.damageCost[DataStorage.curWeapon];
 	}
 	public void HoverOverReload()
 	{
 		if (!upgradeSuccessful.isPlaying)
 			hoverOver.Play();
 		//updates current upgrade
-		if (_GameManager.GetComponent<DataStorage> ().curReload [_GameManager.GetComponent<DataStorage> ().curWeapon] > 0) 
+		if (DataStorage.curReload [DataStorage.curWeapon] > 0) 
 		{
-			myIndex = _GameManager.GetComponent<DataStorage> ().curReload [_GameManager.GetComponent<DataStorage> ().curWeapon] -1;
+			myIndex = DataStorage.curReload [DataStorage.curWeapon] -1;
 			ActivateUpgrade (myIndex);
 		}else
 			DeactivateUpgrades ();
 
 		//display current upgrade and next upgrade
-		curText.GetComponent<Text> ().text = "Reload: " + _GameManager.GetComponent<DataStorage> ().reload [_GameManager.GetComponent<DataStorage> ().curWeapon];
-		if (_GameManager.GetComponent<DataStorage> ().curReload [_GameManager.GetComponent<DataStorage> ().curWeapon] < 5)
-		nextText.GetComponent<Text> ().text = "Next Level: " + (_GameManager.GetComponent<DataStorage> ().reload [_GameManager.GetComponent<DataStorage> ().curWeapon] + 1);
+		curText.GetComponent<Text> ().text = "Reload: " + DataStorage.reload [DataStorage.curWeapon];
+		if (DataStorage.curReload [DataStorage.curWeapon] < 5)
+            nextText.GetComponent<Text>().text = "Next Level: " + (DataStorage.reload[DataStorage.curWeapon] + DataStorage.upReload[DataStorage.curWeapon]);
 		else
 			nextText.GetComponent<Text> ().text = " ";	
 
-		curMoney.GetComponent<Text> ().text = "$" + _GameManager.GetComponent<DataStorage> ().money;
-		price.GetComponent<Text> ().text = "Cost: $" + _GameManager.GetComponent<DataStorage> ().reloadCost[_GameManager.GetComponent<DataStorage> ().curWeapon];
+		curMoney.GetComponent<Text> ().text = "$" + DataStorage.money;
+		price.GetComponent<Text> ().text = "Cost: $" + DataStorage.reloadCost[DataStorage.curWeapon];
 	}
 	public void HoverOverCapacity()
 	{
 		if (!upgradeSuccessful.isPlaying)
 			hoverOver.Play();
 		//updates current upgrade
-		if (_GameManager.GetComponent<DataStorage> ().curCapacity [_GameManager.GetComponent<DataStorage> ().curWeapon] > 0) 
+		if (DataStorage.curCapacity [DataStorage.curWeapon] > 0) 
 		{
-			myIndex = _GameManager.GetComponent<DataStorage> ().curCapacity [_GameManager.GetComponent<DataStorage> ().curWeapon] -1;
+			myIndex = DataStorage.curCapacity [DataStorage.curWeapon] -1;
 			ActivateUpgrade (myIndex);
 		}else
 			DeactivateUpgrades ();
 
 		//display current upgrade and next upgrade
-		curText.GetComponent<Text> ().text = "Capacity: " + _GameManager.GetComponent<DataStorage> ().capacity [_GameManager.GetComponent<DataStorage> ().curWeapon];
-		if (_GameManager.GetComponent<DataStorage> ().curCapacity [_GameManager.GetComponent<DataStorage> ().curWeapon] < 5)
-		nextText.GetComponent<Text> ().text = "Next Level: " + (_GameManager.GetComponent<DataStorage> ().capacity [_GameManager.GetComponent<DataStorage> ().curWeapon] + 1);
+		curText.GetComponent<Text> ().text = "Capacity: " + DataStorage.capacity [DataStorage.curWeapon];
+		if (DataStorage.curCapacity [DataStorage.curWeapon] < 5)
+            nextText.GetComponent<Text>().text = "Next Level: " + (DataStorage.capacity[DataStorage.curWeapon] + DataStorage.upCapacity[DataStorage.curWeapon]);
 		else
 			nextText.GetComponent<Text> ().text = " ";	
 
 		//display current money and price
-		curMoney.GetComponent<Text> ().text = "$" + _GameManager.GetComponent<DataStorage> ().money;
-		price.GetComponent<Text> ().text = "Cost: $" + _GameManager.GetComponent<DataStorage> ().capacityCost[_GameManager.GetComponent<DataStorage> ().curWeapon];
+		curMoney.GetComponent<Text> ().text = "$" + DataStorage.money;
+		price.GetComponent<Text> ().text = "Cost: $" + DataStorage.capacityCost[DataStorage.curWeapon];
 	}
 	public void HoverOverFireRate()
 	{
 		if (!upgradeSuccessful.isPlaying)
 			hoverOver.Play();
 		//updates current upgrade
-		if (_GameManager.GetComponent<DataStorage> ().curFireRate [_GameManager.GetComponent<DataStorage> ().curWeapon] > 0) 
+		if (DataStorage.curFireRate [DataStorage.curWeapon] > 0) 
 		{
-			myIndex = _GameManager.GetComponent<DataStorage> ().curFireRate [_GameManager.GetComponent<DataStorage> ().curWeapon] -1;
+			myIndex = DataStorage.curFireRate [DataStorage.curWeapon] -1;
 			ActivateUpgrade (myIndex);
 		}else
 			DeactivateUpgrades ();
 
 		//display current upgrade and next upgrade
-		curText.GetComponent<Text> ().text = "Fire Rate: " + _GameManager.GetComponent<DataStorage> ().fireRate [_GameManager.GetComponent<DataStorage> ().curWeapon];
-		if (_GameManager.GetComponent<DataStorage> ().curFireRate [_GameManager.GetComponent<DataStorage> ().curWeapon] < 5)
-		nextText.GetComponent<Text> ().text = "Next Level: " + (_GameManager.GetComponent<DataStorage> ().fireRate [_GameManager.GetComponent<DataStorage> ().curWeapon] + 1);
+        curText.GetComponent<Text>().text = "Fire Rate: " + +Mathf.Round(DataStorage.fireRate[DataStorage.curWeapon] * 100.0f) + "%";
+		if (DataStorage.curFireRate [DataStorage.curWeapon] < 5)
+            nextText.GetComponent<Text>().text = "Next Level: " + Mathf.Round((DataStorage.fireRate[DataStorage.curWeapon] + DataStorage.upFireRate[DataStorage.curWeapon]) * 100.0f) + "%";
 		else
 			nextText.GetComponent<Text> ().text = " ";	
 
 		//display current money and price
-		curMoney.GetComponent<Text> ().text = "$" + _GameManager.GetComponent<DataStorage> ().money;
-		price.GetComponent<Text> ().text = "Cost: $" + _GameManager.GetComponent<DataStorage> ().frCost[_GameManager.GetComponent<DataStorage> ().curWeapon];
+		curMoney.GetComponent<Text> ().text = "$" + DataStorage.money;
+		price.GetComponent<Text> ().text = "Cost: $" + DataStorage.frCost[DataStorage.curWeapon];
 	}
 	public void HoverOverCritical()
 	{
 		if (!upgradeSuccessful.isPlaying)
 			hoverOver.Play();
 		//updates current upgrade
-		if (_GameManager.GetComponent<DataStorage> ().curCrit [_GameManager.GetComponent<DataStorage> ().curWeapon] > 0) 
+		if (DataStorage.curCrit [DataStorage.curWeapon] > 0) 
 		{
-			myIndex = _GameManager.GetComponent<DataStorage> ().curCrit [_GameManager.GetComponent<DataStorage> ().curWeapon] -1;
+			myIndex = DataStorage.curCrit [DataStorage.curWeapon] -1;
 			ActivateUpgrade (myIndex);
 		}else
 			DeactivateUpgrades ();
 
 		//display current upgrade and next upgrade
-		curText.GetComponent<Text> ().text = "Critical Hit: " + (_GameManager.GetComponent<DataStorage> ().criticalChance [_GameManager.GetComponent<DataStorage> ().curWeapon] * 100) + "%";
-		if (_GameManager.GetComponent<DataStorage> ().curCrit [_GameManager.GetComponent<DataStorage> ().curWeapon] < 5)
-		nextText.GetComponent<Text> ().text = "Next Level: " + Mathf.Round((_GameManager.GetComponent<DataStorage> ().criticalChance [_GameManager.GetComponent<DataStorage> ().curWeapon]+.02f)*1000.0f)/10.0f + "%";
+		curText.GetComponent<Text> ().text = "Critical Hit: " + (DataStorage.criticalChance [DataStorage.curWeapon] * 100) + "%";
+		if (DataStorage.curCrit [DataStorage.curWeapon] < 5)
+            nextText.GetComponent<Text>().text = "Next Level: " + Mathf.Round((DataStorage.criticalChance[DataStorage.curWeapon] + DataStorage.upCritical[DataStorage.curWeapon]) * 100.0f)+ "%";
 		else
 			nextText.GetComponent<Text> ().text = " ";	
 		//upgradeSelect.GetComponent<RawImage>().texture = _critical;
 
 		//display current money and price
-		curMoney.GetComponent<Text> ().text = "$" + _GameManager.GetComponent<DataStorage> ().money;
-		price.GetComponent<Text> ().text = "Cost: $" + _GameManager.GetComponent<DataStorage> ().CCCost[_GameManager.GetComponent<DataStorage> ().curWeapon];
+		curMoney.GetComponent<Text> ().text = "$" + DataStorage.money;
+		price.GetComponent<Text> ().text = "Cost: $" + DataStorage.CCCost[DataStorage.curWeapon];
 	}
 	public void HoverOverAccuracy()
 	{
 		if (!upgradeSuccessful.isPlaying)
 			hoverOver.Play();
 		//updates current upgrade
-		if (_GameManager.GetComponent<DataStorage> ().curAccuracy [_GameManager.GetComponent<DataStorage> ().curWeapon] > 0) 
+		if (DataStorage.curAccuracy [DataStorage.curWeapon] > 0) 
 		{
-			myIndex = _GameManager.GetComponent<DataStorage> ().curAccuracy [_GameManager.GetComponent<DataStorage> ().curWeapon] -1;
+			myIndex = DataStorage.curAccuracy [DataStorage.curWeapon] -1;
 			ActivateUpgrade (myIndex);
 		}else
 			DeactivateUpgrades ();
 
 		//display current upgrade and next upgrade
-		curText.GetComponent<Text> ().text = "Accuracy: " + _GameManager.GetComponent<DataStorage> ().accuracy[_GameManager.GetComponent<DataStorage> ().curWeapon];
-		if (_GameManager.GetComponent<DataStorage> ().curAccuracy [_GameManager.GetComponent<DataStorage> ().curWeapon] < 5)
-		nextText.GetComponent<Text> ().text = "Next Level: " + (_GameManager.GetComponent<DataStorage> ().accuracy [_GameManager.GetComponent<DataStorage> ().curWeapon] + 1);
+        curText.GetComponent<Text>().text = "Accuracy: " + Mathf.Round(DataStorage.accuracy[DataStorage.curWeapon] * 10) + "%";
+		if (DataStorage.curAccuracy [DataStorage.curWeapon] < 5)
+            nextText.GetComponent<Text>().text = "Next Level: " + Mathf.Round((DataStorage.accuracy[DataStorage.curWeapon] + DataStorage.upAccuracy[DataStorage.curWeapon]) * 10) + "%";
 		else
 			nextText.GetComponent<Text> ().text = " ";	
 
 		//upgradeSelect.GetComponent<RawImage>().texture = _accuracy;
 
 		//display current money and price
-		curMoney.GetComponent<Text> ().text = "$" + _GameManager.GetComponent<DataStorage> ().money;
-		price.GetComponent<Text> ().text = "Cost: $" + _GameManager.GetComponent<DataStorage> ().acCost[_GameManager.GetComponent<DataStorage> ().curWeapon];
+		curMoney.GetComponent<Text> ().text = "$" + DataStorage.money;
+		price.GetComponent<Text> ().text = "Cost: $" + DataStorage.acCost[DataStorage.curWeapon];
 	}
 	public void HoverOverRange()
 	{
 		if (!upgradeSuccessful.isPlaying)
 			hoverOver.Play();
 		//updates current upgrade
-		if (_GameManager.GetComponent<DataStorage> ().curRange [_GameManager.GetComponent<DataStorage> ().curWeapon] > 0) {
-			myIndex = _GameManager.GetComponent<DataStorage> ().curRange [_GameManager.GetComponent<DataStorage> ().curWeapon] - 1;
+		if (DataStorage.curRange [DataStorage.curWeapon] > 0) {
+			myIndex = DataStorage.curRange [DataStorage.curWeapon] - 1;
 			ActivateUpgrade (myIndex);
 		} else
 			DeactivateUpgrades ();
 
 		//display current upgrade and next upgrade
-		curText.GetComponent<Text> ().text = "Range: " + _GameManager.GetComponent<DataStorage> ().range [_GameManager.GetComponent<DataStorage> ().curWeapon];
-		if (_GameManager.GetComponent<DataStorage> ().curRange [_GameManager.GetComponent<DataStorage> ().curWeapon] < 5)
-		nextText.GetComponent<Text> ().text = "Next Level: " + (_GameManager.GetComponent<DataStorage>().range [_GameManager.GetComponent<DataStorage> ().curWeapon] + 1);
+        curText.GetComponent<Text>().text = "Range: " + (DataStorage.range[DataStorage.curWeapon] * 10)/1 + "%";
+		if (DataStorage.curRange [DataStorage.curWeapon] < 5)
+            nextText.GetComponent<Text>().text = "Next Level: " + Mathf.Round((DataStorage.range[DataStorage.curWeapon] + DataStorage.upRange[DataStorage.curWeapon]) * 10)/1  + "%";
 		else
 			nextText.GetComponent<Text> ().text = " ";	
 
@@ -286,8 +286,8 @@ public class UpgradeItems : MonoBehaviour {
 
 
 		//display current money and price
-		curMoney.GetComponent<Text> ().text = "$" + _GameManager.GetComponent<DataStorage> ().money;
-		price.GetComponent<Text> ().text = "Cost: $" + _GameManager.GetComponent<DataStorage> ().rangeCost[_GameManager.GetComponent<DataStorage> ().curWeapon];
+		curMoney.GetComponent<Text> ().text = "$" + DataStorage.money;
+		price.GetComponent<Text> ().text = "Cost: $" + DataStorage.rangeCost[DataStorage.curWeapon];
 	}
 
 
@@ -297,28 +297,26 @@ public class UpgradeItems : MonoBehaviour {
 	{
 		//upgrade damage and sbtracting the cost
 		//checking to see if weapon is not fully maxed
-		if (_GameManager.GetComponent<DataStorage> ().curDamage[_GameManager.GetComponent<DataStorage> ().curWeapon] < 5)
+		if (DataStorage.curDamage[DataStorage.curWeapon] < 5)
 			//checking to see if the player has enough money
-		if (_GameManager.GetComponent<DataStorage> ().money > _GameManager.GetComponent<DataStorage> ().damageCost[_GameManager.GetComponent<DataStorage> ().curWeapon]) {
-			_GameManager.GetComponent<DataStorage> ().money -= _GameManager.GetComponent<DataStorage> ().damageCost [_GameManager.GetComponent<DataStorage> ().curWeapon];
-			_GameManager.GetComponent<DataStorage> ().damageCost [_GameManager.GetComponent<DataStorage> ().curWeapon] += 25;
-			_GameManager.GetComponent<DataStorage> ().weaponDamage[_GameManager.GetComponent<DataStorage> ().curWeapon] += 1;
-			_GameManager.GetComponent<DataStorage> ().sellValue[_GameManager.GetComponent<DataStorage> ().curWeapon] += 8;
+		if (DataStorage.money > DataStorage.damageCost[DataStorage.curWeapon]) {
+			DataStorage.money -= DataStorage.damageCost [DataStorage.curWeapon];
+			DataStorage.damageCost [DataStorage.curWeapon] += 25;
+            DataStorage.weaponDamage[DataStorage.curWeapon] += DataStorage.upDamage[DataStorage.curWeapon];
+			DataStorage.sellValue[DataStorage.curWeapon] += 8;
 			//adding stats
-			_GameManager.GetComponent<DataStorage> ().moneySpent += _GameManager.GetComponent<DataStorage> ().damageCost [_GameManager.GetComponent<DataStorage> ().curWeapon];
+			DataStorage.moneySpent += DataStorage.damageCost [DataStorage.curWeapon];
 			//play sound
 			upgradeSuccessful.Play();
 			//display current upgrade and next upgrade
-			curText.GetComponent<Text> ().text = "Damage: " + _GameManager.GetComponent<DataStorage> ().weaponDamage [_GameManager.GetComponent<DataStorage> ().curWeapon];
-			if (_GameManager.GetComponent<DataStorage> ().curDamage[_GameManager.GetComponent<DataStorage> ().curWeapon] < 5)
-			nextText.GetComponent<Text> ().text = "Next Level: " + (_GameManager.GetComponent<DataStorage> ().weaponDamage [_GameManager.GetComponent<DataStorage> ().curWeapon] + 1);
+         
 			//adding the current upgrade level
-			_GameManager.GetComponent<DataStorage> ().curDamage [_GameManager.GetComponent<DataStorage> ().curWeapon] += 1;
+			DataStorage.curDamage [DataStorage.curWeapon] += 1;
 			//display current money and price
 			HoverOverDamage();
 
 			//updates current upgrade
-			myIndex = _GameManager.GetComponent<DataStorage> ().curDamage[_GameManager.GetComponent<DataStorage> ().curWeapon] - 1;
+			myIndex = DataStorage.curDamage[DataStorage.curWeapon] - 1;
 			ActivateUpgrade(myIndex);
 		} 
 		else 
@@ -339,27 +337,25 @@ public class UpgradeItems : MonoBehaviour {
 	public void UpReload()
 	{
 		//checking to see if weapon is not fully maxed
-		if (_GameManager.GetComponent<DataStorage> ().curReload[_GameManager.GetComponent<DataStorage> ().curWeapon] < 5)
-		if (_GameManager.GetComponent<DataStorage> ().money > _GameManager.GetComponent<DataStorage> ().reloadCost[_GameManager.GetComponent<DataStorage> ().curWeapon]) {
-			_GameManager.GetComponent<DataStorage> ().money -= _GameManager.GetComponent<DataStorage> ().reloadCost [_GameManager.GetComponent<DataStorage> ().curWeapon];
-			_GameManager.GetComponent<DataStorage> ().reloadCost [_GameManager.GetComponent<DataStorage> ().curWeapon] += 25;
-			_GameManager.GetComponent<DataStorage> ().reload[_GameManager.GetComponent<DataStorage> ().curWeapon] += 1;
-			_GameManager.GetComponent<DataStorage> ().sellValue[_GameManager.GetComponent<DataStorage> ().curWeapon] += 8;
+		if (DataStorage.curReload[DataStorage.curWeapon] < 5)
+		if (DataStorage.money > DataStorage.reloadCost[DataStorage.curWeapon]) {
+			DataStorage.money -= DataStorage.reloadCost [DataStorage.curWeapon];
+			DataStorage.reloadCost [DataStorage.curWeapon] += 25;
+            DataStorage.reload[DataStorage.curWeapon] += DataStorage.upReload[DataStorage.curWeapon];
+			DataStorage.sellValue[DataStorage.curWeapon] += 8;
 			//adding stats
-			_GameManager.GetComponent<DataStorage> ().moneySpent += _GameManager.GetComponent<DataStorage> ().reloadCost [_GameManager.GetComponent<DataStorage> ().curWeapon];
+			DataStorage.moneySpent += DataStorage.reloadCost [DataStorage.curWeapon];
 			//play sound
 			upgradeSuccessful.Play();
 
 			//display current upgrade and next upgrade
-			_GameManager.GetComponent<DataStorage> ().curReload [_GameManager.GetComponent<DataStorage> ().curWeapon] +=1;
-			curText.GetComponent<Text> ().text = "Reload: " + _GameManager.GetComponent<DataStorage> ().reload [_GameManager.GetComponent<DataStorage> ().curWeapon];
-			nextText.GetComponent<Text> ().text = "Next Level: " + (_GameManager.GetComponent<DataStorage> ().reload [_GameManager.GetComponent<DataStorage> ().curWeapon] + 1);
+			DataStorage.curReload [DataStorage.curWeapon] +=1;
 
 			//display current money and price
 			HoverOverReload();
 
 			//updates current upgrade
-			myIndex = _GameManager.GetComponent<DataStorage> ().curReload[_GameManager.GetComponent<DataStorage> ().curWeapon] - 1;
+			myIndex = DataStorage.curReload[DataStorage.curWeapon] - 1;
 			ActivateUpgrade(myIndex);
 		} 
 		else 
@@ -381,26 +377,24 @@ public class UpgradeItems : MonoBehaviour {
 	public void UpCapacity()
 	{
 		//checking to see if weapon is not fully maxed
-		if (_GameManager.GetComponent<DataStorage> ().curCapacity[_GameManager.GetComponent<DataStorage> ().curWeapon] < 5)
-		if (_GameManager.GetComponent<DataStorage> ().money > _GameManager.GetComponent<DataStorage> ().capacityCost [_GameManager.GetComponent<DataStorage> ().curWeapon]) {
-			_GameManager.GetComponent<DataStorage> ().money -= _GameManager.GetComponent<DataStorage> ().capacityCost [_GameManager.GetComponent<DataStorage> ().curWeapon];
-			_GameManager.GetComponent<DataStorage> ().capacityCost [_GameManager.GetComponent<DataStorage> ().curWeapon] += 25;
-			_GameManager.GetComponent<DataStorage> ().capacity [_GameManager.GetComponent<DataStorage> ().curWeapon] += 2;
-			_GameManager.GetComponent<DataStorage> ().sellValue [_GameManager.GetComponent<DataStorage> ().curWeapon] += 8;
+		if (DataStorage.curCapacity[DataStorage.curWeapon] < 5)
+		if (DataStorage.money > DataStorage.capacityCost [DataStorage.curWeapon]) {
+			DataStorage.money -= DataStorage.capacityCost [DataStorage.curWeapon];
+			DataStorage.capacityCost [DataStorage.curWeapon] += 25;
+            DataStorage.capacity[DataStorage.curWeapon] += DataStorage.upCapacity[DataStorage.curWeapon];
+			DataStorage.sellValue [DataStorage.curWeapon] += 8;
 			//adding stats
-			_GameManager.GetComponent<DataStorage> ().moneySpent += _GameManager.GetComponent<DataStorage> ().capacityCost [_GameManager.GetComponent<DataStorage> ().curWeapon];
+			DataStorage.moneySpent += DataStorage.capacityCost [DataStorage.curWeapon];
 			//play sound
 			upgradeSuccessful.Play();
 			//display current upgrade and next upgrade
-			_GameManager.GetComponent<DataStorage> ().curCapacity [_GameManager.GetComponent<DataStorage> ().curWeapon] +=1;
-			curText.GetComponent<Text> ().text = "Capacity: " + _GameManager.GetComponent<DataStorage> ().capacity [_GameManager.GetComponent<DataStorage> ().curWeapon];
-			nextText.GetComponent<Text> ().text = "Next Level: " + (_GameManager.GetComponent<DataStorage> ().capacity [_GameManager.GetComponent<DataStorage> ().curWeapon] + 1);
+			DataStorage.curCapacity [DataStorage.curWeapon] +=1;
 
 			//display current money and price
 			HoverOverCapacity ();
 
 			//updates current upgrade
-			myIndex = _GameManager.GetComponent<DataStorage> ().curCapacity[_GameManager.GetComponent<DataStorage> ().curWeapon]-1;
+			myIndex = DataStorage.curCapacity[DataStorage.curWeapon]-1;
 			ActivateUpgrade(myIndex);
 		}
 		else 
@@ -421,27 +415,25 @@ public class UpgradeItems : MonoBehaviour {
 	public void UpFireRate()
 	{
 		//checking to see if weapon is not fully maxed
-		if (_GameManager.GetComponent<DataStorage> ().curFireRate[_GameManager.GetComponent<DataStorage> ().curWeapon] < 5)
-		if (_GameManager.GetComponent<DataStorage> ().money > _GameManager.GetComponent<DataStorage> ().frCost[_GameManager.GetComponent<DataStorage> ().curWeapon]) {
-			_GameManager.GetComponent<DataStorage> ().money -= _GameManager.GetComponent<DataStorage> ().frCost [_GameManager.GetComponent<DataStorage> ().curWeapon];
-			_GameManager.GetComponent<DataStorage> ().frCost [_GameManager.GetComponent<DataStorage> ().curWeapon] += 25;
-			_GameManager.GetComponent<DataStorage> ().fireRate[_GameManager.GetComponent<DataStorage> ().curWeapon] += 1;
-			_GameManager.GetComponent<DataStorage> ().sellValue[_GameManager.GetComponent<DataStorage> ().curWeapon] += 8;
+		if (DataStorage.curFireRate[DataStorage.curWeapon] < 5)
+		if (DataStorage.money > DataStorage.frCost[DataStorage.curWeapon]) {
+			DataStorage.money -= DataStorage.frCost [DataStorage.curWeapon];
+			DataStorage.frCost [DataStorage.curWeapon] += 25;
+			DataStorage.fireRate[DataStorage.curWeapon] += DataStorage.upFireRate[DataStorage.curWeapon];
+			DataStorage.sellValue[DataStorage.curWeapon] += 8;
 			//adding stats
-			_GameManager.GetComponent<DataStorage> ().moneySpent += _GameManager.GetComponent<DataStorage> ().frCost [_GameManager.GetComponent<DataStorage> ().curWeapon];
+			DataStorage.moneySpent += DataStorage.frCost [DataStorage.curWeapon];
 			//play sound
 			upgradeSuccessful.Play();
 			//display current upgrade and next upgrade
-			_GameManager.GetComponent<DataStorage> ().curFireRate [_GameManager.GetComponent<DataStorage> ().curWeapon] +=1;
-			curText.GetComponent<Text> ().text = "Fire Rate: " + _GameManager.GetComponent<DataStorage> ().fireRate [_GameManager.GetComponent<DataStorage> ().curWeapon];
-			nextText.GetComponent<Text> ().text = "Next Level: " + (_GameManager.GetComponent<DataStorage> ().fireRate [_GameManager.GetComponent<DataStorage> ().curWeapon] + 1);
+			DataStorage.curFireRate [DataStorage.curWeapon] +=1;
 
 
 			//display current money and price
 			HoverOverFireRate();
 
 			//updates current upgrade
-			myIndex = _GameManager.GetComponent<DataStorage> ().curFireRate[_GameManager.GetComponent<DataStorage> ().curWeapon]-1;
+			myIndex = DataStorage.curFireRate[DataStorage.curWeapon]-1;
 			ActivateUpgrade(myIndex);
 		} 
 		else 
@@ -464,27 +456,25 @@ public class UpgradeItems : MonoBehaviour {
 	public void UpAccuracy()
 	{
 		//checking to see if weapon is not fully maxed
-		if (_GameManager.GetComponent<DataStorage> ().curAccuracy[_GameManager.GetComponent<DataStorage> ().curWeapon] < 5)
-		if (_GameManager.GetComponent<DataStorage> ().money > _GameManager.GetComponent<DataStorage> ().acCost[_GameManager.GetComponent<DataStorage> ().curWeapon]) 
+		if (DataStorage.curAccuracy[DataStorage.curWeapon] < 5)
+		if (DataStorage.money > DataStorage.acCost[DataStorage.curWeapon]) 
 		{
-			_GameManager.GetComponent<DataStorage> ().money -= _GameManager.GetComponent<DataStorage> ().acCost [_GameManager.GetComponent<DataStorage> ().curWeapon];
-			_GameManager.GetComponent<DataStorage> ().acCost [_GameManager.GetComponent<DataStorage> ().curWeapon] += 25;
-			_GameManager.GetComponent<DataStorage> ().accuracy[_GameManager.GetComponent<DataStorage> ().curWeapon] += 1;
-			_GameManager.GetComponent<DataStorage> ().sellValue[_GameManager.GetComponent<DataStorage> ().curWeapon] += 8;
+			DataStorage.money -= DataStorage.acCost [DataStorage.curWeapon];
+			DataStorage.acCost [DataStorage.curWeapon] += 25;
+			DataStorage.accuracy[DataStorage.curWeapon] += DataStorage.upAccuracy[DataStorage.curWeapon];
+			DataStorage.sellValue[DataStorage.curWeapon] += 8;
 			//adding stats
-			_GameManager.GetComponent<DataStorage> ().moneySpent += _GameManager.GetComponent<DataStorage> ().acCost [_GameManager.GetComponent<DataStorage> ().curWeapon];
+			DataStorage.moneySpent += DataStorage.acCost [DataStorage.curWeapon];
 			//play sound
 			upgradeSuccessful.Play();
 			//display current upgrade and next upgrade
-			_GameManager.GetComponent<DataStorage> ().curAccuracy [_GameManager.GetComponent<DataStorage> ().curWeapon] +=1;
-			curText.GetComponent<Text> ().text = "Accuracy: " + _GameManager.GetComponent<DataStorage> ().accuracy[_GameManager.GetComponent<DataStorage> ().curWeapon];
-			nextText.GetComponent<Text> ().text = "Next Level: " + (_GameManager.GetComponent<DataStorage> ().accuracy [_GameManager.GetComponent<DataStorage> ().curWeapon] + 1);
+			DataStorage.curAccuracy [DataStorage.curWeapon] +=1;
 
 			//display current money and price
 			HoverOverAccuracy();
 
 			//updates current upgrade
-			myIndex = _GameManager.GetComponent<DataStorage> ().curAccuracy[_GameManager.GetComponent<DataStorage> ().curWeapon]-1;
+			myIndex = DataStorage.curAccuracy[DataStorage.curWeapon]-1;
 			ActivateUpgrade(myIndex);
 		} 
 		else 
@@ -506,26 +496,24 @@ public class UpgradeItems : MonoBehaviour {
 	public void UpRange()
 	{
 		//checking to see if weapon is not fully maxed
-		if (_GameManager.GetComponent<DataStorage> ().curRange[_GameManager.GetComponent<DataStorage> ().curWeapon] < 5)
-		if (_GameManager.GetComponent<DataStorage> ().money > _GameManager.GetComponent<DataStorage> ().rangeCost[_GameManager.GetComponent<DataStorage> ().curWeapon]) {
-			_GameManager.GetComponent<DataStorage> ().money -= _GameManager.GetComponent<DataStorage> ().rangeCost [_GameManager.GetComponent<DataStorage> ().curWeapon];
-			_GameManager.GetComponent<DataStorage> ().rangeCost [_GameManager.GetComponent<DataStorage> ().curWeapon] += 25;
-			_GameManager.GetComponent<DataStorage> ().range[_GameManager.GetComponent<DataStorage> ().curWeapon] += 1;
-			_GameManager.GetComponent<DataStorage> ().sellValue[_GameManager.GetComponent<DataStorage> ().curWeapon] += 8;
+		if (DataStorage.curRange[DataStorage.curWeapon] < 5)
+		if (DataStorage.money > DataStorage.rangeCost[DataStorage.curWeapon]) {
+			DataStorage.money -= DataStorage.rangeCost [DataStorage.curWeapon];
+			DataStorage.rangeCost [DataStorage.curWeapon] += 25;
+            DataStorage.range[DataStorage.curWeapon] += DataStorage.upRange[DataStorage.curWeapon];
+			DataStorage.sellValue[DataStorage.curWeapon] += 8;
 			//adding stats
-			_GameManager.GetComponent<DataStorage> ().moneySpent += _GameManager.GetComponent<DataStorage> ().rangeCost [_GameManager.GetComponent<DataStorage> ().curWeapon];
+			DataStorage.moneySpent += DataStorage.rangeCost [DataStorage.curWeapon];
 			//play sound
 			upgradeSuccessful.Play();
 			//display current upgrade and next upgrade
-			_GameManager.GetComponent<DataStorage> ().curRange [_GameManager.GetComponent<DataStorage> ().curWeapon] +=1;
-			curText.GetComponent<Text> ().text = "Range: " + _GameManager.GetComponent<DataStorage> ().range [_GameManager.GetComponent<DataStorage> ().curWeapon];
-			nextText.GetComponent<Text> ().text = "Next Level: " + (_GameManager.GetComponent<DataStorage>().range [_GameManager.GetComponent<DataStorage> ().curWeapon] + 1);
+			DataStorage.curRange [DataStorage.curWeapon] +=1;
 
 			//display current money and price
 			HoverOverRange();
 
 			//updates current upgrade
-			myIndex = _GameManager.GetComponent<DataStorage> ().curRange[_GameManager.GetComponent<DataStorage> ().curWeapon]-1;
+			myIndex = DataStorage.curRange[DataStorage.curWeapon]-1;
 			ActivateUpgrade(myIndex);
 		} 
 		else 
@@ -549,29 +537,28 @@ public class UpgradeItems : MonoBehaviour {
 		//display current upgrade and next upgrade
 
 		//checking to see if weapon is not fully maxed
-		if (_GameManager.GetComponent<DataStorage> ().curCrit[_GameManager.GetComponent<DataStorage> ().curWeapon] < 5)
-		if (_GameManager.GetComponent<DataStorage> ().money > _GameManager.GetComponent<DataStorage> ().CCCost [_GameManager.GetComponent<DataStorage> ().curWeapon]) {
-			_GameManager.GetComponent<DataStorage> ().money -= _GameManager.GetComponent<DataStorage> ().CCCost [_GameManager.GetComponent<DataStorage> ().curWeapon];
-			_GameManager.GetComponent<DataStorage> ().CCCost [_GameManager.GetComponent<DataStorage> ().curWeapon] += 25;
-			_GameManager.GetComponent<DataStorage> ().criticalChance [_GameManager.GetComponent<DataStorage> ().curWeapon] += .02f;
-			_GameManager.GetComponent<DataStorage> ().criticalChance [_GameManager.GetComponent<DataStorage> ().curWeapon] = Mathf.Round(_GameManager.GetComponent<DataStorage> ().criticalChance [_GameManager.GetComponent<DataStorage> ().curWeapon]*100.0f)/100.0f;
-			_GameManager.GetComponent<DataStorage> ().sellValue [_GameManager.GetComponent<DataStorage> ().curWeapon] += 8;
+		if (DataStorage.curCrit[DataStorage.curWeapon] < 5)
+		if (DataStorage.money > DataStorage.CCCost [DataStorage.curWeapon]) {
+			DataStorage.money -= DataStorage.CCCost [DataStorage.curWeapon];
+			DataStorage.CCCost [DataStorage.curWeapon] += 25;
+			DataStorage.criticalChance [DataStorage.curWeapon] += DataStorage.upCritical[DataStorage.curWeapon];
+			DataStorage.criticalChance [DataStorage.curWeapon] = Mathf.Round(DataStorage.criticalChance [DataStorage.curWeapon]*100.0f)/100.0f;
+			DataStorage.sellValue [DataStorage.curWeapon] += 8;
 			//adding stats
-			_GameManager.GetComponent<DataStorage> ().moneySpent += _GameManager.GetComponent<DataStorage> ().CCCost [_GameManager.GetComponent<DataStorage> ().curWeapon];
+			DataStorage.moneySpent += DataStorage.CCCost [DataStorage.curWeapon];
 			//play sound
 			upgradeSuccessful.Play();
 
 			//display current upgrade and next upgrade
-			_GameManager.GetComponent<DataStorage> ().curCrit [_GameManager.GetComponent<DataStorage> ().curWeapon] +=1;
-			curText.GetComponent<Text> ().text = "Critical Hit: " + (_GameManager.GetComponent<DataStorage> ().criticalChance [_GameManager.GetComponent<DataStorage> ().curWeapon]) + "%";
-			nextText.GetComponent<Text> ().text = "Next Level: " + Mathf.Round((_GameManager.GetComponent<DataStorage> ().criticalChance [_GameManager.GetComponent<DataStorage> ().curWeapon]+.02f)*1000.0f)/10.0f + "%";
+			DataStorage.curCrit [DataStorage.curWeapon] +=1;
+		
 
 
 			//display current money and price
 			HoverOverCritical ();
 
 			//updates current upgrade
-			myIndex = _GameManager.GetComponent<DataStorage> ().curCrit[_GameManager.GetComponent<DataStorage> ().curWeapon]-1;
+			myIndex = DataStorage.curCrit[DataStorage.curWeapon]-1;
 			ActivateUpgrade(myIndex);
 		}
 		else 
