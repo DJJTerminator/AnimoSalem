@@ -30,7 +30,7 @@ public class Speech : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		if (PauseMenus.GetComponent<Pause>().pause == false)
+		if (PauseMenus.GetComponent<PauseMenu2>().pause == false)
 		if (active)
 		if  (Input.GetKeyDown(KeyCode.Return))
 		{

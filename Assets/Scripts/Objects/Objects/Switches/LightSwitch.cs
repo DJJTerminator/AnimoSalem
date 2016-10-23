@@ -4,32 +4,33 @@ using System.Collections;
 public class LightSwitch : MonoBehaviour {
 	public GameObject _light;
 	public bool isBroken;
-	public AudioSource turnOn;
-	public AudioSource turnOff;
+	public AudioSource switchSound;
+    public AudioSource dyingLight;
 	public GameObject exclamation;
-	float wait;
 
 
 	public void LightsOnOff()
 	{
-		
 		if (_light.activeSelf) {
 			gameObject.GetComponent<SpriteRenderer> ().flipY = false;
 			_light.SetActive (false);
-			turnOff.Play ();
+            switchSound.Play();
 		} else {
 			gameObject.GetComponent<SpriteRenderer> ().flipY = true;
-			turnOn.Play ();
-			if (isBroken)
-				StartCoroutine (LightsOn (.08f));
-			else
-				_light.SetActive (true);
+            if (isBroken)
+                StartCoroutine(LightsOn(.08f));
+            else
+            {
+                _light.SetActive(true);
+                switchSound.Play();
+            }
 		}
 
 	}
 
 	IEnumerator LightsOn (float waitTime)
 	{
+        dyingLight.Play();
 		_light.SetActive(true);
 		yield return new WaitForSeconds(Random.Range(.02f,waitTime));
 		_light.SetActive(false);
@@ -63,9 +64,8 @@ public class LightSwitch : MonoBehaviour {
 	void OnTriggerStay (Collider other)
 	{
 		if (other.tag =="Player")
-		if (Input.GetKeyDown ("return") && Time.time > wait) 
+		if (Input.GetKeyDown ("return")) 
 		{
-			wait = Time.time + .2f;
 			LightsOnOff ();
 
 		}
