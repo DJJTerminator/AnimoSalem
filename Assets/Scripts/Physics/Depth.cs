@@ -4,8 +4,9 @@ using System.Collections;
 public class Depth : MonoBehaviour {
 	private float Zposition;
 //	private float Xposition;
-
-	public bool isShadow;
+    public bool isShadow;
+    [SerializeField]
+    bool isPlayer = false;
 	
 	// Update is called once per frame
 	void Update () 
@@ -23,7 +24,19 @@ public class Depth : MonoBehaviour {
 		//	transform.rotation = Quaternion.Euler(-300, pos.y, pos.z);
 			//transform.eulerAngles = pos; 
 		}
+    }
 
-	
-	}
+    void OnTriggerEnter(Collider other)
+    {
+        if (!isPlayer && other.tag == "Player")
+            gameObject.GetComponent<Depth>().enabled = true;
+    }
+
+    void OnTriggerExit(Collider other)
+    {
+        if (!isPlayer && other.tag == "Player")
+            gameObject.GetComponent<Depth>().enabled = false;
+    }
+
+
 }
