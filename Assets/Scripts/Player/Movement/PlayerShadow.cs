@@ -18,7 +18,7 @@ public class PlayerShadow : MonoBehaviour {
 	GameObject[] gos;
 	float[] distance;
 
-	float closestDistance = 999, secondClosest = 999;
+	public float closestDistance = 999, secondClosest = 999;
 
 
 	Vector3 diff;
@@ -37,7 +37,7 @@ public class PlayerShadow : MonoBehaviour {
 		distance = new float[gos.Length]; // init the distances
 	}
 
-	void FindClosestLight () {
+	public void FindClosestLight () {
 		
 		position = transform.position;
 		closestDistance = 999;
@@ -59,16 +59,22 @@ public class PlayerShadow : MonoBehaviour {
 				distance [i] = curDistance;
 				target = closestGO.transform; //assigning the transform of gos to target
 
-				if (curDistance > 0f && curDistance < 50) 
-				{ //checking distance of closest light
-					shadowPivot1.transform.localScale = new Vector3 ((100 - curDistance) * .02f, (100 - curDistance) * .02f, 0); //increasing the shadow size based on distance
-					myShadow.color = new Color (0f, 0f, 0f, (curDistance) * .01f + myBrightness); //tuning down the alpha based on distance
-				
-					shadowPivot1.transform.LookAt (target); //move shadow away opposite from light
-					shadowPivot1.transform.Rotate (+90, 0, 0); //rotation of shadow
-				}
-				else
-					myShadow2.color = new Color(0f,0f,0f,0f); //destroying second shadow
+                if (curDistance > 0f && curDistance < 60)
+                { //checking distance of closest light
+                    shadowPivot1.transform.localScale = new Vector3((100 - curDistance) * .02f, (100 - curDistance) * .02f, 0); //increasing the shadow size based on distance
+                    myShadow.color = new Color(0f, 0f, 0f, (curDistance) * .01f + myBrightness); //tuning down the alpha based on distance
+
+                    shadowPivot1.transform.LookAt(target); //move shadow away opposite from light
+                    shadowPivot1.transform.Rotate(+90, 0, 0); //rotation of shadow
+                }
+                else
+                {
+                    //removing shadows or returngin them to their normal state
+                    myShadow2.color = new Color(0f, 0f, 0f, 0f); //destroying second shadow
+                    myShadow.color = new Color(0f, 0f, 0f, Mathf.MoveTowards(0, color.a, Time.deltaTime)); 
+                  //  StartCoroutine (FadeShadow(1f));
+                    //StartCoroutine(FadeShadow(1f));
+                }
 			} //end of checking distance to closest
 			else if (distance [i] <= secondClosest) 
 			{
@@ -101,32 +107,17 @@ public class PlayerShadow : MonoBehaviour {
 		return Vector3.Distance(go.transform.position, origin.transform.position);
 	}
 
-	void ReturnShadow()
-	{
-//		if (shadowPivot1.eulerAngles.y != 0) 
-	
-			if (shadowPivot1.transform.rotation != Quaternion.identity)
-				shadowPivot1.transform.rotation = Quaternion.Lerp (target.transform.rotation, Quaternion.identity, Time.time * .1f);
-
-	}
-
 	void OnTriggerStay(Collider other)
 	{
 		if (other.tag == "Light") 
 		{
 			myBrightness = other.GetComponent<Brightness>().brightness;  //returns the value of brightness from the other gameobject (light)
 			FindClosestLight ();
-		
 		}
-
 	}
 
 	void OnTriggerExit(Collider other)
 	{
-		if (other.tag == "Light") 
-		{
-			//ReturnShadow ();
-	
-		}
+
 	}
 }

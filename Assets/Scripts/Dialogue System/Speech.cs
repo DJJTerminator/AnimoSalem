@@ -3,14 +3,15 @@ using System.Collections;
 
 public class Speech : MonoBehaviour {
 
-	public GameObject PauseMenus;
-	public TextAsset[] theText;
-	public TextManager theTextBox;
+	GameObject pauseMenus;
+	public TextAsset[] theText; //the text document
+	public TextManager theTextBox; //the textmanager script
 
 	public int maxText;
 	private int randomText;
 
-	public GameObject exclamation;
+	GameObject exclamation;
+    GameObject dialogueBox;
 
 	public int startAtLine;
 	public int endAtLine;
@@ -25,16 +26,22 @@ public class Speech : MonoBehaviour {
 	void Start () 
 	{
 		theTextBox = FindObjectOfType <TextManager>();
+        exclamation = GameObject.Find("Player/PlayerIcons/Exclamation");
+        pauseMenus = GameObject.Find("All Canvases/Canvas/PauseMenus");
+        dialogueBox = GameObject.Find("All Canvases/Canvas/TextManager/DialogueBox");
+        //turning script off from the start
+        GetComponent<Speech>().enabled = false;
+       
 
 	}
 	
 	// Update is called once per frame
 	void Update () {
-		if (PauseMenus.GetComponent<PauseMenu2>().pause == false)
+		if (pauseMenus.GetComponent<PauseMenu2>().pause == false)
 		if (active)
 		if  (Input.GetKeyDown(KeyCode.Return))
 		{
-				randomText = Random.Range (0, maxText);
+			randomText = Random.Range (0, maxText);
 
 			Portrait ();
 
@@ -48,17 +55,21 @@ public class Speech : MonoBehaviour {
 			if (destroyWhenActivated)
 				Destroy (gameObject);
 		}
-	
+        if (!dialogueBox.activeSelf)
+        {
+            exclamation.SetActive(true);
+            active = true;
+        }
+
 	}
 	void OnTriggerEnter (Collider other)
 	{
 
 		if (other.name == "Player")
 		{
+            GetComponent<Speech>().enabled = true;
 			exclamation.SetActive (true);
 			active = true;
-	
-
 		}
 	}
 
@@ -68,11 +79,10 @@ public class Speech : MonoBehaviour {
 		{
 			exclamation.SetActive (false);
 			active = false;
+            GetComponent<Speech>().enabled = false;
 		}
 	}
-
 	public void Portrait()
-
 	{
 		theTextBox.currentPortrait = new string[portraitOrder.Length];
 		theTextBox.portrait = new GameObject[portraitOrder.Length];

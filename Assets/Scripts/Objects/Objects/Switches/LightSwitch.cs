@@ -7,6 +7,7 @@ public class LightSwitch : MonoBehaviour {
 	public AudioSource switchSound;
     public AudioSource dyingLight;
 	public GameObject exclamation;
+ 
 
 
 	public void LightsOnOff()

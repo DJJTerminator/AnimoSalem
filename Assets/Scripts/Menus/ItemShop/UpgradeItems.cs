@@ -204,7 +204,7 @@ public class UpgradeItems : MonoBehaviour {
 			DeactivateUpgrades ();
 
 		//display current upgrade and next upgrade
-        curText.GetComponent<Text>().text = "Fire Rate: " + +Mathf.Round(DataStorage.fireRate[DataStorage.curWeapon] * 100.0f) + "%";
+        curText.GetComponent<Text>().text = "Fire Rate: " + Mathf.Round(DataStorage.fireRate[DataStorage.curWeapon] * 100.0f) + "%";
 		if (DataStorage.curFireRate [DataStorage.curWeapon] < 5)
             nextText.GetComponent<Text>().text = "Next Level: " + Mathf.Round((DataStorage.fireRate[DataStorage.curWeapon] + DataStorage.upFireRate[DataStorage.curWeapon]) * 100.0f) + "%";
 		else
