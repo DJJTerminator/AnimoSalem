@@ -42,6 +42,8 @@ public class PlayerShadow : MonoBehaviour {
 		position = transform.position;
 		closestDistance = 999;
 		secondClosest = 999;
+        myShadow.enabled = true;
+        myShadow2.enabled = true;
 
 		for (int i = 0; i < gos.Length; i++) {
 			GameObject closestGO = null;
