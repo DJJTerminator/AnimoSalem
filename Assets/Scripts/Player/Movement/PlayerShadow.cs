@@ -32,15 +32,9 @@ public class PlayerShadow : MonoBehaviour {
 	{
 	//	SpriteRenderer myShadow = GetComponent<SpriteRenderer>();
 //		SpriteRenderer myShadow2 = GetComponent<SpriteRenderer>();
-
-        FindLight();
-	}
-
-    public void FindLight()
-    {
         gos = GameObject.FindGameObjectsWithTag("Light");
         distance = new float[gos.Length]; // init the distances
-    }
+	}
 
 	public void FindClosestLight () {
 		
