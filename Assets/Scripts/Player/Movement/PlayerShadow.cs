@@ -33,9 +33,14 @@ public class PlayerShadow : MonoBehaviour {
 	//	SpriteRenderer myShadow = GetComponent<SpriteRenderer>();
 //		SpriteRenderer myShadow2 = GetComponent<SpriteRenderer>();
 
-		gos = GameObject.FindGameObjectsWithTag("Light");
-		distance = new float[gos.Length]; // init the distances
+        FindLight();
 	}
+
+    public void FindLight()
+    {
+        gos = GameObject.FindGameObjectsWithTag("Light");
+        distance = new float[gos.Length]; // init the distances
+    }
 
 	public void FindClosestLight () {
 		
@@ -105,8 +110,6 @@ public class PlayerShadow : MonoBehaviour {
                         myShadow2.color = new Color(0f, 0f, 0f, 0f); //destroying second shadow
                 } //end of checking ditance of second closest
             }
-            else
-                i++;
 		}//end of forloop
 	}
     //returning the distance between the light and the player
