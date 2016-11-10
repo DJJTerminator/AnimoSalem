@@ -3,20 +3,37 @@ using System.Collections;
 using UnityEngine.UI;
 
 public class EnterDybbukShop : MonoBehaviour {
-    public GameObject exclamation;
-    public GameObject theShop;
-    public GameObject sell;
-    public GameObject upgrade;
-    public GameObject buy;
-    public GameObject pause;
-    public GameObject player;
+    GameObject exclamation;
+    GameObject theShop;
+    GameObject sell;
+    GameObject upgrade;
+    GameObject buy;
+    GameObject pause;
+    GameObject player;
     public GameObject curMoney;
+	GameObject storageMenu;
 
+	void Start()
+	{
+        //finding all game objects from the start
+		theShop = GameObject.Find ("All Canvases/Canvas/TheItemShop");
+        sell = GameObject.Find("All Canvases/Canvas/TheItemShop/Sell");
+        upgrade = GameObject.Find("All Canvases/Canvas/TheItemShop/Upgrade");
+        buy = GameObject.Find("All Canvases/Canvas/TheItemShop/Buy");
+        pause = GameObject.Find("All Canvases/Canvas/PauseMenus");
+        storageMenu = GameObject.Find("All Canvases/Canvas/StorageMenu");
+		player = GameObject.Find ("Player");
+		exclamation = GameObject.Find ("Player/PlayerIcons/Exclamation");
+        //turning the script off from the start
+        gameObject.GetComponent<EnterDybbukShop>().enabled = false;
+	}
 
     void Update()
     {
-        if (!theShop.activeSelf && Input.GetKey ("return")) 
+        //entering the shop
+		if (!theShop.activeSelf && Input.GetKey ("return") && !storageMenu.activeSelf) 
         {
+			exclamation.SetActive(false);
             theShop.SetActive(true);
             upgrade.SetActive(false);
             sell.SetActive(false);
@@ -26,8 +43,10 @@ public class EnterDybbukShop : MonoBehaviour {
             pause.SetActive(false);
            // pause.GetComponent<PauseMenu2>().canUnPause = false;
         }
-        if (theShop.activeSelf && Input.GetKeyDown("escape"))
+        //exiting the shop
+		if (theShop.activeSelf && Input.GetKeyDown("escape"))
         {
+			exclamation.SetActive(true);
             upgrade.SetActive(false);
             sell.SetActive(false);
             buy.SetActive(true);
@@ -50,8 +69,10 @@ public class EnterDybbukShop : MonoBehaviour {
 
         if (other.tag == "Player")
         {
-            gameObject.GetComponent<EnterDybbukShop>().enabled = true;
-            exclamation.SetActive(true);
+
+				gameObject.GetComponent<EnterDybbukShop> ().enabled = true;
+				exclamation.SetActive (true);
+			
         }
     }
          

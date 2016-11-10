@@ -18,16 +18,6 @@ public class PauseMenu2 : MonoBehaviour
     //*bools
     public bool pause = false;
 
-
-
-    //image buttons
-    //	public Image[] selection;
-    //	public Image[] optionSection;
-    //	public Image[] controlSection;
-    //	public Image[] audioSection;
-    //	public Image[] videoSection;
-    //	public Image AnimationSelection;
-
     //basic menus
     public GameObject[] basicMenus;
 
@@ -44,6 +34,7 @@ public class PauseMenu2 : MonoBehaviour
     public GameObject[] controlMenus;
 
     public GameObject[] everythingElse;
+	public GameObject storageMenu;
 
     // Use this for initialization
     void Start()
@@ -62,48 +53,6 @@ public class PauseMenu2 : MonoBehaviour
             PlayerPrefs.SetFloat("Sound Volume", soundVolume);
             PlayerPrefs.SetFloat("Music Volume", musicVolume);
         }
-
-        /* selectionIndicator = 0;
-
-         Color c = selection[0].color;
-         c.a = 1.0f;
-         selection[0].color = c;
-
-         for (int i = 1; i < selection.Length; i++)
-         {
-             c.a = .3f;
-             selection[i].color = c;
-         }
-
-         for (int i = 1; i < optionSection.Length; i++)
-         {
-             c.a = .3f;
-             optionSection[i].color = c;
-         }
-
-         for (int i = 1; i < audioSection.Length; i++)
-         {
-             c.a = .3f;
-             audioSection[i].color = c;
-         }
-
-         for (int i = 1; i < videoSection.Length; i++)
-         {
-             c.a = .3f;
-             videoSection[i].color = c;
-         }
-
-         for (int i = 1; i < controlSection.Length; i++)
-         {
-             c.a = .3f;
-             controlSection[i].color = c;
-         }
-         */
-
-        //		Color c = selection [0].color;
-        //		c.a = 1.0f;
-        //		selection [0].color = c;
-
     }
 
     void Update()
@@ -112,7 +61,7 @@ public class PauseMenu2 : MonoBehaviour
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
 
-        if (Input.GetKeyDown(KeyCode.Escape) && canUnPause == true && !dialogueBox.activeSelf)
+		if (Input.GetKeyDown(KeyCode.Escape) && canUnPause == true && !dialogueBox.activeSelf && !storageMenu.activeSelf)
         {
             if (!pause)
             {
