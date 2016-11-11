@@ -30,14 +30,12 @@ public class PlayerShadow : MonoBehaviour {
 
 	void Start () 
 	{
-	//	SpriteRenderer myShadow = GetComponent<SpriteRenderer>();
-//		SpriteRenderer myShadow2 = GetComponent<SpriteRenderer>();
         gos = GameObject.FindGameObjectsWithTag("Light");
         distance = new float[gos.Length]; // init the distances
 	}
 
-	public void FindClosestLight () {
-		
+	public void FindClosestLight () 
+	{
 		position = transform.position;
 		closestDistance = 999;
 		secondClosest = 999;
@@ -54,7 +52,7 @@ public class PlayerShadow : MonoBehaviour {
                 distance[i] = FindDistance(gos[i], this.gameObject); // however you decide to get distance, origin is probably this gameobject?
 
 
-                if (distance[i] <= closestDistance)
+				if (distance[i] <= closestDistance)
                 {
                     closestDistance = distance[i];
 
@@ -77,15 +75,12 @@ public class PlayerShadow : MonoBehaviour {
                         //removing shadows or returngin them to their normal state
                         myShadow2.color = new Color(0f, 0f, 0f, 0f); //destroying second shadow
                         myShadow.color = new Color(0f, 0f, 0f, Mathf.MoveTowards(0, color.a, Time.deltaTime));
-                        //  StartCoroutine (FadeShadow(1f));
-                        //StartCoroutine(FadeShadow(1f));
                     }
                 } //end of checking distance to closest
-                else if (distance[i] <= secondClosest)
+				else if (distance[i] <= secondClosest)
                 {
                     secondClosest = distance[i];
-
-
+				
                     diff2 = gos[i].transform.position - position; //returning the one with the closest transform
                     curDistance2 = diff2.sqrMagnitude;
                     secondClosestGO = gos[i];
@@ -111,7 +106,7 @@ public class PlayerShadow : MonoBehaviour {
 	{
             return Vector3.Distance(go.transform.position, origin.transform.position);
 	}
-
+	//entering light
 	void OnTriggerStay(Collider other)
 	{
 		if (other.tag == "Light") 
