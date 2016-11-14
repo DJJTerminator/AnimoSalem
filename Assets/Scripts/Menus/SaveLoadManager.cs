@@ -30,7 +30,7 @@ public static class SaveLoadManager{
 		else 
 		{
 			Debug.LogError("No saved data found");
-			return new float[313];
+			return new float[346];
 		}
 	}
 }
@@ -44,7 +44,7 @@ public class PlayerData{
 
 	public PlayerData(DataStorage player)
 	{
-		stats = new float[313];
+		stats = new float[346];
 			stats [0] = DataStorage.money;
 			stats [1] = DataStorage.currentLevel;
 			stats [2] = DataStorage.XP;
@@ -402,7 +402,48 @@ public class PlayerData{
 		stats [309] = DataStorage.totalXP;
 		stats [310] = DataStorage.shopKeepTimer;
         stats[311] = DataStorage.maxWeight;
-        stats[312] = DataStorage.maxWeight;
+        stats[312] = DataStorage.curItems;
+		stats[313] = DataStorage.curWeight;
+
+		//curent holsters
+		stats[314] = DataStorage.holster[0];
+		stats[315] = DataStorage.holster[1];
+		stats[316] = DataStorage.holster[2];
+		stats[317] = DataStorage.holster[3];
+		stats[318] = DataStorage.holster[4];
+		stats[319] = DataStorage.holster[5];
+		stats[320] = DataStorage.holster[6];
+		stats[321] = DataStorage.holster[7];
+		stats[322] = DataStorage.holster[8];
+		stats[323] = DataStorage.holster[9];
+		stats[324] = DataStorage.holster[10];
+		stats[325] = DataStorage.holster[11];
+		stats[326] = DataStorage.holster[12];
+		stats[327] = DataStorage.holster[13];
+		stats[328] = DataStorage.holster[14];
+		stats[329] = DataStorage.holster[15];
+		stats[330] = DataStorage.holster[16];
+		stats[331] = DataStorage.holster[17];
+		stats[332] = DataStorage.holster[18];
+		stats[333] = DataStorage.holster[19];
+		stats[334] = DataStorage.holster[20];
+		stats[335] = DataStorage.holster[21];
+
+		//player stats (attributes)
+
+		stats[336] = DataStorage.strength;
+		stats[337] = DataStorage.constitution;
+		stats[338] = DataStorage.fortitude;
+		stats[339] = DataStorage.dexterity;
+		stats[340] = DataStorage.luck;
+		stats[341] = DataStorage.perception;
+		stats[342] = DataStorage.agility;
+		stats[343] = DataStorage.intelligence;
+		stats[344] = DataStorage.charisma;
+		stats[345] = DataStorage.playerStats;
+
+
+		//need to add save/load upgrades for the new weapons
 
         
 			//PlayerDisplay.UpdateDisplay();

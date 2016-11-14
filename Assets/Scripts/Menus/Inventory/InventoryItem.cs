@@ -18,7 +18,8 @@ public class InventoryItem : MonoBehaviour {
         itemPotion,
         itemAmmo,
         itemKey,
-        ItemGem,
+        itemGem,
+		itemMisc,
         itemQuest
 
     }
@@ -31,7 +32,7 @@ public class InventoryItem : MonoBehaviour {
         shotgunAmmo,
         rifleAmmo,
         magnumAmmo,
-        explosiveAmmo
+        explosiveAmmo,
     }
 
     public AmmoType ammo;
@@ -40,6 +41,7 @@ public class InventoryItem : MonoBehaviour {
 	void Start () {
         myDescription = GameObject.Find("ItemDescription");
         myName = GameObject.Find("ItemName");
+	
 
         if (type == ItemType.itemAmmo && ammo == AmmoType.handgunAmmo)
             myAmount.GetComponent<Text>().text = "Bullets" + "(" + DataStorage.HGAmmo.ToString() +")";
@@ -55,6 +57,19 @@ public class InventoryItem : MonoBehaviour {
             myAmount.GetComponent<Text>().text = "Rounds" + "(" + DataStorage.explosiveAmmo.ToString() + ")";
         if (type == ItemType.itemWeapon)
             myAmount.GetComponent<Text>().text = DataStorage.weaponType[weaponNumber].ToString();
+		if (type == ItemType.itemWeapon)
+			myAmount.GetComponent<Text>().text = DataStorage.weaponType[weaponNumber].ToString();
+		if (type == ItemType.itemAid)
+			myAmount.GetComponent<Text>().text = "Aid";
+		if (type == ItemType.itemKey)
+			myAmount.GetComponent<Text>().text = "Key";
+		if (type == ItemType.itemGem)
+			myAmount.GetComponent<Text>().text = "Soul Gem";
+		if (type == ItemType.itemQuest)
+			myAmount.GetComponent<Text>().text = "Quest";
+		if (type == ItemType.itemMisc)
+			myAmount.GetComponent<Text>().text = "Misc";
+
 
         myWeight.GetComponent<Text>().text = "lbs " + DataStorage.maxWeight.ToString();
 	}

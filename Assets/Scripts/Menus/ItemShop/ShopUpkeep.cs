@@ -27,32 +27,51 @@ public class ShopUpkeep : MonoBehaviour {
 	float timeBetweenItems;
 
 	// Use this for initialization
-	void Start () {
-		
-
-	
+	void Start ()
+	{
 	}
+
 	void Update()
 	{
 		if (Time.time > DataStorage.shopKeepTimer) 
 		{
 			RandomUpKeep ();
-			DataStorage.shopKeepTimer += Random.Range (Time.time + 100, Time.time + 120);
+			DataStorage.shopKeepTimer += Random.Range (Time.time + 100 - (DataStorage.charisma * 2), Time.time + 120 - (DataStorage.charisma * 2));
 		}
 	}
-	
+
+	public int AddCharisma(int charisma)
+	{
+		int remainder = charisma % 4;
+		charisma = DataStorage.charisma / 4;
+		if (charisma % 4 == 0) 
+		{
+			print (charisma);
+			return charisma;
+		} 
+		else 
+		{
+			print (charisma);
+			charisma -= remainder;
+			print (charisma);
+			return charisma;
+		}
+	}
+
 	public void RandomUpKeep()
 	{
+		int charism = AddCharisma (DataStorage.charisma);
+		
 		//randomizing all shop keeper's upkeep
-		DataStorage.shopHandgunAmmo = Random.Range (0,5);
-		DataStorage.shopRifleAmmo = Random.Range (0,3);
-		DataStorage.shopMachinegunAmmo = Random.Range (0,5);
-		DataStorage.shopShotgunAmmo = Random.Range (0,3);
-		DataStorage.shopMagnumAmmo = Random.Range (0,3);
-		DataStorage.shopSmallAid = Random.Range (0,2);
-		DataStorage.shopMedAid = Random.Range (0,1);
-		DataStorage.shopLargeAid = Random.Range (0,1);
-		DataStorage.shopHolyWater = Random.Range (0,3);
+		DataStorage.shopHandgunAmmo = Random.Range (0,4+charism);
+		DataStorage.shopRifleAmmo = Random.Range (0,2+charism);
+		DataStorage.shopMachinegunAmmo = Random.Range (0,4+charism);
+		DataStorage.shopShotgunAmmo = Random.Range (0,2+charism);
+		DataStorage.shopMagnumAmmo = Random.Range (0,2+charism);
+		DataStorage.shopSmallAid = Random.Range (0,2+charism);
+		DataStorage.shopMedAid = Random.Range (0,1+charism);
+		DataStorage.shopLargeAid = Random.Range (0,1+charism);
+		DataStorage.shopHolyWater = Random.Range (0,2+charism);
 
 		//enabling and disabling the sold out game objects
 		if (DataStorage.shopHandgunAmmo > 0)
