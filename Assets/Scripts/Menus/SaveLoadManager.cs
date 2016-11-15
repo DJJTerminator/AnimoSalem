@@ -30,7 +30,7 @@ public static class SaveLoadManager{
 		else 
 		{
 			Debug.LogError("No saved data found");
-			return new float[346];
+			return new float[386];
 		}
 	}
 }
@@ -44,7 +44,7 @@ public class PlayerData{
 
 	public PlayerData(DataStorage player)
 	{
-		stats = new float[346];
+		stats = new float[386];
 			stats [0] = DataStorage.money;
 			stats [1] = DataStorage.currentLevel;
 			stats [2] = DataStorage.XP;
@@ -127,7 +127,6 @@ public class PlayerData{
 		stats [72] = DataStorage.reload[16];
 
 		//accuracy
-
 		stats [73] = DataStorage.accuracy[0];
 		stats [74] = DataStorage.accuracy[1];
 		stats [75] = DataStorage.accuracy[2];
@@ -427,7 +426,7 @@ public class PlayerData{
 		stats[332] = DataStorage.holster[18];
 		stats[333] = DataStorage.holster[19];
 		stats[334] = DataStorage.holster[20];
-		stats[335] = DataStorage.holster[21];
+		stats[335] = DataStorage.damage;
 
 		//player stats (attributes)
 
@@ -441,9 +440,47 @@ public class PlayerData{
 		stats[343] = DataStorage.intelligence;
 		stats[344] = DataStorage.charisma;
 		stats[345] = DataStorage.playerStats;
+		stats [346] = DataStorage.lightRadius.GetComponent<Light> ().spotAngle;
+		stats [347] = DataStorage.lightRadius.GetComponent<Light> ().range;
+		stats [348] = DataStorage.player.GetComponent<Controls> ().speed;
 
 
 		//need to add save/load upgrades for the new weapons
+		stats [349] = DataStorage.weaponDamage[17];
+		stats [350] = DataStorage.weaponDamage[18];
+		stats [351] = DataStorage.weaponDamage[19];
+		stats [352] = DataStorage.weaponDamage[20];
+
+		stats [353] = DataStorage.capacity[17];
+		stats [354] = DataStorage.capacity[18];
+		stats [355] = DataStorage.capacity[19];
+		stats [356] = DataStorage.capacity[20];
+
+		stats [357] = DataStorage.reload[17];
+		stats [358] = DataStorage.reload[18];
+		stats [359] = DataStorage.reload[19];
+		stats [360] = DataStorage.reload[20];
+
+		stats [361] = DataStorage.accuracy[17];
+		stats [362] = DataStorage.accuracy[18];
+		stats [363] = DataStorage.accuracy[19];
+		stats [364] = DataStorage.accuracy[20];
+
+		stats [365] = DataStorage.range[17];
+		stats [366] = DataStorage.range[18];
+		stats [367] = DataStorage.range[19];
+		stats [368] = DataStorage.range[20];
+
+		stats [369] = DataStorage.criticalChance[17];
+		stats [370] = DataStorage.criticalChance[18];
+		stats [371] = DataStorage.criticalChance[19];
+		stats [381] = DataStorage.criticalChance[20];
+
+		stats [372] = DataStorage.fireRate[17];
+		stats [373] = DataStorage.fireRate[18];
+		stats [374] = DataStorage.fireRate[19];
+		stats [375] = DataStorage.fireRate[20];
+
 
         
 			//PlayerDisplay.UpdateDisplay();

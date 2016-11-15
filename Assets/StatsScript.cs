@@ -7,6 +7,7 @@ public class StatsScript : MonoBehaviour {
 	Text constitutionV;
 	Text fortitudeV;
 	Text dexterityV;
+	Text agilityV;
 	Text charismaV;
 	Text intelligenceV;
 	Text luckV;
@@ -16,7 +17,7 @@ public class StatsScript : MonoBehaviour {
 	Text maxXPV;
 	Text maxWeight;
 	Text maxHealth;
-	Text defense;
+	Text damage;
 	Text armor;
 	Text cash;
 	Text speed;
@@ -26,7 +27,7 @@ public class StatsScript : MonoBehaviour {
 
 
 	// Use this for initialization
-	void Start () 
+	void Awake () 
 	{
 		//finding all game objects
 		strengthV = GameObject.Find ("All Canvases/Canvas/LevelStats/Panel/Strength/Button/Value/Text").GetComponent<Text>();
@@ -37,12 +38,13 @@ public class StatsScript : MonoBehaviour {
 		intelligenceV = GameObject.Find ("All Canvases/Canvas/LevelStats/Panel/Intelligence/Button/Value/Text").GetComponent<Text>();
 		luckV = GameObject.Find ("All Canvases/Canvas/LevelStats/Panel/Luck/Button/Value/Text").GetComponent<Text>();
 		perceptionV = GameObject.Find ("All Canvases/Canvas/LevelStats/Panel/Perception/Button/Value/Text").GetComponent<Text>();
+		agilityV = GameObject.Find ("All Canvases/Canvas/LevelStats/Panel/Agility/Button/Value/Text").GetComponent<Text>();
 		statsV = GameObject.Find ("All Canvases/Canvas/LevelStats/Panel/Stats/Text").GetComponent<Text>();
 		curXPV = GameObject.Find ("All Canvases/Canvas/LevelStats/Panel/Level/CurXP/Text").GetComponent<Text>();
 		maxXPV = GameObject.Find ("All Canvases/Canvas/LevelStats/Panel/Level/MaxXP/Text").GetComponent<Text>();
 		lvlV = GameObject.Find ("All Canvases/Canvas/LevelStats/Panel/Level/LVL/Text").GetComponent<Text>();
 		vision = GameObject.Find ("All Canvases/Canvas/LevelStats/Panel/Vision/Text").GetComponent<Text>();
-		defense = GameObject.Find ("All Canvases/Canvas/LevelStats/Panel/Defense/Text").GetComponent<Text>();
+		damage = GameObject.Find ("All Canvases/Canvas/LevelStats/Panel/Damage/Text").GetComponent<Text>();
 		armor = GameObject.Find ("All Canvases/Canvas/LevelStats/Panel/Armor/Text").GetComponent<Text>();
 		speed = GameObject.Find ("All Canvases/Canvas/LevelStats/Panel/Speed/Text").GetComponent<Text>();
 		cash = GameObject.Find ("All Canvases/Canvas/LevelStats/Panel/Money/Text").GetComponent<Text>();
@@ -55,12 +57,14 @@ public class StatsScript : MonoBehaviour {
 	//displays and updates all stats
 	void ShowStats()
 	{
+		//getting the discount for the skill, "Charisma"
 		float price = Discount (DataStorage.damageCost [DataStorage.curWeapon]);
 
 		strengthV.text = DataStorage.strength.ToString();
 		constitutionV.text = DataStorage.constitution.ToString();
 		fortitudeV.text = DataStorage.fortitude.ToString();
 		luckV.text = DataStorage.luck.ToString();
+		agilityV.text = DataStorage.agility.ToString();
 		intelligenceV.text = DataStorage.intelligence.ToString();
 		dexterityV.text = DataStorage.dexterity.ToString();
 		charismaV.text = DataStorage.charisma.ToString();
@@ -69,9 +73,9 @@ public class StatsScript : MonoBehaviour {
 		curXPV.text = DataStorage.XP.ToString();
 		maxXPV.text = DataStorage.maxXP.ToString();
 		lvlV.text = DataStorage.currentLevel.ToString();
-		vision.text = "Light Radius " + DataStorage.lightRadius.GetComponent<Light> ().spotAngle.ToString();
-		speed.text = "Speed " + DataStorage.player.GetComponent<Controls>().speed.ToString();
-		defense.text = "Defense " + DataStorage.dexterity.ToString();
+		vision.text = "Light Radius " + Mathf.Round(DataStorage.lightRadius.GetComponent<Light> ().spotAngle/10).ToString();
+		speed.text = "Speed " + Mathf.Round(DataStorage.player.GetComponent<Controls>().speed*100/100f).ToString();
+		damage.text = "Damage " + Mathf.Round(DataStorage.damage + DataStorage.weaponDamage[DataStorage.curWeapon]).ToString();
 		armor.text = "Armor " + DataStorage.fortitude.ToString();
 		cash.text = "Cash $" + DataStorage.money.ToString();
 		barter.text = "Barter " + Mathf.Round(price * 100) + "% Discount".ToString();
@@ -100,7 +104,7 @@ public class StatsScript : MonoBehaviour {
 			//adding stats
 			DataStorage.playerStats -= 1;
 			DataStorage.constitution +=1;
-			DataStorage.maxHealth += 5;
+			DataStorage.maxHealth += 4;
 
 			//we are later assigning that same percentage to the newly upgraded max health
 			hp = Mathf.Round(DataStorage.maxHealth * hp);
@@ -123,7 +127,7 @@ public class StatsScript : MonoBehaviour {
 			DataStorage.strength +=1;
 
 			//adding the skill
-			DataStorage.maxWeight = DataStorage.strength * 2;
+			DataStorage.maxWeight += 2;
 
 			//play sounds
 			ShowStats();
@@ -152,6 +156,7 @@ public class StatsScript : MonoBehaviour {
 		{
 			DataStorage.playerStats -= 1;
 			DataStorage.dexterity +=1;
+			DataStorage.damage += .2f;
 			//play sounds
 			ShowStats();
 		}
@@ -193,7 +198,9 @@ public class StatsScript : MonoBehaviour {
 			DataStorage.agility +=1;
 
 			//adding the skill
-			DataStorage.player.GetComponent<Controls>().speed = DataStorage.player.GetComponent<Controls>().speed + (DataStorage.agility * .1f);
+			DataStorage.player.GetComponent<Controls>().speed += .02f;
+			if (DataStorage.player.GetComponent<Controls> ().speed >= 10f)
+				DataStorage.player.GetComponent<Controls> ().speed = 10f;
 
 			//play sounds
 			ShowStats();
@@ -210,8 +217,8 @@ public class StatsScript : MonoBehaviour {
 			DataStorage.perception +=1;
 
 			//adding the skill
-			DataStorage.lightRadius.GetComponent<Light> ().range = DataStorage.lightRadius.GetComponent<Light> ().range + DataStorage.perception;
-			DataStorage.lightRadius.GetComponent<Light>().spotAngle = DataStorage.lightRadius.GetComponent<Light> ().spotAngle + (DataStorage.perception * .5f);
+			DataStorage.lightRadius.GetComponent<Light> ().range += .2f;
+			DataStorage.lightRadius.GetComponent<Light> ().spotAngle += .2f;
 
 			//play sounds
 			ShowStats();
