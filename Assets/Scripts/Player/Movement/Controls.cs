@@ -8,7 +8,6 @@ public class Controls : MonoBehaviour {
 	RaycastHit hit;
 	public LayerMask targetLayer;
 	public Rigidbody myBody;
-    public GameObject storageMenu;
 
 
 	//In other words, it is the length that a player must wait before he can move.
@@ -32,10 +31,5 @@ public class Controls : MonoBehaviour {
 			print ("There is something in front of the object!");
 		}
 			Debug.DrawRay(transform.position, up, Color.white);
-
-        if (Input.GetKeyDown ("i") && (storageMenu.activeSelf == true))
-            storageMenu.SetActive(false);
-        else if (Input.GetKeyDown ("i") && (storageMenu.activeSelf == false))
-            storageMenu.SetActive(true);
 	}
 }

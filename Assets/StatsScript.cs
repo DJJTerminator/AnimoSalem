@@ -24,6 +24,9 @@ public class StatsScript : MonoBehaviour {
 	Text vision;
 	Text barter;
 	Text perceptionV;
+	AudioSource noSound;
+	AudioSource yesSound;
+
 
 
 	// Use this for initialization
@@ -51,6 +54,9 @@ public class StatsScript : MonoBehaviour {
 		barter = GameObject.Find ("All Canvases/Canvas/LevelStats/Panel/Barter/Text").GetComponent<Text>();
 		maxHealth = GameObject.Find ("All Canvases/Canvas/LevelStats/Panel/Health/Text").GetComponent<Text>();
 		maxWeight = GameObject.Find ("All Canvases/Canvas/LevelStats/Panel/Weight/Text").GetComponent<Text>();
+		yesSound = GameObject.Find ("All Canvases/Canvas/LevelStats/Sounds/Yes").GetComponent<AudioSource>();
+		noSound = GameObject.Find ("All Canvases/Canvas/LevelStats/Sounds/No").GetComponent<AudioSource>();
+	
 
 		ShowStats ();
 	}
@@ -79,7 +85,7 @@ public class StatsScript : MonoBehaviour {
 		armor.text = "Armor " + DataStorage.fortitude.ToString();
 		cash.text = "Cash $" + DataStorage.money.ToString();
 		barter.text = "Barter " + Mathf.Round(price * 100) + "% Discount".ToString();
-		maxWeight.text = "Weight " + DataStorage.curWeight +"/"+ DataStorage.maxWeight.ToString();
+		maxWeight.text = "Weight " + DataStorage.curWeight +"/"+ Mathf.Round(DataStorage.maxWeight).ToString();
 		maxHealth.text = "Health " + DataStorage.health +"/"+ DataStorage.maxHealth.ToString();
 	}
 
@@ -111,11 +117,11 @@ public class StatsScript : MonoBehaviour {
 			DataStorage.health = (int)hp;
 
 
-			//play sounds
+			yesSound.Play ();
 			ShowStats();
 		}
-		//else
-			//playsound
+		else
+			noSound.Play ();
 	}
 
 
@@ -127,13 +133,13 @@ public class StatsScript : MonoBehaviour {
 			DataStorage.strength +=1;
 
 			//adding the skill
-			DataStorage.maxWeight += 2;
+			DataStorage.maxWeight += .2f;
 
-			//play sounds
+			yesSound.Play ();
 			ShowStats();
 		}
-		//else
-		//playsound
+		else
+			noSound.Play ();
 	}
 
 
@@ -143,11 +149,11 @@ public class StatsScript : MonoBehaviour {
 		{
 			DataStorage.playerStats -= 1;
 			DataStorage.luck +=1;
-			//play sounds
+			yesSound.Play ();
 			ShowStats();
 		}
-		//else
-		//playsound
+		else
+			noSound.Play ();
 	}
 
 	public void Dexterity()
@@ -157,11 +163,11 @@ public class StatsScript : MonoBehaviour {
 			DataStorage.playerStats -= 1;
 			DataStorage.dexterity +=1;
 			DataStorage.damage += .2f;
-			//play sounds
+			yesSound.Play ();
 			ShowStats();
 		}
-		//else
-		//playsound
+		else
+			noSound.Play ();
 	}
 
 	public void Charisma()
@@ -170,11 +176,11 @@ public class StatsScript : MonoBehaviour {
 		{
 			DataStorage.playerStats -= 1;
 			DataStorage.charisma +=1;
-			//play sounds
+			yesSound.Play ();
 			ShowStats();
 		}
-		//else
-		//playsound
+		else
+			noSound.Play ();
 	}
 
 	public void Intelligence()
@@ -184,11 +190,11 @@ public class StatsScript : MonoBehaviour {
 			DataStorage.playerStats -= 1;
 			DataStorage.intelligence +=1;
 
-			//play sounds
+			yesSound.Play ();
 			ShowStats();
 		}
-		//else
-		//playsound
+		else
+			noSound.Play ();
 	}
 	public void Agility()
 	{
@@ -202,11 +208,11 @@ public class StatsScript : MonoBehaviour {
 			if (DataStorage.player.GetComponent<Controls> ().speed >= 10f)
 				DataStorage.player.GetComponent<Controls> ().speed = 10f;
 
-			//play sounds
+			yesSound.Play ();
 			ShowStats();
 		}
-		//else
-		//playsound
+		else
+			noSound.Play ();
 	}
 
 	public void Perception()
@@ -220,11 +226,11 @@ public class StatsScript : MonoBehaviour {
 			DataStorage.lightRadius.GetComponent<Light> ().range += .2f;
 			DataStorage.lightRadius.GetComponent<Light> ().spotAngle += .2f;
 
-			//play sounds
+			yesSound.Play ();
 			ShowStats();
 		}
-		//else
-		//playsound
+		else
+			noSound.Play ();
 	}
 
 	public void Fortitude()
@@ -234,10 +240,10 @@ public class StatsScript : MonoBehaviour {
 			DataStorage.playerStats -= 1;
 			DataStorage.fortitude +=1;
 
-			//play sounds
+			yesSound.Play ();
 			ShowStats();
 		}
-		//else
-		//playsound
+		else
+			noSound.Play ();
 	}
 }//end of class
