@@ -16,7 +16,7 @@ public class EnterDybbukShop : MonoBehaviour {
     void Update()
     {
 			//entering the shop
-		if (!DataStorage.theShop.activeSelf && Input.GetKeyDown ("return") && !DataStorage.storageMenu.activeSelf && !DataStorage.levelStats.activeSelf && !DataStorage.textBox.activeSelf)
+		if (!DataStorage.theShop.activeSelf && Input.GetKeyDown ("return") && DataStorage.canDo && !DataStorage.textBox.activeSelf)
 			 {
 				DataStorage.exclamation.SetActive (false);
 				DataStorage.theShop.SetActive (true);
@@ -26,7 +26,9 @@ public class EnterDybbukShop : MonoBehaviour {
 				curMoney.GetComponent<Text> ().text = "$" + DataStorage.money;
 				DataStorage.player.GetComponent<Controls> ().enabled = false;
 				DataStorage.pauseMenus.SetActive (false);
-				DataStorage.gameManager.GetComponent<CanvasScript> ().enabled = false;
+				DataStorage.gameManager.GetComponent<StatActivation> ().enabled = false;
+				DataStorage.gameManager.GetComponent<InventoryActivation> ().enabled = false;
+				DataStorage.canDo = false;
 			}
 			//exiting the shop
 			if (DataStorage.theShop.activeSelf && Input.GetKeyDown ("escape")) {
@@ -37,7 +39,9 @@ public class EnterDybbukShop : MonoBehaviour {
 				DataStorage.theShop.SetActive (false);
 				DataStorage.player.GetComponent<Controls> ().enabled = true;
 				DataStorage.pauseMenus.SetActive (true);
-				DataStorage.gameManager.GetComponent<CanvasScript> ().enabled = true;
+				DataStorage.gameManager.GetComponent<StatActivation> ().enabled = true;
+				DataStorage.gameManager.GetComponent<InventoryActivation> ().enabled = true;
+				DataStorage.canDo = true;
 			}
 			if (DataStorage.theShop.activeSelf) {
 				DataStorage.player.GetComponent<Controls> ().enabled = false;

@@ -30,10 +30,16 @@ public class Speech : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		if (DataStorage.pauseMenus.GetComponent<PauseMenu2>().pause == false && !DataStorage.levelStats.activeSelf && !DataStorage.storageMenu.activeSelf) 
+		if (DataStorage.pauseMenus.GetComponent<PauseMenu2>().pause == false && DataStorage.canDo) 
 		if (active)
 		if  (Input.GetKeyDown(KeyCode.Return))
 		{
+			//activating the textbox and text message
+			DataStorage.textManager.GetComponent<TextManager> ().enabled = true;
+			DataStorage.gameManager.GetComponent<StatActivation> ().enabled = false;
+			DataStorage.gameManager.GetComponent<InventoryActivation> ().enabled = false;
+			DataStorage.canDo = false;
+
 			randomText = Random.Range (0, maxText);
 
 			Portrait ();
@@ -50,8 +56,12 @@ public class Speech : MonoBehaviour {
 		}
         if (!DataStorage.textBox.activeSelf)
         {
+			DataStorage.textManager.GetComponent<TextManager> ().enabled = false;
+			DataStorage.gameManager.GetComponent<StatActivation> ().enabled = true;
+			DataStorage.gameManager.GetComponent<InventoryActivation> ().enabled = true;
             DataStorage.exclamation.SetActive(true);
             active = true;
+			DataStorage.canDo = true;
         }
 
 	}
@@ -73,6 +83,7 @@ public class Speech : MonoBehaviour {
 			DataStorage.exclamation.SetActive (false);
 			active = false;
             GetComponent<Speech>().enabled = false;
+			DataStorage.canDo = true;
 		}
 	}
 	public void Portrait()

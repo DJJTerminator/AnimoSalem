@@ -20,7 +20,8 @@ public static class SaveLoadManager{
 
 	public static float[] LoadGame()
 	{
-		if (File.Exists (Application.persistentDataPath + "/DataStorage.sav")) {
+		if (File.Exists (Application.persistentDataPath + "/DataStorage.sav"))
+		{
 			BinaryFormatter bf = new BinaryFormatter ();
 			FileStream stream = new FileStream (Application.persistentDataPath + "/DataStorage.sav", FileMode.Open);
 			PlayerData data = bf.Deserialize (stream) as PlayerData;

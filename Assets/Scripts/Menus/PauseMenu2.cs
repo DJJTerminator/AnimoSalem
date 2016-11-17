@@ -55,16 +55,17 @@ public class PauseMenu2 : MonoBehaviour
         }
     }
 
-    void Update()
-    {
-        //Unlocks the (Mouse)Cursor and makes it visible
-        Cursor.lockState = CursorLockMode.None;
-        Cursor.visible = true;
+    void Update ()
+	{
+		//Unlocks the (Mouse)Cursor and makes it visible
+		Cursor.lockState = CursorLockMode.None;
+		Cursor.visible = true;
 
-		if (Input.GetKeyDown(KeyCode.Escape) && canUnPause == true && !dialogueBox.activeSelf && !storageMenu.activeSelf)
-        {
-            if (!pause)
-            {
+		if (Input.GetKeyDown (KeyCode.Escape) && canUnPause == true && !dialogueBox.activeSelf && !storageMenu.activeSelf) {
+			if (!pause) {
+				DataStorage.canDo = false;
+				DataStorage.gameManager.GetComponent<StatActivation>().enabled = false;
+				DataStorage.gameManager.GetComponent<InventoryActivation>().enabled = false;
                 pause = true;
                 for (int i = 0; i < everythingElse.Length; i++)
                 {
@@ -77,6 +78,9 @@ public class PauseMenu2 : MonoBehaviour
             }
             else
             {
+				DataStorage.canDo = true;
+				DataStorage.gameManager.GetComponent<StatActivation>().enabled = false;
+				DataStorage.gameManager.GetComponent<InventoryActivation>().enabled = false;
                 pause = false;
                 for (int i = 0; i < everythingElse.Length; i++)
                 {
@@ -94,6 +98,10 @@ public class PauseMenu2 : MonoBehaviour
     //resuming the game from basic menus
     public void Resume()
     {
+		DataStorage.canDo = true;
+		DataStorage.canDo = true;
+		DataStorage.gameManager.GetComponent<StatActivation>().enabled = false;
+		DataStorage.gameManager.GetComponent<InventoryActivation>().enabled = false;
         pause = false;
         for (int i = 0; i < everythingElse.Length; i++)
         {
