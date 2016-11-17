@@ -244,7 +244,7 @@ public class InventoryListWindow : MonoBehaviour {
         }
     }
 
-    //destroying the items upon exit
+    //destroying the items upon exit, so that when we enable the inventory, it wont double the items
     void OnDisable()
     {
         foreach (Transform child in content.transform)

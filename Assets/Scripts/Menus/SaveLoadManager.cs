@@ -440,8 +440,8 @@ public class PlayerData{
 		stats[343] = DataStorage.intelligence;
 		stats[344] = DataStorage.charisma;
 		stats[345] = DataStorage.playerStats;
-		stats [346] = DataStorage.lightRadius.GetComponent<Light> ().spotAngle;
-		stats [347] = DataStorage.lightRadius.GetComponent<Light> ().range;
+		stats [346] = DataStorage.lightRadius.spotAngle;
+		stats [347] = DataStorage.lightRadius.range;
 		stats [348] = DataStorage.player.GetComponent<Controls> ().speed;
 
 

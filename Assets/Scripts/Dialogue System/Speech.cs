@@ -3,15 +3,11 @@ using System.Collections;
 
 public class Speech : MonoBehaviour {
 
-	GameObject pauseMenus;
 	public TextAsset[] theText; //the text document
 	public TextManager theTextBox; //the textmanager script
 
 	public int maxText;
 	private int randomText;
-
-	GameObject exclamation;
-    GameObject dialogueBox;
 
 	public int startAtLine;
 	public int endAtLine;
@@ -26,9 +22,6 @@ public class Speech : MonoBehaviour {
 	void Start () 
 	{
 		theTextBox = FindObjectOfType <TextManager>();
-        exclamation = GameObject.Find("Player/PlayerIcons/Exclamation");
-        pauseMenus = GameObject.Find("All Canvases/Canvas/PauseMenus");
-        dialogueBox = GameObject.Find("All Canvases/Canvas/TextManager/DialogueBox");
         //turning script off from the start
         GetComponent<Speech>().enabled = false;
        
@@ -37,7 +30,7 @@ public class Speech : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		if (pauseMenus.GetComponent<PauseMenu2>().pause == false)
+		if (DataStorage.pauseMenus.GetComponent<PauseMenu2>().pause == false && !DataStorage.levelStats.activeSelf && !DataStorage.storageMenu.activeSelf) 
 		if (active)
 		if  (Input.GetKeyDown(KeyCode.Return))
 		{
@@ -46,7 +39,7 @@ public class Speech : MonoBehaviour {
 			Portrait ();
 
 			active = false;
-			exclamation.SetActive (false);
+			DataStorage.exclamation.SetActive (false);
 			theTextBox.ReloadScript(theText[randomText]);
 			theTextBox.theText.text = theTextBox.textLines[0]; 
 			theTextBox.curLine = startAtLine;
@@ -55,9 +48,9 @@ public class Speech : MonoBehaviour {
 			if (destroyWhenActivated)
 				Destroy (gameObject);
 		}
-        if (!dialogueBox.activeSelf)
+        if (!DataStorage.textBox.activeSelf)
         {
-            exclamation.SetActive(true);
+            DataStorage.exclamation.SetActive(true);
             active = true;
         }
 
@@ -68,7 +61,7 @@ public class Speech : MonoBehaviour {
 		if (other.name == "Player")
 		{
             GetComponent<Speech>().enabled = true;
-			exclamation.SetActive (true);
+			DataStorage.exclamation.SetActive (true);
 			active = true;
 		}
 	}
@@ -77,7 +70,7 @@ public class Speech : MonoBehaviour {
 	{
 		if (other.name == "Player") 
 		{
-			exclamation.SetActive (false);
+			DataStorage.exclamation.SetActive (false);
 			active = false;
             GetComponent<Speech>().enabled = false;
 		}

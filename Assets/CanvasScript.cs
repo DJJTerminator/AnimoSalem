@@ -18,7 +18,7 @@ public class CanvasScript : MonoBehaviour
 	void Update () 
 	{
 		//accessing player stats
-		if (Input.GetKeyDown ("p") && storageMenu.activeSelf == false)
+		if (Input.GetKeyDown ("p") && storageMenu.activeSelf == false && !DataStorage.textBox.activeSelf)
 		if (!animBool)
 				if (levelStats.activeSelf)
 					{
@@ -26,7 +26,7 @@ public class CanvasScript : MonoBehaviour
 					levelStats.GetComponent<Animator>().SetBool ("isOn", false);
 					levelStats.GetComponent<AudioSource> ().pitch = 1.3f;
 					levelStats.GetComponent<AudioSource> ().Play ();
-					StartCoroutine (DisableStats (.8f));
+					StartCoroutine (DisableStats (.5f));
 					} 
 				else 
 					{
@@ -36,20 +36,24 @@ public class CanvasScript : MonoBehaviour
 					levelStats.GetComponent<AudioSource> ().pitch = 1f;
 					levelStats.GetComponent<AudioSource> ().Play ();
 					DataStorage.player.GetComponent<Controls> ().enabled = false;
-					StartCoroutine (EnableStats (.8f));
+					StartCoroutine (EnableStats (.5f));
+					DataStorage.pauseMenus.GetComponent<PauseMenu2> ().enabled = false;
 					}//end of else
 
 		//accessing  storage menu
-		if (Input.GetKeyDown ("i") && levelStats.activeSelf == false)
+		if (Input.GetKeyDown ("i") && levelStats.activeSelf == false && !DataStorage.textBox.activeSelf)
 			if(storageMenu.activeSelf)
 		   {
 			 	storageMenu.SetActive (false);
 				DataStorage.player.GetComponent<Controls> ().enabled = true;
+				DataStorage.pauseMenus.GetComponent<PauseMenu2>().enabled = true;
+
 		   } 
 			else
 			{
 				storageMenu.SetActive (true);
-				DataStorage.player.GetComponent<Controls> ().enabled = false;;
+				DataStorage.player.GetComponent<Controls> ().enabled = false;
+				DataStorage.pauseMenus.GetComponent<PauseMenu2>().enabled = false;
 			}
 	}//end of update
 
@@ -59,6 +63,7 @@ public class CanvasScript : MonoBehaviour
 		DataStorage.player.GetComponent<Controls> ().enabled = true;
 		levelStats.SetActive (false);
 		animBool = false;
+		DataStorage.pauseMenus.GetComponent<PauseMenu2>().enabled = true;
 	}
 	IEnumerator EnableStats(float waitTime)
 	{
