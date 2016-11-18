@@ -78,9 +78,6 @@ public class PauseMenu2 : MonoBehaviour
             }
             else
             {
-				DataStorage.canDo = true;
-				DataStorage.gameManager.GetComponent<StatActivation>().enabled = false;
-				DataStorage.gameManager.GetComponent<InventoryActivation>().enabled = false;
                 pause = false;
                 for (int i = 0; i < everythingElse.Length; i++)
                 {
@@ -91,6 +88,9 @@ public class PauseMenu2 : MonoBehaviour
                 {
                     basicMenus[j].SetActive(false);
                 }
+				DataStorage.gameManager.GetComponent<StatActivation>().enabled = true;
+				DataStorage.gameManager.GetComponent<InventoryActivation>().enabled = true;
+				DataStorage.canDo = true;
             }
 
         }
@@ -98,10 +98,7 @@ public class PauseMenu2 : MonoBehaviour
     //resuming the game from basic menus
     public void Resume()
     {
-		DataStorage.canDo = true;
-		DataStorage.canDo = true;
-		DataStorage.gameManager.GetComponent<StatActivation>().enabled = false;
-		DataStorage.gameManager.GetComponent<InventoryActivation>().enabled = false;
+
         pause = false;
         for (int i = 0; i < everythingElse.Length; i++)
         {
@@ -110,7 +107,10 @@ public class PauseMenu2 : MonoBehaviour
         for (int j = 0; j < basicMenus.Length; j++)
         {
             basicMenus[j].SetActive(false);
-        }
+        }	
+		DataStorage.gameManager.GetComponent<StatActivation> ().enabled = true;
+		DataStorage.gameManager.GetComponent<InventoryActivation>().enabled = true;
+		DataStorage.canDo = true;
     }
 
     //entering advance options

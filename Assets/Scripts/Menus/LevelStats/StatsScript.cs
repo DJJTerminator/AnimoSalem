@@ -26,7 +26,22 @@ public class StatsScript : MonoBehaviour {
 	Text perceptionV;
 	AudioSource noSound;
 	AudioSource yesSound;
-
+	//game information
+	Text dmgTaken;
+	Text dmgDealt;
+	Text totalTime;
+	Text totalSaves;
+	Text shotsFired;
+	Text shotsMissed;
+	Text hitRatio;
+	Text enemiesKilled;
+	Text itemsUsed;
+	Text itemsSold;
+	Text totalMoney;
+	Text moneySpent;
+	Text totalXP;
+	Text targetsHit;
+	Text itemsBought;
 
 
 	// Use this for initialization
@@ -56,10 +71,48 @@ public class StatsScript : MonoBehaviour {
 		maxWeight = GameObject.Find ("All Canvases/Canvas/LevelStats/Panel/Weight/Text").GetComponent<Text>();
 		yesSound = GameObject.Find ("All Canvases/Canvas/LevelStats/Sounds/Yes").GetComponent<AudioSource>();
 		noSound = GameObject.Find ("All Canvases/Canvas/LevelStats/Sounds/No").GetComponent<AudioSource>();
+
+		dmgTaken = GameObject.Find ("All Canvases/Canvas/LevelStats/GameInfo/Image/Info/DamageTaken").GetComponent<Text>();
+		totalXP = GameObject.Find ("All Canvases/Canvas/LevelStats/GameInfo/Image/Info/TotalXP").GetComponent<Text>();
+		dmgDealt= GameObject.Find ("All Canvases/Canvas/LevelStats/GameInfo/Image/Info/DamageDealt").GetComponent<Text>();
+		totalTime = GameObject.Find ("All Canvases/Canvas/LevelStats/GameInfo/Image/Info/TotalTime").GetComponent<Text>();
+		totalSaves = GameObject.Find ("All Canvases/Canvas/LevelStats/GameInfo/Image/Info/TotalSaves").GetComponent<Text>();
+		shotsFired= GameObject.Find ("All Canvases/Canvas/LevelStats/GameInfo/Image/Info/ShotsFired").GetComponent<Text>();
+		shotsMissed= GameObject.Find ("All Canvases/Canvas/LevelStats/GameInfo/Image/Info/ShotsMissed").GetComponent<Text>();
+		hitRatio= GameObject.Find ("All Canvases/Canvas/LevelStats/GameInfo/Image/Info/HitRatio").GetComponent<Text>();
+		enemiesKilled= GameObject.Find ("All Canvases/Canvas/LevelStats/GameInfo/Image/Info/EnemiesKilled").GetComponent<Text>();
+		itemsUsed= GameObject.Find ("All Canvases/Canvas/LevelStats/GameInfo/Image/Info/ItemsUsed").GetComponent<Text>();
+		itemsSold= GameObject.Find ("All Canvases/Canvas/LevelStats/GameInfo/Image/Info/ItemsSold").GetComponent<Text>();
+		totalMoney= GameObject.Find ("All Canvases/Canvas/LevelStats/GameInfo/Image/Info/TotalMoney").GetComponent<Text>();
+		moneySpent= GameObject.Find ("All Canvases/Canvas/LevelStats/GameInfo/Image/Info/MoneySpent").GetComponent<Text>();
+		targetsHit= GameObject.Find ("All Canvases/Canvas/LevelStats/GameInfo/Image/Info/ShotsHit").GetComponent<Text>();
+		itemsBought= GameObject.Find ("All Canvases/Canvas/LevelStats/GameInfo/Image/Info/ItemsBought").GetComponent<Text>();
 	
 
 		ShowStats ();
 	}
+
+	void OnEnable()
+	{
+		dmgTaken.text = "Damage Taken: " + DataStorage.damageTaken.ToString();
+		dmgDealt.text = "Damage Dealt: " + DataStorage.damageDealt.ToString();
+		itemsUsed.text = "Items Used: " + DataStorage.itemsUsed.ToString();
+		itemsSold.text = "Items Sold: " + DataStorage.itemsSold.ToString();
+		itemsBought.text = "Items Bought: " + DataStorage.itemsBought.ToString();
+		totalSaves.text = "Games Saved: " + DataStorage.numberOfSaves.ToString();
+		enemiesKilled.text = "Kills: " + DataStorage.enemiesKilled.ToString();
+		totalXP.text = "Total XP: " + DataStorage.totalXP.ToString();
+		totalMoney.text = "Earned: " + "$"+ DataStorage.totalMoneyEarned.ToString();
+		moneySpent.text = "Money Spent: " + DataStorage.moneySpent.ToString();
+		totalTime.text = "Total Time: " + DataStorage.currentTime.ToString();
+
+		hitRatio.text = "Accuracy: " + ((float)DataStorage.targetsHit/(float)DataStorage.shotsFired*100).ToString() + "%";
+		targetsHit.text = "Shots Hit: " + DataStorage.targetsHit.ToString();
+		shotsFired.text = "Shots Fired: " + DataStorage.shotsFired.ToString();
+		shotsMissed.text = "Shots Missed: " + DataStorage.damageDealt.ToString();
+
+	}
+
 	//displays and updates all stats
 	void ShowStats()
 	{

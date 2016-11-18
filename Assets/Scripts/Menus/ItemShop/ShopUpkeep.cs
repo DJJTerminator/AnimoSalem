@@ -46,14 +46,11 @@ public class ShopUpkeep : MonoBehaviour {
 		charisma = DataStorage.charisma / 4;
 		if (charisma % 4 == 0) 
 		{
-			print (charisma);
 			return charisma;
 		} 
 		else 
 		{
-			print (charisma);
 			charisma -= remainder;
-			print (charisma);
 			return charisma;
 		}
 	}
