@@ -51,17 +51,18 @@ public class Speech : MonoBehaviour {
 			theTextBox.curLine = startAtLine;
 			theTextBox.endLine = endAtLine;
 			theTextBox.EnableText();
-			if (destroyWhenActivated)
-				Destroy (gameObject);
 		}
 		if (!DataStorage.textBox.activeSelf && DataStorage.textManager.GetComponent<TextManager> ().enabled == true)
         {
 			DataStorage.textManager.GetComponent<TextManager> ().enabled = false;
 			DataStorage.gameManager.GetComponent<StatActivation> ().enabled = true;
 			DataStorage.gameManager.GetComponent<InventoryActivation> ().enabled = true;
+			if (!destroyWhenActivated)
             DataStorage.exclamation.SetActive(true);
             active = true;
 			DataStorage.canDo = true;
+			if (destroyWhenActivated)
+				Destroy (gameObject);
         }
 
 	}
