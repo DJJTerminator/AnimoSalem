@@ -31,7 +31,7 @@ public static class SaveLoadManager{
 		else 
 		{
 			Debug.LogError("No saved data found");
-			return new float[378];
+			return new float[379];
 		}
 	}
 }
@@ -45,7 +45,7 @@ public class PlayerData{
 
 	public PlayerData(DataStorage player)
 	{
-		stats = new float[378];
+		stats = new float[379];
 			stats [0] = DataStorage.money;
 			stats [1] = DataStorage.currentLevel;
 			stats [2] = DataStorage.XP;
@@ -441,9 +441,9 @@ public class PlayerData{
 		stats[343] = DataStorage.intelligence;
 		stats[344] = DataStorage.charisma;
 		stats[345] = DataStorage.playerStats;
-		stats [346] = DataStorage.lightRadius.spotAngle;
-		stats [347] = DataStorage.lightRadius.range;
-		stats [348] = DataStorage.player.GetComponent<Controls> ().speed;
+		stats [346] = DataStorage.lightAngle;
+		stats [347] = DataStorage.lightRange;
+		stats [348] = DataStorage.speed;
 
 
 		//need to add save/load upgrades for the new weapons

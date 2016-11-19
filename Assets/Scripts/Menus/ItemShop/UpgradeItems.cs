@@ -17,6 +17,7 @@ public class UpgradeItems : MonoBehaviour {
 	Text price;
 	[SerializeField]
 	Text _weaponName;
+	int returnWeapon; //returns weapon back to what was originally equipped after the player leaves the shop
 
 	[SerializeField]
 	GameObject[] myActive;
@@ -31,6 +32,15 @@ public class UpgradeItems : MonoBehaviour {
 	public AudioSource noMoney;
 	public AudioSource maxedOut;
 	public AudioSource hoverOver;
+
+	void OnEnable()
+	{
+		returnWeapon = DataStorage.curWeapon;
+	}
+	void OnDisable()
+	{
+		DataStorage.curWeapon = returnWeapon;
+	}
 
 
 	//cycling weapons to the left

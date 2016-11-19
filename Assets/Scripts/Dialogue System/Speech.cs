@@ -54,7 +54,7 @@ public class Speech : MonoBehaviour {
 			if (destroyWhenActivated)
 				Destroy (gameObject);
 		}
-        if (!DataStorage.textBox.activeSelf)
+		if (!DataStorage.textBox.activeSelf && DataStorage.textManager.GetComponent<TextManager> ().enabled == true)
         {
 			DataStorage.textManager.GetComponent<TextManager> ().enabled = false;
 			DataStorage.gameManager.GetComponent<StatActivation> ().enabled = true;

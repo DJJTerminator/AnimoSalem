@@ -105,11 +105,12 @@ public class StatsScript : MonoBehaviour {
 		totalMoney.text = "Earned: " + "$"+ DataStorage.totalMoneyEarned.ToString();
 		moneySpent.text = "Money Spent: " + DataStorage.moneySpent.ToString();
 		totalTime.text = "Total Time: " + DataStorage.currentTime.ToString();
-
 		hitRatio.text = "Accuracy: " + ((float)DataStorage.targetsHit/(float)DataStorage.shotsFired*100).ToString() + "%";
 		targetsHit.text = "Shots Hit: " + DataStorage.targetsHit.ToString();
 		shotsFired.text = "Shots Fired: " + DataStorage.shotsFired.ToString();
 		shotsMissed.text = "Shots Missed: " + DataStorage.damageDealt.ToString();
+
+		damage.text = "Damage " + (Mathf.Round((DataStorage.damage + DataStorage.weaponDamage[DataStorage.curWeapon])*100f)/100f).ToString();
 
 	}
 
@@ -132,14 +133,15 @@ public class StatsScript : MonoBehaviour {
 		curXPV.text = DataStorage.XP.ToString();
 		maxXPV.text = DataStorage.maxXP.ToString();
 		lvlV.text = DataStorage.currentLevel.ToString();
-		vision.text = "Light Radius " + Mathf.Round(DataStorage.lightRadius.GetComponent<Light> ().spotAngle/10).ToString();
-		speed.text = "Speed " + Mathf.Round(DataStorage.player.GetComponent<Controls>().speed*100/100f).ToString();
-		damage.text = "Damage " + Mathf.Round(DataStorage.damage + DataStorage.weaponDamage[DataStorage.curWeapon]).ToString();
+		float myVis = DataStorage.lightAngle / 10f;
+		vision.text = "Light Radius " + (Mathf.Round(myVis*100)/100).ToString();
+		speed.text = "Speed " + (Mathf.Round(DataStorage.speed*100f)/100f).ToString();
 		armor.text = "Armor " + DataStorage.fortitude.ToString();
 		cash.text = "Cash $" + DataStorage.money.ToString();
 		barter.text = "Barter " + Mathf.Round(price * 100) + "% Discount".ToString();
 		maxWeight.text = "Weight " + DataStorage.curWeight +"/"+ Mathf.Round(DataStorage.maxWeight).ToString();
 		maxHealth.text = "Health " + DataStorage.health +"/"+ DataStorage.maxHealth.ToString();
+		damage.text = "Damage " + (Mathf.Round((DataStorage.damage + DataStorage.weaponDamage[DataStorage.curWeapon])*100f)/100f).ToString();
 	}
 
 	//returning the exchange
@@ -214,7 +216,7 @@ public class StatsScript : MonoBehaviour {
 		if (DataStorage.playerStats > 0)
 		{
 			DataStorage.playerStats -= 1;
-			DataStorage.dexterity +=1;
+			DataStorage.dexterity += 1;
 			DataStorage.damage += .2f;
 			yesSound.Play ();
 			ShowStats();
@@ -257,7 +259,8 @@ public class StatsScript : MonoBehaviour {
 			DataStorage.agility +=1;
 
 			//adding the skill
-			DataStorage.player.GetComponent<Controls>().speed += .02f;
+			DataStorage.speed += .02f;
+			DataStorage.player.GetComponent<Controls> ().speed = DataStorage.speed;
 			if (DataStorage.player.GetComponent<Controls> ().speed >= 10f)
 				DataStorage.player.GetComponent<Controls> ().speed = 10f;
 
@@ -276,8 +279,10 @@ public class StatsScript : MonoBehaviour {
 			DataStorage.perception +=1;
 
 			//adding the skill
-			DataStorage.lightRadius.GetComponent<Light> ().range += .2f;
-			DataStorage.lightRadius.GetComponent<Light> ().spotAngle += .2f;
+			DataStorage.lightAngle += .2f;
+			DataStorage.lightRange += .2f;
+			DataStorage.lightRadius.GetComponent<Light> ().range = DataStorage.lightRange;
+			DataStorage.lightRadius.GetComponent<Light> ().spotAngle = DataStorage.lightAngle;
 
 			yesSound.Play ();
 			ShowStats();

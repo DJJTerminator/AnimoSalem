@@ -57,20 +57,22 @@ public class PauseMenu2 : MonoBehaviour
 
     void Update ()
 	{
-		//Unlocks the (Mouse)Cursor and makes it visible
-		Cursor.lockState = CursorLockMode.None;
-		Cursor.visible = true;
 
 		if (Input.GetKeyDown (KeyCode.Escape) && canUnPause == true && !dialogueBox.activeSelf && !storageMenu.activeSelf) {
 			if (!pause) {
+				//Unlocks the (Mouse)Cursor and makes it visible
+				Cursor.lockState = CursorLockMode.None;
+				Cursor.visible = true;
+
 				DataStorage.canDo = false;
 				DataStorage.gameManager.GetComponent<StatActivation>().enabled = false;
 				DataStorage.gameManager.GetComponent<InventoryActivation>().enabled = false;
                 pause = true;
-                for (int i = 0; i < everythingElse.Length; i++)
-                {
-                    everythingElse[i].SetActive(false);
-                }
+				Time.timeScale = 0;
+//                for (int i = 0; i < everythingElse.Length; i++)
+//                {
+//                    everythingElse[i].SetActive(false);
+//                }
                 for (int j = 0; j < basicMenus.Length; j++)
                 {
                     basicMenus[j].SetActive(true);
@@ -79,11 +81,11 @@ public class PauseMenu2 : MonoBehaviour
             else
             {
                 pause = false;
-                for (int i = 0; i < everythingElse.Length; i++)
-                {
-
-                    everythingElse[i].SetActive(true);
-                }
+//                for (int i = 0; i < everythingElse.Length; i++)
+//                {
+//
+//                    everythingElse[i].SetActive(true);
+//                }
                 for (int j = 0; j < basicMenus.Length; j++)
                 {
                     basicMenus[j].SetActive(false);
@@ -91,6 +93,7 @@ public class PauseMenu2 : MonoBehaviour
 				DataStorage.gameManager.GetComponent<StatActivation>().enabled = true;
 				DataStorage.gameManager.GetComponent<InventoryActivation>().enabled = true;
 				DataStorage.canDo = true;
+				Time.timeScale = 1;
             }
 
         }
@@ -100,10 +103,10 @@ public class PauseMenu2 : MonoBehaviour
     {
 
         pause = false;
-        for (int i = 0; i < everythingElse.Length; i++)
-        {
-            everythingElse[i].SetActive(true);
-        }
+//        for (int i = 0; i < everythingElse.Length; i++)
+//        {
+//            everythingElse[i].SetActive(true);
+//        }
         for (int j = 0; j < basicMenus.Length; j++)
         {
             basicMenus[j].SetActive(false);
@@ -111,6 +114,7 @@ public class PauseMenu2 : MonoBehaviour
 		DataStorage.gameManager.GetComponent<StatActivation> ().enabled = true;
 		DataStorage.gameManager.GetComponent<InventoryActivation>().enabled = true;
 		DataStorage.canDo = true;
+		Time.timeScale = 1;
     }
 
     //entering advance options
