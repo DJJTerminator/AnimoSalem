@@ -3,6 +3,7 @@ using System.Collections;
 using UnityEngine.UI;
 
 public class InventoryItem : MonoBehaviour {
+	public InventoryDecisionScript decide;
     public GameObject myImage;
     public Text myWeight;
     public Text myAmount;
@@ -10,6 +11,10 @@ public class InventoryItem : MonoBehaviour {
     public GameObject myDescription;
     public string myDesc;
     public int weaponNumber;
+	float doubleClick;
+	public string itemName;
+
+
 
     public enum ItemType
     {
@@ -41,6 +46,7 @@ public class InventoryItem : MonoBehaviour {
 	void Start () {
         myDescription = GameObject.Find("ItemDescription");
         myName = GameObject.Find("ItemName");
+		decide = GameObject.Find ("All Canvases/Canvas/StorageMenu/Inventory/InventoryList/ScrollRect").GetComponent<InventoryDecisionScript>();
 	
 
         if (type == ItemType.itemAmmo && ammo == AmmoType.handgunAmmo)
@@ -85,19 +91,25 @@ public class InventoryItem : MonoBehaviour {
     }
 
     public void OnClick()
-    {
-        if (type == ItemType.itemWeapon)
-        {
-            myDescription.GetComponent<Text>().lineSpacing = 1.8f;
-            myName.GetComponent<Text>().text = DataStorage.weaponName[weaponNumber];
-            myDescription.GetComponent<Text>().text = "Damage: " + DataStorage.weaponDamage[weaponNumber] + "\n" + "Fire Rate: " + Mathf.Round(DataStorage.fireRate[weaponNumber] * 100.0f) + "%" + "\n" + "Capacity " + DataStorage.capacity[weaponNumber] + "\n" + "Reload: " + DataStorage.reload[weaponNumber] + "\n" + "Accuracy: " + Mathf.Round(DataStorage.accuracy[DataStorage.curWeapon] * 10) + "%" + "\n" + "Range: " + (DataStorage.range[DataStorage.curWeapon] * 10) / 1 + "%" + "\n" + "Crit Chance: " + (DataStorage.criticalChance[weaponNumber] * 100) + "%";
-        }
-        else
-        {
-            myDescription.GetComponent<Text>().lineSpacing = 1f;
-            myDescription.GetComponent<Text>().text = "\n" + "\n" + "\n" + "\n" + "\n" + "\n" + "\n" + "\n" + "\n" + myDesc;
-        }
-    }
- 
-  
-}
+	{
+
+		if (Input.GetKeyDown ("return")) 
+		{
+			decide.Decide (gameObject);
+		} 
+
+				//if it was not double clciked or if eneter was not hit, then we will display the item's content
+				if (type == ItemType.itemWeapon) 
+				{
+					myDescription.GetComponent<Text> ().lineSpacing = 1.8f;
+					myName.GetComponent<Text> ().text = DataStorage.weaponName [weaponNumber];
+					myDescription.GetComponent<Text> ().text = "Damage: " + DataStorage.weaponDamage [weaponNumber] + "\n" + "Fire Rate: " + Mathf.Round (DataStorage.fireRate [weaponNumber] * 100.0f) + "%" + "\n" + "Capacity " + DataStorage.capacity [weaponNumber] + "\n" + "Reload: " + DataStorage.reload [weaponNumber] + "\n" + "Accuracy: " + Mathf.Round (DataStorage.accuracy [DataStorage.curWeapon] * 10) + "%" + "\n" + "Range: " + (DataStorage.range [DataStorage.curWeapon] * 10) / 1 + "%" + "\n" + "Crit Chance: " + (DataStorage.criticalChance [weaponNumber] * 100) + "%";
+				} 
+				else 
+				{
+					myDescription.GetComponent<Text> ().lineSpacing = 1f;
+			myName.GetComponent<Text> ().text = itemName;
+					myDescription.GetComponent<Text> ().text = "\n" + "\n" + "\n" + "\n" + "\n" + "\n" + "\n" + "\n" + "\n" + myDesc;
+				}//end of third else
+	}//end of function
+}//end of class

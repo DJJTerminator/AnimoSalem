@@ -72,8 +72,8 @@ public class Speech : MonoBehaviour {
 		if (other.name == "Player")
 		{
             GetComponent<Speech>().enabled = true;
-			DataStorage.exclamation.SetActive (true);
 			active = true;
+			DataStorage.exclamation.SetActive (true);
 		}
 	}
 

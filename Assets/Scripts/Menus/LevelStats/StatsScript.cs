@@ -165,7 +165,7 @@ public class StatsScript : MonoBehaviour {
 			//adding stats
 			DataStorage.playerStats -= 1;
 			DataStorage.constitution +=1;
-			DataStorage.maxHealth += 4;
+			DataStorage.maxHealth += 2;
 
 			//we are later assigning that same percentage to the newly upgraded max health
 			hp = Mathf.Round(DataStorage.maxHealth * hp);
