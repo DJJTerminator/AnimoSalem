@@ -13,6 +13,7 @@ public class InventoryItem : MonoBehaviour {
     public int weaponNumber;
 	float doubleClick;
 	public string itemName;
+	public float itemWeight;
 
 
 
@@ -49,20 +50,34 @@ public class InventoryItem : MonoBehaviour {
 		decide = GameObject.Find ("All Canvases/Canvas/StorageMenu/Inventory/InventoryList/ScrollRect").GetComponent<InventoryDecisionScript>();
 	
 
-        if (type == ItemType.itemAmmo && ammo == AmmoType.handgunAmmo)
-            myAmount.GetComponent<Text>().text = "Bullets" + "(" + DataStorage.HGAmmo.ToString() +")";
-        else if (type == ItemType.itemAmmo && ammo == AmmoType.shotgunAmmo)
-            myAmount.GetComponent<Text>().text = "Shells" + "(" + DataStorage.SGAmmo.ToString() + ")";
-        else if (type == ItemType.itemAmmo && ammo == AmmoType.machinegunAmmo)
-            myAmount.GetComponent<Text>().text = "Bullet" + "(" + DataStorage.MGAmmo.ToString() + ")";
-        else if (type == ItemType.itemAmmo && ammo == AmmoType.rifleAmmo)
-            myAmount.GetComponent<Text>().text = "Rounds" + "(" + DataStorage.rifleAmmo.ToString() + ")";
-        else if (type == ItemType.itemAmmo && ammo == AmmoType.magnumAmmo)
-            myAmount.GetComponent<Text>().text = "Rounds" + "(" + DataStorage.magnumAmmo.ToString() + ")";
-        else if (type == ItemType.itemAmmo && ammo == AmmoType.explosiveAmmo)
-            myAmount.GetComponent<Text>().text = "Rounds" + "(" + DataStorage.explosiveAmmo.ToString() + ")";
-        if (type == ItemType.itemWeapon)
-            myAmount.GetComponent<Text>().text = DataStorage.weaponType[weaponNumber].ToString();
+		if (type == ItemType.itemAmmo && ammo == AmmoType.handgunAmmo) 
+		{
+			itemWeight = (float)DataStorage.HGAmmo * .15f;
+			myAmount.GetComponent<Text> ().text = "Bullets" + "(" + DataStorage.HGAmmo.ToString () + ")";
+			myWeight.GetComponent<Text>().text = "lbs " + ((float)DataStorage.HGAmmo * .15f).ToString();
+		} else if (type == ItemType.itemAmmo && ammo == AmmoType.shotgunAmmo) {
+			itemWeight = (float)DataStorage.SGAmmo * .25f;
+			myAmount.GetComponent<Text> ().text = "Shells" + "(" + DataStorage.SGAmmo.ToString () + ")";
+			myWeight.GetComponent<Text>().text = "lbs " + ((float)DataStorage.SGAmmo * .25f).ToString();
+		} else if (type == ItemType.itemAmmo && ammo == AmmoType.machinegunAmmo) {
+			itemWeight = (float)DataStorage.MGAmmo * .12f;
+			myAmount.GetComponent<Text> ().text = "Bullet" + "(" + DataStorage.MGAmmo.ToString () + ")";
+			myWeight.GetComponent<Text>().text = "lbs " + ((float)DataStorage.MGAmmo * .12f).ToString();
+		} else if (type == ItemType.itemAmmo && ammo == AmmoType.rifleAmmo) {
+			itemWeight = (float)DataStorage.rifleAmmo * .2f;
+			myAmount.GetComponent<Text> ().text = "Rounds" + "(" + DataStorage.rifleAmmo.ToString () + ")";
+			myWeight.GetComponent<Text>().text = "lbs " + ((float)DataStorage.rifleAmmo * .2f).ToString();
+		} else if (type == ItemType.itemAmmo && ammo == AmmoType.magnumAmmo) {
+			itemWeight = (float)DataStorage.magnumAmmo * .2f;
+			myAmount.GetComponent<Text> ().text = "Rounds" + "(" + DataStorage.magnumAmmo.ToString () + ")";
+			myWeight.GetComponent<Text>().text = "lbs " + ((float)DataStorage.magnumAmmo * .2f).ToString();
+		} else if (type == ItemType.itemAmmo && ammo == AmmoType.explosiveAmmo) {
+			itemWeight = (float)DataStorage.explosiveAmmo * .4f;
+			myAmount.GetComponent<Text> ().text = "Rounds" + "(" + DataStorage.explosiveAmmo.ToString () + ")";
+			myWeight.GetComponent<Text>().text = "lbs " + ((float)DataStorage.explosiveAmmo * .4f).ToString();
+		}
+		if (type == ItemType.itemWeapon) 
+			myAmount.GetComponent<Text> ().text = DataStorage.weaponType [weaponNumber].ToString ();
 		if (type == ItemType.itemWeapon)
 			myAmount.GetComponent<Text>().text = DataStorage.weaponType[weaponNumber].ToString();
 		if (type == ItemType.itemAid)
@@ -75,9 +90,6 @@ public class InventoryItem : MonoBehaviour {
 			myAmount.GetComponent<Text>().text = "Quest";
 		if (type == ItemType.itemMisc)
 			myAmount.GetComponent<Text>().text = "Misc";
-
-
-        myWeight.GetComponent<Text>().text = "lbs " + DataStorage.maxWeight.ToString();
 	}
 
     public void Animation()
