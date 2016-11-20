@@ -25,6 +25,7 @@ public class InventoryDecisionScript : MonoBehaviour {
 		//heal player or do whatever
 	}
 
+	//dropping the items
 	public void Drop()
 	{
 		discardSound.Play ();
@@ -87,6 +88,8 @@ public class InventoryDecisionScript : MonoBehaviour {
 		eventStorage.SetActive(true);
 		gameObject.GetComponent<ScrollRect>().enabled = true;
 		decision.SetActive (false);
+
+		totalWeight.text = DataStorage.curWeight + "/" + DataStorage.maxWeight.ToString();
 
 	}
 

@@ -14,6 +14,7 @@ public class InventoryItem : MonoBehaviour {
 	float doubleClick;
 	public string itemName;
 	public float itemWeight;
+	public GameObject sellAmount;
 
 
 
