@@ -15,11 +15,16 @@ public class InventoryDecisionScript : MonoBehaviour {
 	public GameObject amountValue;
 	public Text ammoText;
 	int temp;
+    GameObject buttons;
+    public GameObject droppedText;
+
 
 
 	void Start()
 	{
-	}
+    buttons = GameObject.Find ("All Canvases/Canvas/StorageMenu/Inventory/InventoryList/Decisions/Buttons");
+    droppedText = GameObject.Find("All Canvases/Canvas/StorageMenu/DroppedItemText");
+    }
 
 	public void Use()
 	{
@@ -63,7 +68,8 @@ public class InventoryDecisionScript : MonoBehaviour {
 				break;
 			}
 			amountValue.SetActive (true);
-			ammoText.text = ammoAmount.ToString ();
+            ammoText.text = ammoAmount.ToString ();
+            buttons.SetActive(false);
 		}
 	}
 
@@ -82,9 +88,13 @@ public class InventoryDecisionScript : MonoBehaviour {
 	}
 	public void Okay()
 	{
-		amountValue.SetActive (false);
-		Drop ();
-	}
+        buttons.SetActive(true);
+        amountValue.SetActive (false);
+        Drop ();
+        droppedText.SetActive(false);
+        droppedText.SetActive(true);
+        StartCoroutine(wait(2f));
+    }
 
 	//dropping the items
 	public void Drop()
@@ -105,7 +115,8 @@ public class InventoryDecisionScript : MonoBehaviour {
 			myItem.GetComponent<InventoryItem>().myWeight.GetComponent<Text>().text = "lbs " + myItem.GetComponent<InventoryItem> ().itemWeight.ToString();
 			myItem.GetComponent<InventoryItem>().myAmount.GetComponent<Text> ().text = "Bullets" + "(" + DataStorage.HGAmmo.ToString () + ")";
 			clone.GetComponent<ItemPickups> ().ammoCount = ammoAmount;
-			if (DataStorage.HGAmmo <= 0)
+            droppedText.GetComponent<Text>().text = "Dropped " + ammoAmount + " " + "handgun bullets";
+                if (DataStorage.HGAmmo <= 0)
 				Destroy (myItem);
 		//	print (DataStorage.HGAmmo);
 			break;
@@ -117,7 +128,8 @@ public class InventoryDecisionScript : MonoBehaviour {
 			myItem.GetComponent<InventoryItem>().myWeight.GetComponent<Text>().text = "lbs " + myItem.GetComponent<InventoryItem> ().itemWeight.ToString();
 			myItem.GetComponent<InventoryItem>().myAmount.GetComponent<Text> ().text = "Bullets" + "(" + DataStorage.SGAmmo.ToString () + ")";
 			clone.GetComponent<ItemPickups> ().ammoCount = ammoAmount;
-			if (DataStorage.SGAmmo <= 0)
+            droppedText.GetComponent<Text>().text = "Dropped " + ammoAmount + " " + "shotgun shells";
+                if (DataStorage.SGAmmo <= 0)
 				Destroy (myItem);
 			//print (DataStorage.SGAmmo);
 			break;
@@ -129,7 +141,8 @@ public class InventoryDecisionScript : MonoBehaviour {
 			myItem.GetComponent<InventoryItem>().myWeight.GetComponent<Text>().text = "lbs " + myItem.GetComponent<InventoryItem> ().itemWeight.ToString();
 			clone.GetComponent<ItemPickups> ().ammoCount = ammoAmount;
 			myItem.GetComponent<InventoryItem>().myAmount.GetComponent<Text> ().text = "Bullets" + "(" + DataStorage.MGAmmo.ToString () + ")";
-			if (DataStorage.MGAmmo <= 0)
+            droppedText.GetComponent<Text>().text = "Dropped " + ammoAmount + " " + "machinegun bullets";
+                if (DataStorage.MGAmmo <= 0)
 				Destroy (myItem);
 		break;
 			//dropping machinegun ammo
@@ -140,7 +153,8 @@ public class InventoryDecisionScript : MonoBehaviour {
 			myItem.GetComponent<InventoryItem> ().itemWeight -= (float)ammoAmount *.2f;
 			myItem.GetComponent<InventoryItem>().myWeight.GetComponent<Text>().text = "lbs " + myItem.GetComponent<InventoryItem> ().itemWeight.ToString();
 			myItem.GetComponent<InventoryItem>().myAmount.GetComponent<Text> ().text = "Bullets" + "(" + DataStorage.rifleAmmo.ToString () + ")";
-			if (DataStorage.rifleAmmo <= 0)
+            droppedText.GetComponent<Text>().text = "Dropped " + ammoAmount + " " + "rifle rounds";
+                if (DataStorage.rifleAmmo <= 0)
 				Destroy (myItem);
 			break;
 			//dropping magnum ammo
@@ -151,8 +165,9 @@ public class InventoryDecisionScript : MonoBehaviour {
 			myItem.GetComponent<InventoryItem> ().itemWeight -= (float)ammoAmount *.2f;
 			myItem.GetComponent<InventoryItem>().myWeight.GetComponent<Text>().text = "lbs " + myItem.GetComponent<InventoryItem> ().itemWeight.ToString();
 			myItem.GetComponent<InventoryItem>().myAmount.GetComponent<Text> ().text = "Bullets" + "(" + DataStorage.magnumAmmo.ToString () + ")";
-		//	myItem.GetComponent<InventoryItem>().myWeight.GetComponent<Text>().text = "lbs " + ((float)DataStorage.SGAmmo * .25f).ToString();
-			if (DataStorage.magnumAmmo <= 0)
+                //	myItem.GetComponent<InventoryItem>().myWeight.GetComponent<Text>().text = "lbs " + ((float)DataStorage.SGAmmo * .25f).ToString();
+            droppedText.GetComponent<Text>().text = "Dropped " + ammoAmount + " " + "magnum rounds";
+                if (DataStorage.magnumAmmo <= 0)
 				Destroy (myItem);
 			break;
 			//dropping explosive ammo
@@ -163,7 +178,8 @@ public class InventoryDecisionScript : MonoBehaviour {
 			myItem.GetComponent<InventoryItem> ().itemWeight -= (float)ammoAmount *.4f;
 			myItem.GetComponent<InventoryItem>().myWeight.GetComponent<Text>().text = "lbs " + myItem.GetComponent<InventoryItem> ().itemWeight.ToString();
 			myItem.GetComponent<InventoryItem>().myAmount.GetComponent<Text> ().text = "Bullets" + "(" + DataStorage.explosiveAmmo.ToString () + ")";
-			if (DataStorage.magnumAmmo <= 0)
+            droppedText.GetComponent<Text>().text = "Dropped " + ammoAmount + " " + "explosive rounds";
+                if (DataStorage.magnumAmmo <= 0)
 				Destroy (myItem);
 			break;
 		}
@@ -202,4 +218,10 @@ public class InventoryDecisionScript : MonoBehaviour {
 		gameObject.GetComponent<ScrollRect>().enabled = false;
 		decision.SetActive (true);
 	}
+
+    IEnumerator wait(float waitTime)
+    {
+        yield return new WaitForSeconds(waitTime);
+        droppedText.SetActive(false);
+    }
 }
