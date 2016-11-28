@@ -15,7 +15,22 @@ public class InventoryItem : MonoBehaviour {
 	public string itemName;
 	public float itemWeight;
 	public GameObject sellAmount;
-
+    //percentage bars
+    GameObject dmg;
+    GameObject rload;
+    GameObject cap;
+    GameObject fr;
+    GameObject ac;
+    GameObject crit;
+    GameObject rg;
+    //text values
+    Text _damage;
+    Text _capacity;
+    Text _crit;
+    Text _range;
+    Text _accuracy;
+    Text _fireRate;
+    Text _reload;
 
 
     public enum ItemType
@@ -49,9 +64,24 @@ public class InventoryItem : MonoBehaviour {
         myDescription = GameObject.Find("ItemDescription");
         myName = GameObject.Find("ItemName");
 		decide = GameObject.Find ("All Canvases/Canvas/StorageMenu/Inventory/InventoryList/ScrollRect").GetComponent<InventoryDecisionScript>();
-	
+        dmg = GameObject.Find("All Canvases/Canvas/StorageMenu/Inventory/Display/WeaponStats/Damage/Image/Bar");
+        rload= GameObject.Find("All Canvases/Canvas/StorageMenu/Inventory/Display/WeaponStats/Reload/Image/Bar");
+        cap= GameObject.Find("All Canvases/Canvas/StorageMenu/Inventory/Display/WeaponStats/Capacity/Image/Bar");
+        fr= GameObject.Find("All Canvases/Canvas/StorageMenu/Inventory/Display/WeaponStats/FireRate/Image/Bar");
+        ac= GameObject.Find("All Canvases/Canvas/StorageMenu/Inventory/Display/WeaponStats/Accuracy/Image/Bar");
+        crit= GameObject.Find("All Canvases/Canvas/StorageMenu/Inventory/Display/WeaponStats/CriticalChance/Image/Bar");
+        rg= GameObject.Find("All Canvases/Canvas/StorageMenu/Inventory/Display/WeaponStats/Range/Image/Bar");
 
-		if (type == ItemType.itemAmmo && ammo == AmmoType.handgunAmmo) 
+        _damage = GameObject.Find("All Canvases/Canvas/StorageMenu/Inventory/Display/WeaponStats/Damage/Value").GetComponent<Text>();
+        _capacity = GameObject.Find("All Canvases/Canvas/StorageMenu/Inventory/Display/WeaponStats/Capacity/Value").GetComponent<Text>();
+        _crit = GameObject.Find("All Canvases/Canvas/StorageMenu/Inventory/Display/WeaponStats/CriticalChance/Value").GetComponent<Text>();
+        _range = GameObject.Find("All Canvases/Canvas/StorageMenu/Inventory/Display/WeaponStats/Range/Value").GetComponent<Text>();
+        _accuracy = GameObject.Find("All Canvases/Canvas/StorageMenu/Inventory/Display/WeaponStats/Accuracy/Value").GetComponent<Text>();
+        _fireRate = GameObject.Find("All Canvases/Canvas/StorageMenu/Inventory/Display/WeaponStats/FireRate/Value").GetComponent<Text>();
+        _reload = GameObject.Find("All Canvases/Canvas/StorageMenu/Inventory/Display/WeaponStats/Reload/Value").GetComponent<Text>();
+
+
+        if (type == ItemType.itemAmmo && ammo == AmmoType.handgunAmmo) 
 		{
 			itemWeight = (float)DataStorage.HGAmmo * .15f;
 			myAmount.GetComponent<Text> ().text = "Bullets" + "(" + DataStorage.HGAmmo.ToString () + ")";
@@ -116,8 +146,24 @@ public class InventoryItem : MonoBehaviour {
 				{
 					myDescription.GetComponent<Text> ().lineSpacing = 1.8f;
 					myName.GetComponent<Text> ().text = DataStorage.weaponName [weaponNumber];
-					myDescription.GetComponent<Text> ().text = "Damage: " + DataStorage.weaponDamage [weaponNumber] + "\n" + "Fire Rate: " + Mathf.Round (DataStorage.fireRate [weaponNumber] * 100.0f) + "%" + "\n" + "Capacity " + DataStorage.capacity [weaponNumber] + "\n" + "Reload: " + DataStorage.reload [weaponNumber] + "\n" + "Accuracy: " + Mathf.Round (DataStorage.accuracy [DataStorage.curWeapon] * 10) + "%" + "\n" + "Range: " + (DataStorage.range [DataStorage.curWeapon] * 10) / 1 + "%" + "\n" + "Crit Chance: " + (DataStorage.criticalChance [weaponNumber] * 100) + "%";
-				} 
+                     //assinging the percentage bar accordingly to the weapon that is selected
+                     dmg.transform.localScale = new Vector3((float)DataStorage.curDamage[weaponNumber] / 5f, 1, 0);
+                     rload.transform.localScale = new Vector3((float)DataStorage.curReload[weaponNumber] / 5f, 1, 0);
+                     cap.transform.localScale = new Vector3((float)DataStorage.curCapacity[weaponNumber] / 5f, 1, 0);
+                     fr.transform.localScale = new Vector3((float)DataStorage.curFireRate[weaponNumber] / 5f, 1, 0);
+                     ac.transform.localScale = new Vector3((float)DataStorage.curAccuracy[weaponNumber] / 5f, 1, 0);
+                     crit.transform.localScale = new Vector3((float)DataStorage.curCrit[weaponNumber] / 5f, 1, 0);
+                     rg.transform.localScale = new Vector3((float)DataStorage.curRange[weaponNumber] / 5f, 1, 0);
+                        //assigning the values to each text
+                     _damage.text = DataStorage.weaponDamage[weaponNumber].ToString();
+                     _reload.text = DataStorage.reload[weaponNumber].ToString();
+                     _fireRate.text = DataStorage.fireRate[weaponNumber].ToString();
+                     _capacity.text = DataStorage.capacity[weaponNumber].ToString();
+                     _crit.text = DataStorage.criticalChance[weaponNumber].ToString();
+                     _range.text = DataStorage.range[weaponNumber].ToString();
+                     _accuracy.text = DataStorage.accuracy[weaponNumber].ToString();
+            //		myDescription.GetComponent<Text> ().text = "Damage: " + DataStorage.weaponDamage [weaponNumber] + "\n" + "Fire Rate: " + Mathf.Round (DataStorage.fireRate [weaponNumber] * 100.0f) + "%" + "\n" + "Capacity " + DataStorage.capacity [weaponNumber] + "\n" + "Reload: " + DataStorage.reload [weaponNumber] + "\n" + "Accuracy: " + Mathf.Round (DataStorage.accuracy [DataStorage.curWeapon] * 10) + "%" + "\n" + "Range: " + (DataStorage.range [DataStorage.curWeapon] * 10) / 1 + "%" + "\n" + "Crit Chance: " + (DataStorage.criticalChance [weaponNumber] * 100) + "%";
+        } 
 				else 
 				{
 					myDescription.GetComponent<Text> ().lineSpacing = 1f;

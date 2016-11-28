@@ -179,7 +179,7 @@ public class InventoryDecisionScript : MonoBehaviour {
 			myItem.GetComponent<InventoryItem>().myWeight.GetComponent<Text>().text = "lbs " + myItem.GetComponent<InventoryItem> ().itemWeight.ToString();
 			myItem.GetComponent<InventoryItem>().myAmount.GetComponent<Text> ().text = "Bullets" + "(" + DataStorage.explosiveAmmo.ToString () + ")";
             droppedText.GetComponent<Text>().text = "Dropped " + ammoAmount + " " + "explosive rounds";
-                if (DataStorage.magnumAmmo <= 0)
+                if (DataStorage.explosiveAmmo <= 0)
 				Destroy (myItem);
 			break;
 		}
