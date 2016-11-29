@@ -15,6 +15,7 @@ public class InventoryItem : MonoBehaviour {
 	public string itemName;
 	public float itemWeight;
 	public GameObject sellAmount;
+    public GameObject content;
     //percentage bars
     GameObject dmg;
     GameObject rload;
@@ -79,6 +80,7 @@ public class InventoryItem : MonoBehaviour {
         _accuracy = GameObject.Find("All Canvases/Canvas/StorageMenu/Inventory/Display/WeaponStats/Accuracy/Value").GetComponent<Text>();
         _fireRate = GameObject.Find("All Canvases/Canvas/StorageMenu/Inventory/Display/WeaponStats/FireRate/Value").GetComponent<Text>();
         _reload = GameObject.Find("All Canvases/Canvas/StorageMenu/Inventory/Display/WeaponStats/Reload/Value").GetComponent<Text>();
+        content = GameObject.Find("All Canvases/Canvas/StorageMenu/Inventory/InventoryList/ScrollRect/Content");
 
 
         if (type == ItemType.itemAmmo && ammo == AmmoType.handgunAmmo) 
@@ -135,8 +137,10 @@ public class InventoryItem : MonoBehaviour {
 
     public void OnClick()
 	{
+        content.transform.localPosition = new Vector3(0, -gameObject.transform.localPosition.y,0);
 
-		if (Input.GetKeyDown ("return")) 
+
+        if (Input.GetKeyDown ("return")) 
 		{
 			decide.Decide (gameObject);
 		} 

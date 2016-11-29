@@ -22,7 +22,6 @@ public class Controls : MonoBehaviour {
 	void Update () 
 	{
 		Vector3 up = -myBody.velocity;
-	//	Vector3 up = transform.TranformDirection(Vector3.up);
 		transform.Translate(Input.GetAxis ("Horizontal")*Time.deltaTime*speed,Input.GetAxis("Vertical")*Time.deltaTime*speed,0);
 
 
