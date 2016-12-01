@@ -30,5 +30,14 @@ public class Controls : MonoBehaviour {
 			print ("There is something in front of the object!");
 		}
 			Debug.DrawRay(transform.position, up, Color.white);
-	}
-}
+        if (Input.GetKey("space"))
+        {
+            DataStorage.health -= 1;
+            if (DataStorage.health <= 0)
+                DataStorage.health = DataStorage.maxHealth;
+            DataStorage.UpdateHUD();
+        }
+
+    }//end of update
+
+}//end of class
