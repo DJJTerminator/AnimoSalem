@@ -120,26 +120,28 @@ public class Controls : MonoBehaviour {
         DataStorage.itemBar.GetComponent<Image>().fillAmount += Time.deltaTime * (DataStorage.speed * .08f);
         if (DataStorage.itemBar.GetComponent<Image>().fillAmount >= 1)
         {
+            DataStorage.CBTHealth.GetComponent<Animator>().Play("IncrementHealth", -1, 0f);
             switch (DataStorage.equippedItem)
             {
                 case 1:
+                    DataStorage.CBTHealth.GetComponent<Text>().text = "+ " + (addHealth += 20 + (DataStorage.intelligence / 2)).ToString();
                     DataStorage.itemSmallAid -= 1;
                     addHealth += 20 +(DataStorage.intelligence/2);
-                    StartCoroutine(AddToHealth(.00005f));
+                    StartCoroutine(AddToHealth(.02f));
                     break;
                 case 2:
+                    DataStorage.CBTHealth.GetComponent<Text>().text = "+ " + (addHealth += 40 + (DataStorage.intelligence / 2)).ToString();
                     DataStorage.itemMedAid -= 1;
                     addHealth += 40 + (DataStorage.intelligence / 2);
-                    StartCoroutine(AddToHealth(.00005f));
+                    StartCoroutine(AddToHealth(.02f));
                     break;
                 case 3:
+                    DataStorage.CBTHealth.GetComponent<Text>().text = "+ " + (addHealth += 80 + (DataStorage.intelligence / 2)).ToString();
                     DataStorage.itemLargeAid -=1;
                     addHealth += 80 + (DataStorage.intelligence / 2);
-                    StartCoroutine(AddToHealth(.00005f));
+                    StartCoroutine(AddToHealth(.02f));
                     break;
             }
-            if (DataStorage.health > DataStorage.maxHealth)
-                DataStorage.health = DataStorage.maxHealth;
             healing.Stop();
             DataStorage.itemBar.GetComponent<Image>().fillAmount = 0;
             DataStorage.greenFlash.Play("HealAnimation", -1, 0f);
@@ -158,6 +160,11 @@ public class Controls : MonoBehaviour {
         {
             addHealth -= 1;
             DataStorage.health++;
+            if ((DataStorage.health > DataStorage.maxHealth))
+            {
+                DataStorage.health = DataStorage.maxHealth;
+                addHealth = 0;
+            }
             DataStorage.UpdateHUDHealth();//refreshing the HUD
             yield return new WaitForSeconds(add);
         }
