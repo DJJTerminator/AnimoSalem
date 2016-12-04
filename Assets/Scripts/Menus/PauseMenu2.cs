@@ -63,16 +63,13 @@ public class PauseMenu2 : MonoBehaviour
 				//Unlocks the (Mouse)Cursor and makes it visible
 				Cursor.lockState = CursorLockMode.None;
 				Cursor.visible = true;
+                DataStorage.player.GetComponent<Controls>().enabled = false;
 
 				DataStorage.canDo = false;
 				DataStorage.gameManager.GetComponent<StatActivation>().enabled = false;
 				DataStorage.gameManager.GetComponent<InventoryActivation>().enabled = false;
                 pause = true;
 				Time.timeScale = 0;
-//                for (int i = 0; i < everythingElse.Length; i++)
-//                {
-//                    everythingElse[i].SetActive(false);
-//                }
                 for (int j = 0; j < basicMenus.Length; j++)
                 {
                     basicMenus[j].SetActive(true);
@@ -81,11 +78,7 @@ public class PauseMenu2 : MonoBehaviour
             else
             {
                 pause = false;
-//                for (int i = 0; i < everythingElse.Length; i++)
-//                {
-//
-//                    everythingElse[i].SetActive(true);
-//                }
+                DataStorage.player.GetComponent<Controls>().enabled = true;
                 for (int j = 0; j < basicMenus.Length; j++)
                 {
                     basicMenus[j].SetActive(false);
@@ -101,7 +94,7 @@ public class PauseMenu2 : MonoBehaviour
     //resuming the game from basic menus
     public void Resume()
     {
-
+        DataStorage.player.GetComponent<Controls>().enabled = true;
         pause = false;
 //        for (int i = 0; i < everythingElse.Length; i++)
 //        {
