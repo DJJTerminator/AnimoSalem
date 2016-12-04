@@ -12,8 +12,13 @@ public class Controls : MonoBehaviour {
     public AudioSource healing;
     public AudioSource healed;
     public AudioSource cycleItems;
+    public AudioSource HGReload;
+    public AudioSource HGLoaded;
     bool canUse = true; //the boolean that allows players to use items
     int addHealth = 0;
+    bool isReloading;
+
+
 
     // Update is called once per frame
     void Update()
@@ -28,7 +33,7 @@ public class Controls : MonoBehaviour {
         Debug.DrawRay(transform.position, up, Color.white);
 
         //using hotkeys for items
-        if ((Input.GetMouseButton(1) || Input.GetKey("space")) && DataStorage.itemBar.GetComponent<Image>().fillAmount < 1 && canUse == true && int.Parse(DataStorage.itemCount.text) > 0)
+        if ((Input.GetMouseButton(1) || Input.GetKey("space")) && DataStorage.itemBar.GetComponent<Image>().fillAmount < 1 && canUse == true && int.Parse(DataStorage.itemCount.text) > 0 && !isReloading)
         {
             UseItems();
         }
@@ -48,8 +53,48 @@ public class Controls : MonoBehaviour {
         {
             SwitchItemsRight();
         }
+        //Reloading your weapon
+        if (Input.GetKeyDown("r") && DataStorage.holster[DataStorage.curWeapon] < DataStorage.capacity[DataStorage.curWeapon] && !isReloading && DataStorage.itemBar.GetComponent<Image>().fillAmount <= 0)
+             switch (DataStorage.weaponType[DataStorage.curWeapon])
+            {
+                case "Handgun":
+                    if (DataStorage.HGAmmo > 1)
+                    {
+                        isReloading = true;
+                        DataStorage.HGAmmo += DataStorage.holster[DataStorage.curWeapon];
+                        DataStorage.holster[DataStorage.curWeapon] = 0;
+                        HGReload.Play();
+                        DataStorage.UpdateHolster();
+                        StartCoroutine (Reload(DataStorage.reload[DataStorage.curWeapon]));
+                    }
+                    DataStorage.reloadingText.SetActive(true);
+                    DataStorage.reloadingText.GetComponent<Animator>().Play("Reloading", -1, 0f);
+                    DataStorage.reloadingText.GetComponent<Text>().text = "Reloading";
+                    break; 
+            }
+        {
+            //play reloading animations
+            //play reoad sound
+            //set holster to 0
+            //subtract current ammo and add to holster
+            //play sound after reloading is cmoplete
+            //play reload animations
+        }
+
+        //No Ammo
+        if (DataStorage.holster[DataStorage.curWeapon] <= 0 && !isReloading)
+        {
+            DataStorage.reloadingText.SetActive(true);
+            if (!DataStorage.reloadingText.GetComponent<Animator>().GetCurrentAnimatorStateInfo(0).IsName("Reload"))
+            {
+                DataStorage.reloadingText.GetComponent<Animator>().Play("Reload", -1, 0f);
+                DataStorage.reloadingText.GetComponent<Text>().text = "Reload";
+            }
+        }
 
     }//end of update
+
+
 
     //switch items left
     void SwitchItemsLeft()
@@ -170,5 +215,31 @@ public class Controls : MonoBehaviour {
         }
 
     }
+    //reloading the weapon
+    IEnumerator Reload(float reloadTime)
+    {
+        yield return new WaitForSeconds(reloadTime);
+        switch (DataStorage.weaponType[DataStorage.curWeapon])
+        {
+            case "Handgun":
+                if (DataStorage.HGAmmo > DataStorage.capacity[DataStorage.curWeapon])
+                {
+                    DataStorage.HGAmmo -= DataStorage.capacity[DataStorage.curWeapon];
+                    DataStorage.holster[DataStorage.curWeapon] = DataStorage.capacity[DataStorage.curWeapon];
+                }
+                else
+                { 
+                    DataStorage.holster[DataStorage.curWeapon] = DataStorage.HGAmmo;
+                    DataStorage.HGAmmo = 0;
+                }
+                HGLoaded.Play();
+                break;
+        }
+        DataStorage.reloadingText.GetComponent<Animator>().Play("Reloaded", -1, 0f);
+        DataStorage.reloadingText.GetComponent<Text>().text = "Reloaded";
+        isReloading = false;
+        DataStorage.UpdateHolster();
+    }
+
 
 }//end of class

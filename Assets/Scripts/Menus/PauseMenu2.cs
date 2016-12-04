@@ -96,10 +96,6 @@ public class PauseMenu2 : MonoBehaviour
     {
         DataStorage.player.GetComponent<Controls>().enabled = true;
         pause = false;
-//        for (int i = 0; i < everythingElse.Length; i++)
-//        {
-//            everythingElse[i].SetActive(true);
-//        }
         for (int j = 0; j < basicMenus.Length; j++)
         {
             basicMenus[j].SetActive(false);
