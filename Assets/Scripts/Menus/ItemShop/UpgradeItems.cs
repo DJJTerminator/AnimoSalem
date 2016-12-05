@@ -174,7 +174,7 @@ public class UpgradeItems : MonoBehaviour {
 		//display current upgrade and next upgrade
 		curText.GetComponent<Text> ().text = "Reload: " + DataStorage.reload [DataStorage.curWeapon];
 		if (DataStorage.curReload [DataStorage.curWeapon] < 5)
-            nextText.GetComponent<Text>().text = "Next Level: " + (DataStorage.reload[DataStorage.curWeapon] + DataStorage.upReload[DataStorage.curWeapon]);
+            nextText.GetComponent<Text>().text = "Next Level: " + (DataStorage.reload[DataStorage.curWeapon] - DataStorage.upReload[DataStorage.curWeapon]);
 		else
 			nextText.GetComponent<Text> ().text = " ";	
 

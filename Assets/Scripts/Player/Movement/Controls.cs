@@ -75,8 +75,7 @@ public class Controls : MonoBehaviour {
                         DataStorage.holster[DataStorage.curWeapon] = 0;
                         HGReload.Play();
                         DataStorage.UpdateHolster();
-                        StartCoroutine(Reload(DataStorage.reload[DataStorage.curWeapon]));
-                        StartCoroutine(ReloadingBar(0f));
+                        StartCoroutine(Reload(0f));
                     }
                     else break;
                     DataStorage.reloadingText.SetActive(true);
@@ -219,12 +218,20 @@ public class Controls : MonoBehaviour {
             DataStorage.UpdateHUDHealth();//refreshing the HUD
             yield return new WaitForSeconds(add);
         }
-
     }
     //reloading the weapon
     IEnumerator Reload(float reloadTime)
     {
-        yield return new WaitForSeconds(reloadTime);
+        DataStorage.reloadPiBar.SetActive(true);
+        DataStorage.reloadPiBar.GetComponent<Animator>().Play("ReloadBarEnabled", -1, 0f);
+        DataStorage.reloadBar.GetComponent<Image>().fillAmount = 0f;
+
+        while (DataStorage.reloadBar.GetComponent<Image>().fillAmount < 1)
+        {
+            yield return new WaitForSeconds(DataStorage.reload[DataStorage.curWeapon]/8);
+            DataStorage.reloadBar.GetComponent<Image>().fillAmount = reloadTime / DataStorage.reload[DataStorage.curWeapon];
+            reloadTime += DataStorage.reload[DataStorage.curWeapon] / 8;
+        }
         switch (DataStorage.weaponType[DataStorage.curWeapon])
         {
             case "Handgun":
@@ -243,23 +250,10 @@ public class Controls : MonoBehaviour {
         }
         DataStorage.reloadingText.GetComponent<Animator>().Play("Reloaded", -1, 0f);
         DataStorage.reloadingText.GetComponent<Text>().text = "Reloaded";
+    //    DataStorage.reloadBar.GetComponent<Image>().fillAmount = 1f;
+        DataStorage.reloadPiBar.GetComponent<Animator>().Play("ReloadBar", -1, 0f);
         isReloading = false;
         DataStorage.UpdateHolster();
-    }
-
-    IEnumerator ReloadingBar(float reloadTime)
-    {
-        DataStorage.reloadPiBar.SetActive(true);
-        DataStorage.reloadPiBar.GetComponent<Animator>().Play("ReloadBarEnabled", -1, 0f);
-        DataStorage.reloadBar.GetComponent<Image>().fillAmount = 0f;
-        while (reloadTime < DataStorage.reload[DataStorage.curWeapon])
-        {
-            yield return new WaitForSeconds(.2f);
-            DataStorage.reloadBar.GetComponent<Image>().fillAmount = reloadTime/DataStorage.reload[DataStorage.curWeapon];
-            reloadTime += .2f;
-        }
-        DataStorage.reloadBar.GetComponent<Image>().fillAmount = 1f;
-        DataStorage.reloadPiBar.GetComponent<Animator>().Play("ReloadBar", -1, 0f);
     }
 
 }//end of class
