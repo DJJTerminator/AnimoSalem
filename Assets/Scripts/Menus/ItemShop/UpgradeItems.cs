@@ -374,7 +374,7 @@ public class UpgradeItems : MonoBehaviour {
 		if (DataStorage.money > (int)price) {
 			DataStorage.money -= (int)price;
 			DataStorage.reloadCost [DataStorage.curWeapon] += 25;
-            DataStorage.reload[DataStorage.curWeapon] += DataStorage.upReload[DataStorage.curWeapon];
+            DataStorage.reload[DataStorage.curWeapon] -= DataStorage.upReload[DataStorage.curWeapon];
 			DataStorage.sellValue[DataStorage.curWeapon] += 8;
 			//adding stats
 			DataStorage.moneySpent += (int)price;
