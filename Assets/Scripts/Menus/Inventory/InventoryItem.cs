@@ -160,8 +160,8 @@ public class InventoryItem : MonoBehaviour {
                      rg.transform.localScale = new Vector3((float)DataStorage.curRange[weaponNumber] / 5f, 1, 0);
                         //assigning the values to each text
                      _damage.text = DataStorage.weaponDamage[weaponNumber].ToString();
-                     _reload.text = DataStorage.reload[weaponNumber].ToString();
-                     _fireRate.text = DataStorage.fireRate[weaponNumber].ToString();
+                     _reload.text = (Mathf.Round(DataStorage.reload[weaponNumber] * 100f) / 100f).ToString(); 
+            _fireRate.text = DataStorage.fireRate[weaponNumber].ToString();
                      _capacity.text = DataStorage.capacity[weaponNumber].ToString();
                      _crit.text = DataStorage.criticalChance[weaponNumber].ToString();
                      _range.text = DataStorage.range[weaponNumber].ToString();

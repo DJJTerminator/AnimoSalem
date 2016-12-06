@@ -172,9 +172,9 @@ public class UpgradeItems : MonoBehaviour {
 			DeactivateUpgrades ();
 
 		//display current upgrade and next upgrade
-		curText.GetComponent<Text> ().text = "Reload: " + DataStorage.reload [DataStorage.curWeapon];
+		curText.GetComponent<Text> ().text = "Reload: " + Mathf.Round(DataStorage.reload [DataStorage.curWeapon]*100f)/100f;
 		if (DataStorage.curReload [DataStorage.curWeapon] < 5)
-            nextText.GetComponent<Text>().text = "Next Level: " + (DataStorage.reload[DataStorage.curWeapon] - DataStorage.upReload[DataStorage.curWeapon]);
+            nextText.GetComponent<Text>().text = "Next Level: " + Mathf.Round((DataStorage.reload[DataStorage.curWeapon] - DataStorage.upReload[DataStorage.curWeapon]) * 100f)/100f;
 		else
 			nextText.GetComponent<Text> ().text = " ";	
 

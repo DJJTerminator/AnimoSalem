@@ -12,18 +12,10 @@ public class Controls : MonoBehaviour {
     public AudioSource healing;
     public AudioSource healed;
     public AudioSource cycleItems;
-    public AudioSource HGReload;
-    public AudioSource HGLoaded;
-    public AudioSource SGReload;
-    public AudioSource SGLoaded;
-    public AudioSource MGReload;
-    public AudioSource MGLoaded;
-    public AudioSource rifleReload;
-    public AudioSource rifleLoaded;
-    public AudioSource magnumReload;
-    public AudioSource magnumLoaded;
-    public AudioSource explosiveReload;
-    public AudioSource explosiveLoaded;
+    [Tooltip("These are the reload sounds for the weapons")]
+    public AudioSource[] reloadSounds;
+    [Tooltip("The sound that plays when a gun is loaded")]
+    public AudioSource[] loadedSounds;
     bool canUse = true; //the boolean that allows players to use items
     int addHealth = 0;
     bool isReloading;
@@ -65,24 +57,7 @@ public class Controls : MonoBehaviour {
         }
         //Reloading your weapon
         if (Input.GetKeyDown("r") && DataStorage.holster[DataStorage.curWeapon] < DataStorage.capacity[DataStorage.curWeapon] && !isReloading && DataStorage.itemBar.GetComponent<Image>().fillAmount <= 0)
-             switch (DataStorage.weaponType[DataStorage.curWeapon])
-            {
-                case "Handgun":
-                    if (DataStorage.HGAmmo > 1)
-                    {
-                        isReloading = true;
-                        DataStorage.HGAmmo += DataStorage.holster[DataStorage.curWeapon];
-                        DataStorage.holster[DataStorage.curWeapon] = 0;
-                        HGReload.Play();
-                        DataStorage.UpdateHolster();
-                        StartCoroutine(Reload(0f));
-                    }
-                    else break;
-                    DataStorage.reloadingText.SetActive(true);
-                    DataStorage.reloadingText.GetComponent<Animator>().Play("Reloading", -1, 0f);
-                    DataStorage.reloadingText.GetComponent<Text>().text = "Reloading";
-                    break; 
-            }
+            Reload();
         {
       }
 
@@ -99,7 +74,86 @@ public class Controls : MonoBehaviour {
 
     }//end of update
 
-
+    //start reloading
+    void Reload()
+    {
+        switch (DataStorage.weaponType[DataStorage.curWeapon])
+        {
+            case "Handgun":
+                if (DataStorage.HGAmmo > 0)
+                {
+                    isReloading = true;
+                    DataStorage.HGAmmo += DataStorage.holster[DataStorage.curWeapon];
+                    DataStorage.holster[DataStorage.curWeapon] = 0;
+                    reloadSounds[0].Play();
+                    DataStorage.UpdateHolster();
+                    StartCoroutine(Reload(0f));
+                }
+                else break;
+                break;
+            case "Shotgun":
+                if (DataStorage.SGAmmo > 0)
+                {
+                    isReloading = true;
+                    DataStorage.SGAmmo += DataStorage.holster[DataStorage.curWeapon];
+                    DataStorage.holster[DataStorage.curWeapon] = 0;
+                    reloadSounds[1].Play();
+                    DataStorage.UpdateHolster();
+                    StartCoroutine(Reload(0f));
+                }
+                else break;
+                break;
+            case "Automatic":
+                if (DataStorage.MGAmmo > 0)
+                {
+                    isReloading = true;
+                    DataStorage.MGAmmo += DataStorage.holster[DataStorage.curWeapon];
+                    DataStorage.holster[DataStorage.curWeapon] = 0;
+                    reloadSounds[2].Play();
+                    DataStorage.UpdateHolster();
+                    StartCoroutine(Reload(0f));
+                }
+                else break;
+                break;
+            case "Rifle":
+                if (DataStorage.rifleAmmo > 0)
+                {
+                    isReloading = true;
+                    DataStorage.rifleAmmo += DataStorage.holster[DataStorage.curWeapon];
+                    DataStorage.holster[DataStorage.curWeapon] = 0;
+                    reloadSounds[3].Play();
+                    DataStorage.UpdateHolster();
+                    StartCoroutine(Reload(0f));
+                }
+                else
+                    break;
+                break;
+            case "Magnum":
+                if (DataStorage.magnumAmmo > 0)
+                {
+                    isReloading = true;
+                    DataStorage.magnumAmmo += DataStorage.holster[DataStorage.curWeapon];
+                    DataStorage.holster[DataStorage.curWeapon] = 0;
+                    reloadSounds[3].Play();
+                    DataStorage.UpdateHolster();
+                    StartCoroutine(Reload(0f));
+                }
+                else break;
+                break;
+            case "Explosive":
+                if (DataStorage.magnumAmmo > 0)
+                {
+                    isReloading = true;
+                    DataStorage.magnumAmmo += DataStorage.holster[DataStorage.curWeapon];
+                    DataStorage.holster[DataStorage.curWeapon] = 0;
+                    reloadSounds[4].Play();
+                    DataStorage.UpdateHolster();
+                    StartCoroutine(Reload(0f));
+                }
+                else break;
+                break;
+        }
+    }
 
     //switch items left
     void SwitchItemsLeft()
@@ -221,17 +275,44 @@ public class Controls : MonoBehaviour {
     }
     //reloading the weapon
     IEnumerator Reload(float reloadTime)
-    {
+    {//setting the reload text so that it animates
+        DataStorage.reloadingText.SetActive(true);
+        DataStorage.reloadingText.GetComponent<Animator>().Play("Reloading", -1, 0f);
+        DataStorage.reloadingText.GetComponent<Text>().text = "Reloading";
+        //setting the reload pi bar so that it animates
         DataStorage.reloadPiBar.SetActive(true);
         DataStorage.reloadPiBar.GetComponent<Animator>().Play("ReloadBarEnabled", -1, 0f);
         DataStorage.reloadBar.GetComponent<Image>().fillAmount = 0f;
-
+        int temp = 0;
         while (DataStorage.reloadBar.GetComponent<Image>().fillAmount < 1)
         {
             yield return new WaitForSeconds(DataStorage.reload[DataStorage.curWeapon]/8);
-            DataStorage.reloadBar.GetComponent<Image>().fillAmount = reloadTime / DataStorage.reload[DataStorage.curWeapon];
-            reloadTime += DataStorage.reload[DataStorage.curWeapon] / 8;
+            temp++;
+            if (DataStorage.weaponType[DataStorage.curWeapon] == "Shotgun")
+            {
+                if (temp == 2 || temp == 4 || temp == 6 || temp == 8)
+                    reloadSounds[0].Play();//playing reload sounds for shotgun
+
+                DataStorage.reloadBar.GetComponent<Image>().fillAmount = reloadTime / DataStorage.reload[DataStorage.curWeapon];
+                reloadTime += DataStorage.reload[DataStorage.curWeapon] / 8;
+            }
+            else if (DataStorage.weaponType[DataStorage.curWeapon] == "Magnum")
+            {
+                if (temp == 2 || temp == 4 || temp == 6 || temp == 8)
+                    reloadSounds[0].Play();//playing reload sounds for magnum
+                DataStorage.reloadBar.GetComponent<Image>().fillAmount = reloadTime / DataStorage.reload[DataStorage.curWeapon];
+                reloadTime += DataStorage.reload[DataStorage.curWeapon] / 8;
+            }
+            else
+            {
+                DataStorage.reloadBar.GetComponent<Image>().fillAmount = reloadTime / DataStorage.reload[DataStorage.curWeapon];
+                reloadTime += DataStorage.reload[DataStorage.curWeapon] / 8;
+            }
+
+
         }
+
+
         switch (DataStorage.weaponType[DataStorage.curWeapon])
         {
             case "Handgun":
@@ -245,7 +326,72 @@ public class Controls : MonoBehaviour {
                     DataStorage.holster[DataStorage.curWeapon] = DataStorage.HGAmmo;
                     DataStorage.HGAmmo = 0;
                 }
-                HGLoaded.Play();
+                loadedSounds[0].Play();
+                break;
+            case "Shotgun":
+                if (DataStorage.SGAmmo > DataStorage.capacity[DataStorage.curWeapon])
+                {
+                    DataStorage.SGAmmo -= DataStorage.capacity[DataStorage.curWeapon];
+                    DataStorage.holster[DataStorage.curWeapon] = DataStorage.capacity[DataStorage.curWeapon];
+                }
+                else
+                {
+                    DataStorage.holster[DataStorage.curWeapon] = DataStorage.SGAmmo;
+                    DataStorage.SGAmmo = 0;
+                }
+                loadedSounds[1].Play();
+                break;
+            case "Automatic":
+                if (DataStorage.MGAmmo > DataStorage.capacity[DataStorage.curWeapon])
+                {
+                    DataStorage.MGAmmo -= DataStorage.capacity[DataStorage.curWeapon];
+                    DataStorage.holster[DataStorage.curWeapon] = DataStorage.capacity[DataStorage.curWeapon];
+                }
+                else
+                {
+                    DataStorage.holster[DataStorage.curWeapon] = DataStorage.MGAmmo;
+                    DataStorage.MGAmmo = 0;
+                }
+                loadedSounds[2].Play();
+                break;
+            case "Rifle":
+                if (DataStorage.rifleAmmo > DataStorage.capacity[DataStorage.curWeapon])
+                {
+                    DataStorage.rifleAmmo -= DataStorage.capacity[DataStorage.curWeapon];
+                    DataStorage.holster[DataStorage.curWeapon] = DataStorage.capacity[DataStorage.curWeapon];
+                }
+                else
+                {
+                    DataStorage.holster[DataStorage.curWeapon] = DataStorage.rifleAmmo;
+                    DataStorage.rifleAmmo = 0;
+                }
+                loadedSounds[3].Play();
+                break;
+            case "Magnum":
+                if (DataStorage.magnumAmmo > DataStorage.capacity[DataStorage.curWeapon])
+                {
+                    DataStorage.magnumAmmo -= DataStorage.capacity[DataStorage.curWeapon];
+                    DataStorage.holster[DataStorage.curWeapon] = DataStorage.capacity[DataStorage.curWeapon];
+                }
+                else
+                {
+                    DataStorage.holster[DataStorage.curWeapon] = DataStorage.magnumAmmo;
+                    DataStorage.magnumAmmo = 0;
+                }
+                loadedSounds[4].Play();
+                break;
+            case "Explosive":
+                if (DataStorage.explosiveAmmo > DataStorage.capacity[DataStorage.curWeapon])
+                {
+                    DataStorage.explosiveAmmo -= DataStorage.capacity[DataStorage.curWeapon];
+                    DataStorage.holster[DataStorage.curWeapon] = DataStorage.capacity[DataStorage.curWeapon];
+                }
+                else
+                {
+                    DataStorage.holster[DataStorage.curWeapon] = DataStorage.explosiveAmmo;
+                    DataStorage.explosiveAmmo = 0;
+                }
+                loadedSounds[5].Play();
                 break;
         }
         DataStorage.reloadingText.GetComponent<Animator>().Play("Reloaded", -1, 0f);
