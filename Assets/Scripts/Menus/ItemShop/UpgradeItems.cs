@@ -221,7 +221,7 @@ public class UpgradeItems : MonoBehaviour {
 		//display current upgrade and next upgrade
         curText.GetComponent<Text>().text = "Fire Rate: " + Mathf.Round(DataStorage.fireRate[DataStorage.curWeapon] * 100.0f) + "%";
 		if (DataStorage.curFireRate [DataStorage.curWeapon] < 5)
-            nextText.GetComponent<Text>().text = "Next Level: " + Mathf.Round((DataStorage.fireRate[DataStorage.curWeapon] + DataStorage.upFireRate[DataStorage.curWeapon]) * 100.0f) + "%";
+            nextText.GetComponent<Text>().text = "Next Level: " + Mathf.Round((DataStorage.fireRate[DataStorage.curWeapon] - DataStorage.upFireRate[DataStorage.curWeapon]) * 100.0f) + "%";
 		else
 			nextText.GetComponent<Text> ().text = " ";	
 
@@ -293,7 +293,7 @@ public class UpgradeItems : MonoBehaviour {
 			DeactivateUpgrades ();
 
 		//display current upgrade and next upgrade
-        curText.GetComponent<Text>().text = "Range: " + (DataStorage.range[DataStorage.curWeapon] * 10)/1 + "%";
+        curText.GetComponent<Text>().text = "Recoil: " + (DataStorage.range[DataStorage.curWeapon] * 10)/1 + "%";
 		if (DataStorage.curRange [DataStorage.curWeapon] < 5)
             nextText.GetComponent<Text>().text = "Next Level: " + Mathf.Round((DataStorage.range[DataStorage.curWeapon] + DataStorage.upRange[DataStorage.curWeapon]) * 10)/1  + "%";
 		else
@@ -454,7 +454,7 @@ public class UpgradeItems : MonoBehaviour {
 		if (DataStorage.money > (int)price) {
 			DataStorage.money -= (int)price;
 			DataStorage.frCost [DataStorage.curWeapon] += 25;
-			DataStorage.fireRate[DataStorage.curWeapon] += DataStorage.upFireRate[DataStorage.curWeapon];
+			DataStorage.fireRate[DataStorage.curWeapon] -= DataStorage.upFireRate[DataStorage.curWeapon];
 			DataStorage.sellValue[DataStorage.curWeapon] += 8;
 			//adding stats
 			DataStorage.moneySpent += (DataStorage.frCost[DataStorage.curWeapon]- DataStorage.charisma);
