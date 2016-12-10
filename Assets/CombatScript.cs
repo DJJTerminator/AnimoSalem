@@ -24,6 +24,9 @@ public class CombatScript : MonoBehaviour
     public GameObject[] enemyHealthBar;
     public GameObject[] enemyBar;
     public GameObject CBTprefab;
+    public static int myXP; //the amount of xp that is gained after a battle is won.
+        //this variable, after the battle is over, will get converted into xp.
+
 
     void OnEnable()
     {
@@ -125,6 +128,7 @@ public class CombatScript : MonoBehaviour
                 DataStorage.crosshair.GetComponent<Animator>().Play("Hit", -1, 0f);
                 DataStorage.combat.GetComponent<Animator>().speed = 0f;
                 StartCoroutine(StopWatch(DataStorage.fireRate[DataStorage.curWeapon] / 2));
+                DataStorage.shotsFired++;
                 break;
             case "Oppressor":
                 gunShots[3].Play();
@@ -133,6 +137,7 @@ public class CombatScript : MonoBehaviour
                 DataStorage.crosshair.GetComponent<Animator>().Play("Hit", -1, 0f);
                 DataStorage.combat.GetComponent<Animator>().speed = 0f;
                 StartCoroutine(StopWatch(DataStorage.fireRate[DataStorage.curWeapon] / 2));
+                DataStorage.shotsFired++;
                 break;
             case "The Blacklist":
                 gunShots[4].Play();
@@ -141,11 +146,13 @@ public class CombatScript : MonoBehaviour
                 DataStorage.crosshair.GetComponent<Animator>().Play("Hit", -1, 0f);
                 DataStorage.combat.GetComponent<Animator>().speed = 0f;
                 StartCoroutine(StopWatch(DataStorage.fireRate[DataStorage.curWeapon] / 2));
+                DataStorage.shotsFired++;
                 break;
             case "Trident":
                 DataStorage.combat.GetComponent<Animator>().speed = 0f;
                 StartCoroutine(TrippleShot(.1f));
                 StartCoroutine(StopWatch(DataStorage.fireRate[DataStorage.curWeapon] / 2));
+                DataStorage.shotsFired++;
                 break;
             case "Silencer":
                 gunShots[6].Play();
@@ -154,6 +161,7 @@ public class CombatScript : MonoBehaviour
                 DataStorage.crosshair.GetComponent<Animator>().Play("Hit", -1, 0f);
                 DataStorage.combat.GetComponent<Animator>().speed = 0f;
                 StartCoroutine(StopWatch(DataStorage.fireRate[DataStorage.curWeapon] / 2));
+                DataStorage.shotsFired++;
                 break;
             case "Seeker":
                 gunShots[5].Play();
@@ -162,6 +170,7 @@ public class CombatScript : MonoBehaviour
                 DataStorage.crosshair.GetComponent<Animator>().Play("Hit", -1, 0f);
                 DataStorage.combat.GetComponent<Animator>().speed = 0f;
                 StartCoroutine(StopWatch(DataStorage.fireRate[DataStorage.curWeapon] / 2));
+                DataStorage.shotsFired++;
                 break;
             case "Hunter Killer":
                 gunShots[7].Play();
@@ -170,6 +179,7 @@ public class CombatScript : MonoBehaviour
                 DataStorage.crosshair.GetComponent<Animator>().Play("Hit", -1, 0f);
                 DataStorage.combat.GetComponent<Animator>().speed = 0f;
                 StartCoroutine(StopWatch(DataStorage.fireRate[DataStorage.curWeapon] / 2));
+                DataStorage.shotsFired++;
                 break;
             case "Crow's Nest":
                 gunShots[8].Play();
@@ -178,6 +188,7 @@ public class CombatScript : MonoBehaviour
                 DataStorage.crosshair.GetComponent<Animator>().Play("Hit", -1, 0f);
                 DataStorage.combat.GetComponent<Animator>().speed = 0f;
                 StartCoroutine(StopWatch(DataStorage.fireRate[DataStorage.curWeapon] / 2));
+                DataStorage.shotsFired++;
                 break;
             case "12 Gauge":
                 gunShots[12].Play();
@@ -186,6 +197,7 @@ public class CombatScript : MonoBehaviour
                 DataStorage.crosshair.GetComponent<Animator>().Play("Hit", -1, 0f);
                 DataStorage.combat.GetComponent<Animator>().speed = 0f;
                 StartCoroutine(StopWatch(DataStorage.fireRate[DataStorage.curWeapon] / 2));
+                DataStorage.shotsFired++;
                 break;
             case "Orthrus":
                 gunShots[9].Play();
@@ -194,6 +206,7 @@ public class CombatScript : MonoBehaviour
                 DataStorage.crosshair.GetComponent<Animator>().Play("Hit", -1, 0f);
                 DataStorage.combat.GetComponent<Animator>().speed = 0f;
                 StartCoroutine(StopWatch(DataStorage.fireRate[DataStorage.curWeapon] / 2));
+                DataStorage.shotsFired++;
                 break;
             case "Cerberus":
                 gunShots[10].Play();
@@ -202,6 +215,7 @@ public class CombatScript : MonoBehaviour
                 DataStorage.crosshair.GetComponent<Animator>().Play("Hit", -1, 0f);
                 DataStorage.combat.GetComponent<Animator>().speed = 0f;
                 StartCoroutine(StopWatch(DataStorage.fireRate[DataStorage.curWeapon] / 2));
+                DataStorage.shotsFired++;
                 break;
             case "Devestator":
                 gunShots[11].Play();
@@ -210,6 +224,7 @@ public class CombatScript : MonoBehaviour
                 DataStorage.crosshair.GetComponent<Animator>().Play("Hit", -1, 0f);
                 DataStorage.combat.GetComponent<Animator>().speed = 0f;
                 StartCoroutine(StopWatch(DataStorage.fireRate[DataStorage.curWeapon] / 2));
+                DataStorage.shotsFired++;
                 break;
             case "Savage One":
                 gunShots[12].Play();
@@ -218,6 +233,7 @@ public class CombatScript : MonoBehaviour
                 DataStorage.crosshair.GetComponent<Animator>().Play("Hit", -1, 0f);
                 DataStorage.combat.GetComponent<Animator>().speed = 0f;
                 StartCoroutine(StopWatch(DataStorage.fireRate[DataStorage.curWeapon] / 2));
+                DataStorage.shotsFired++;
                 break;
             case "Diminisher":
                 gunShots[16].Play();
@@ -234,6 +250,7 @@ public class CombatScript : MonoBehaviour
                     StartCoroutine(SlowMo(1f));
                     DataStorage.combat.GetComponent<Animator>().speed = .1f;
                 }
+                DataStorage.shotsFired++;
                 break;
             case "Revolver":
                 gunShots[13].Play();
@@ -242,6 +259,7 @@ public class CombatScript : MonoBehaviour
                 DataStorage.crosshair.GetComponent<Animator>().Play("Hit", -1, 0f);
                 DataStorage.combat.GetComponent<Animator>().speed = 0f;
                 StartCoroutine(StopWatch(DataStorage.fireRate[DataStorage.curWeapon] / 2));
+                DataStorage.shotsFired++;
                 break;
             case "Scylla":
                 gunShots[13].Play();
@@ -250,6 +268,7 @@ public class CombatScript : MonoBehaviour
                 DataStorage.crosshair.GetComponent<Animator>().Play("Hit", -1, 0f);
                 DataStorage.combat.GetComponent<Animator>().speed = 0f;
                 StartCoroutine(StopWatch(DataStorage.fireRate[DataStorage.curWeapon] / 2));
+                DataStorage.shotsFired++;
                 break;
             case "Day Ender":
                 gunShots[13].Play();
@@ -258,6 +277,7 @@ public class CombatScript : MonoBehaviour
                 DataStorage.crosshair.GetComponent<Animator>().Play("Hit", -1, 0f);
                 DataStorage.combat.GetComponent<Animator>().speed = 0f;
                 StartCoroutine(StopWatch(DataStorage.fireRate[DataStorage.curWeapon] / 2));
+                DataStorage.shotsFired++;
                 break;
             case "Redeemer":
                 gunShots[12].Play();
@@ -266,6 +286,7 @@ public class CombatScript : MonoBehaviour
                 DataStorage.crosshair.GetComponent<Animator>().Play("Hit", -1, 0f);
                 DataStorage.combat.GetComponent<Animator>().speed = 0f;
                 StartCoroutine(StopWatch(DataStorage.fireRate[DataStorage.curWeapon] / 2));
+                DataStorage.shotsFired++;
                 break;
             case "Hellfire":
                 gunShots[2].Play();
@@ -282,6 +303,7 @@ public class CombatScript : MonoBehaviour
                     StartCoroutine(SlowMo(1f));
                     DataStorage.combat.GetComponent<Animator>().speed = .08f;
                 }
+                DataStorage.shotsFired++;
                 break;
             case "Energy Rifle":
                 gunShots[14].Play();
@@ -290,6 +312,7 @@ public class CombatScript : MonoBehaviour
                 DataStorage.crosshair.GetComponent<Animator>().Play("Hit", -1, 0f);
                 DataStorage.combat.GetComponent<Animator>().speed = 0f;
                 StartCoroutine(StopWatch(DataStorage.fireRate[DataStorage.curWeapon] / 2));
+                DataStorage.shotsFired++;
                 break;
             case "Eradicator":
                 gunShots[15].Play();
@@ -298,6 +321,7 @@ public class CombatScript : MonoBehaviour
                 DataStorage.crosshair.GetComponent<Animator>().Play("Hit", -1, 0f);
                 DataStorage.combat.GetComponent<Animator>().speed = 0f;
                 StartCoroutine(StopWatch(DataStorage.fireRate[DataStorage.curWeapon] / 2));
+                DataStorage.shotsFired++;
                 break;
         }
     }
@@ -670,30 +694,48 @@ public class CombatScript : MonoBehaviour
     //checking to see if an enemy was hit, if so, deal te appriopriate damage
     public void Damage()
     {
+        float dmg;
         for (int i = 0; i < enemyTarget.Length; i++)
         {
             if (enemyTarget[i].activeSelf)
             {
-                //print("range " + (enemyTarget[i].transform.position.x - (enemyTarget[i].transform.localScale.x / 4)) + "-" + (enemyTarget[i].transform.position.x + (enemyTarget[i].transform.localScale.x / 4)));
-               // print("my shot " + DataStorage.crosshair.transform.position.x);
                 if (DataStorage.crosshair.transform.position.x >= enemyTarget[i].transform.position.x - (enemyTarget[i].transform.localScale.x / 2) && DataStorage.crosshair.transform.position.x <= enemyTarget[i].transform.position.x + (enemyTarget[i].transform.localScale.x/2))
                 {
+                    //finding the accuracy
+                    float temp = DataStorage.crosshair.transform.position.x / (enemyTarget[i].transform.position.x + (enemyTarget[i].transform.localScale.x / 2));
+                    print(temp);
+                    //adding to the total amount of damage the player has dalt over a lifetime
+                    if ((DataStorage.weaponDamage[DataStorage.curWeapon] + DataStorage.damage) * temp < enemyHP[i])
+                    {
+                        DataStorage.damageDealt += (Mathf.Round((DataStorage.weaponDamage[DataStorage.curWeapon] + DataStorage.damage) * temp) * 100) / 100;
+                        dmg = (Mathf.Round((DataStorage.weaponDamage[DataStorage.curWeapon] + DataStorage.damage) * temp) * 100) / 100;
+                    }
+                    else
+                    {
+                        DataStorage.damageDealt += DataStorage.damageDealt += (Mathf.Round(((DataStorage.weaponDamage[DataStorage.curWeapon] + DataStorage.damage) * temp) - enemyHP[i]) * 100) / 100;
+                        dmg = (Mathf.Round(((DataStorage.weaponDamage[DataStorage.curWeapon] + DataStorage.damage) * temp) - enemyHP[i]) * 100) / 100;
+                    }
+ 
                     //adding the damage
-                     enemyHP[i] -= DataStorage.weaponDamage[DataStorage.curWeapon] + DataStorage.damage;
+                    enemyHP[i] -= (DataStorage.weaponDamage[DataStorage.curWeapon] + DataStorage.damage)*temp;
                     //calculating the current health bar for the enemy
-                     enemyHealthBar[i].transform.localScale = new Vector3 (enemyHP[i] / enemyMaxHP[i],1,1);
+                    enemyHealthBar[i].transform.localScale = new Vector3 (enemyHP[i] / enemyMaxHP[i],1,1);
                     //initiating the amount of damage to a foating text
-                    InitCBT(i, "-" + (DataStorage.weaponDamage[DataStorage.curWeapon] + DataStorage.damage).ToString());
+                    InitCBT(i, "-" + dmg.ToString());
+                    DataStorage.targetsHit ++;
                     if (enemyHP[i] <= 0)
                     {
                         StartCoroutine(WaitAndDisable(i, 2f));
+                        DataStorage.enemiesKilled++;
+                        //adding xp
+                        myXP += 25;
                     }
                   //preventing any weapon other than the shotgun from doing damage to multiple enemies
                     if (DataStorage.weaponType[DataStorage.curWeapon] != "Shotgun")
                         i = enemyMaxHP.Length;
                 }
-               // else
-                 //   print("miss");
+                //else
+                   // 
             }
         }
     }
