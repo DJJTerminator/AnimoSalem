@@ -23,14 +23,14 @@ public class CombatScript : MonoBehaviour
     public GameObject[] enemyTarget;
     public GameObject[] enemyHealthBar;
     public GameObject[] enemyBar;
-    public Text[] CBT;
+    public GameObject CBTprefab;
 
     void OnEnable()
     {
         for (int i = 0; i < enemyMaxHP.Length; i++)
         {
             enemyHP[i] = enemyMaxHP[i];
-            enemyTarget[i].transform.localScale = new Vector3(1 + DataStorage.accuracy[DataStorage.curWeapon],1,1);
+            enemyTarget[i].transform.localScale = new Vector3(enemyTarget[i].transform.localScale.x + DataStorage.accuracy[DataStorage.curWeapon],1,1);
         }
     }
 
@@ -670,7 +670,7 @@ public class CombatScript : MonoBehaviour
     //checking to see if an enemy was hit, if so, deal te appriopriate damage
     public void Damage()
     {
-        for (int i = 0; i < enemyMaxHP.Length; i++)
+        for (int i = 0; i < enemyTarget.Length; i++)
         {
             if (enemyTarget[i].activeSelf)
             {
@@ -682,10 +682,11 @@ public class CombatScript : MonoBehaviour
                      enemyHP[i] -= DataStorage.weaponDamage[DataStorage.curWeapon] + DataStorage.damage;
                     //calculating the current health bar for the enemy
                      enemyHealthBar[i].transform.localScale = new Vector3 (enemyHP[i] / enemyMaxHP[i],1,1);
-                  if (enemyHP[i] <= 0)
+                    //initiating the amount of damage to a foating text
+                    InitCBT(i, "-" + (DataStorage.weaponDamage[DataStorage.curWeapon] + DataStorage.damage).ToString());
+                    if (enemyHP[i] <= 0)
                     {
-                        enemyBar[i].SetActive(false);
-                        enemyTarget[i].SetActive(false);
+                        StartCoroutine(WaitAndDisable(i, 2f));
                     }
                   //preventing any weapon other than the shotgun from doing damage to multiple enemies
                     if (DataStorage.weaponType[DataStorage.curWeapon] != "Shotgun")
@@ -695,5 +696,32 @@ public class CombatScript : MonoBehaviour
                  //   print("miss");
             }
         }
+    }
+    //disable gameobjects after 2 seconds, so that the text can be seen.
+    //otherwise, the game objects get disabled, and the text is never seen
+    IEnumerator WaitAndDisable(int number, float disable)
+    {
+        yield return new WaitForSeconds(disable);
+        enemyBar[number].SetActive(false);
+        enemyTarget[number].SetActive(false);
+    }
+
+    //damage to  floating text
+    GameObject InitCBT(int number, string text)
+    {
+        GameObject temp = Instantiate(CBTprefab) as GameObject;
+        RectTransform tempRect = temp.GetComponent<RectTransform>();
+        temp.transform.SetParent(enemyTarget[number].transform);
+        tempRect.transform.localPosition = CBTprefab.transform.transform.localPosition;
+        tempRect.transform.localScale = CBTprefab.transform.localScale;
+        tempRect.transform.localRotation = CBTprefab.transform.localRotation;
+
+
+        //Debug.Log(tempRect.transform.localPosition);
+
+        temp.GetComponent<Text>().text = text;
+        Destroy(temp.gameObject, 6);
+        //temp.GetComponent<Animator>().SetTrigger("Hit");
+        return temp;
     }
 }//end of class
