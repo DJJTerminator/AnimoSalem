@@ -24,6 +24,9 @@ public class CombatScript : MonoBehaviour
     public GameObject[] enemyHealthBar;
     public GameObject[] enemyBar;
     public GameObject CBTprefab;
+    [SerializeField]
+    GameObject[] myText;
+
     public static int myXP; //the amount of xp that is gained after a battle is won.
         //this variable, after the battle is over, will get converted into xp.
 
@@ -243,7 +246,7 @@ public class CombatScript : MonoBehaviour
                 if (mgFire == false)
                 {
                     DataStorage.combat.GetComponent<Animator>().speed = 0f;
-                    StartCoroutine(StopWatch(.6f));
+                    StartCoroutine(StopWatch(.2f));
                 }
                 else
                 {
@@ -296,7 +299,7 @@ public class CombatScript : MonoBehaviour
                 if (mgFire == false)
                 {
                     DataStorage.combat.GetComponent<Animator>().speed = 0f;
-                    StartCoroutine(StopWatch(.6f));
+                    StartCoroutine(StopWatch(.2f));
                 }
                 else
                 {
@@ -694,26 +697,40 @@ public class CombatScript : MonoBehaviour
     //checking to see if an enemy was hit, if so, deal te appriopriate damage
     public void Damage()
     {
+        //getting the critical chances
+        float crit = Mathf.Round(Random.Range(0.0f, 1)*100)/100;
         float dmg;
+        float temp;
         for (int i = 0; i < enemyTarget.Length; i++)
         {
             if (enemyTarget[i].activeSelf)
             {
-                if (DataStorage.crosshair.transform.position.x >= enemyTarget[i].transform.position.x - (enemyTarget[i].transform.localScale.x / 2) && DataStorage.crosshair.transform.position.x <= enemyTarget[i].transform.position.x + (enemyTarget[i].transform.localScale.x/2))
+                if (DataStorage.crosshair.transform.position.x >= enemyTarget[i].transform.position.x - (enemyTarget[i].transform.localScale.x / 4) && DataStorage.crosshair.transform.position.x <= enemyTarget[i].transform.position.x + (enemyTarget[i].transform.localScale.x/4))
                 {
                     //finding the accuracy
-                    float temp = DataStorage.crosshair.transform.position.x / (enemyTarget[i].transform.position.x + (enemyTarget[i].transform.localScale.x / 2));
-                    print(temp);
-                    //adding to the total amount of damage the player has dalt over a lifetime
+                    if (DataStorage.crosshair.transform.position.x <= enemyTarget[i].transform.position.x)
+                        temp = DataStorage.crosshair.transform.position.x / enemyTarget[i].transform.position.x;
+                    else
+                        temp = enemyTarget[i].transform.position.x/DataStorage.crosshair.transform.position.x;
+
+
                     if ((DataStorage.weaponDamage[DataStorage.curWeapon] + DataStorage.damage) * temp < enemyHP[i])
                     {
-                        DataStorage.damageDealt += (Mathf.Round((DataStorage.weaponDamage[DataStorage.curWeapon] + DataStorage.damage) * temp) * 100) / 100;
                         dmg = (Mathf.Round((DataStorage.weaponDamage[DataStorage.curWeapon] + DataStorage.damage) * temp) * 100) / 100;
+                        if (crit <= DataStorage.criticalChance[DataStorage.curWeapon])
+                            dmg *= 2;
+                        //adding to the total amount of damage the player has dalt over a lifetime
+                        DataStorage.damageDealt += dmg;
+
                     }
                     else
                     {
-                        DataStorage.damageDealt += DataStorage.damageDealt += (Mathf.Round(((DataStorage.weaponDamage[DataStorage.curWeapon] + DataStorage.damage) * temp) - enemyHP[i]) * 100) / 100;
+                        DataStorage.damageDealt +=
                         dmg = (Mathf.Round(((DataStorage.weaponDamage[DataStorage.curWeapon] + DataStorage.damage) * temp) - enemyHP[i]) * 100) / 100;
+                        if (crit <= DataStorage.criticalChance[DataStorage.curWeapon])
+                            dmg *= 2;
+                        //adding to the total amount of damage the player has dalt over a lifetime
+                        DataStorage.damageDealt += dmg;
                     }
  
                     //adding the damage
@@ -721,7 +738,8 @@ public class CombatScript : MonoBehaviour
                     //calculating the current health bar for the enemy
                     enemyHealthBar[i].transform.localScale = new Vector3 (enemyHP[i] / enemyMaxHP[i],1,1);
                     //initiating the amount of damage to a foating text
-                    InitCBT(i, "-" + dmg.ToString());
+                    if (DataStorage.weaponType[DataStorage.curWeapon] != "Automatic")
+                    InitCBT(crit, i, "-" + dmg.ToString());
                     DataStorage.targetsHit ++;
                     if (enemyHP[i] <= 0)
                     {
@@ -749,21 +767,24 @@ public class CombatScript : MonoBehaviour
     }
 
     //damage to  floating text
-    GameObject InitCBT(int number, string text)
+    GameObject InitCBT(float crit, int number, string text)
     {
         GameObject temp = Instantiate(CBTprefab) as GameObject;
         RectTransform tempRect = temp.GetComponent<RectTransform>();
-        temp.transform.SetParent(enemyTarget[number].transform);
+        temp.transform.SetParent(myText[number].transform);
         tempRect.transform.localPosition = CBTprefab.transform.transform.localPosition;
         tempRect.transform.localScale = CBTprefab.transform.localScale;
         tempRect.transform.localRotation = CBTprefab.transform.localRotation;
-
-
-        //Debug.Log(tempRect.transform.localPosition);
-
+        if (crit > DataStorage.criticalChance[DataStorage.curWeapon])
+        {
+            temp.GetComponent<Animator>().Play("CBTDamage", -1, 0f);
+        }
+        else
+        {
+            temp.GetComponent<Animator>().Play("CBTDamageCrit", -1, 0f);
+        }
         temp.GetComponent<Text>().text = text;
         Destroy(temp.gameObject, 6);
-        //temp.GetComponent<Animator>().SetTrigger("Hit");
         return temp;
     }
 }//end of class
