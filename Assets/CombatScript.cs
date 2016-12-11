@@ -26,6 +26,14 @@ public class CombatScript : MonoBehaviour
     public GameObject CBTprefab;
     [SerializeField]
     GameObject[] myText;
+    float totalDamage; //used to tally up all machine damage
+    int lastHit;
+    [SerializeField]
+    GameObject[] blood1;
+    [SerializeField]
+    GameObject[] blood2;
+    [SerializeField]
+    GameObject[] blood3;
 
     public static int myXP; //the amount of xp that is gained after a battle is won.
         //this variable, after the battle is over, will get converted into xp.
@@ -74,8 +82,16 @@ public class CombatScript : MonoBehaviour
                 {
                     gunShots[0].Play();
                     fireRate = Time.time + .12f;
+                    if (totalDamage > 0)
+                    {
+                        InitCBT(0, lastHit, "-" + totalDamage.ToString());
+                    }
                 }
             }
+        if (Input.GetKeyUp(KeyCode.Mouse0) && totalDamage > 0)
+        {
+            InitCBT(0, lastHit, "-" + totalDamage.ToString());
+        }
         //Reloading your weapon
         if (Input.GetKeyDown("r") && DataStorage.holster[DataStorage.curWeapon] < DataStorage.capacity[DataStorage.curWeapon] && !isReloading && DataStorage.itemBar.GetComponent<Image>().fillAmount <= 0)
             Reload();
@@ -707,6 +723,8 @@ public class CombatScript : MonoBehaviour
             {
                 if (DataStorage.crosshair.transform.position.x >= enemyTarget[i].transform.position.x - (enemyTarget[i].transform.localScale.x / 4) && DataStorage.crosshair.transform.position.x <= enemyTarget[i].transform.position.x + (enemyTarget[i].transform.localScale.x/4))
                 {
+                    //calling the blood
+                    StartCoroutine(Blood(i, 1f));
                     //finding the accuracy
                     if (DataStorage.crosshair.transform.position.x <= enemyTarget[i].transform.position.x)
                         temp = DataStorage.crosshair.transform.position.x / enemyTarget[i].transform.position.x;
@@ -721,7 +739,7 @@ public class CombatScript : MonoBehaviour
                             dmg *= 2;
                         //adding to the total amount of damage the player has dalt over a lifetime
                         DataStorage.damageDealt += dmg;
-
+                        lastHit = i;
                     }
                     else
                     {
@@ -740,6 +758,9 @@ public class CombatScript : MonoBehaviour
                     //initiating the amount of damage to a foating text
                     if (DataStorage.weaponType[DataStorage.curWeapon] != "Automatic")
                     InitCBT(crit, i, "-" + dmg.ToString());
+                    else
+                    totalDamage += dmg;
+
                     DataStorage.targetsHit ++;
                     if (enemyHP[i] <= 0)
                     {
@@ -775,16 +796,59 @@ public class CombatScript : MonoBehaviour
         tempRect.transform.localPosition = CBTprefab.transform.transform.localPosition;
         tempRect.transform.localScale = CBTprefab.transform.localScale;
         tempRect.transform.localRotation = CBTprefab.transform.localRotation;
-        if (crit > DataStorage.criticalChance[DataStorage.curWeapon])
-        {
-            temp.GetComponent<Animator>().Play("CBTDamage", -1, 0f);
-        }
+        if (totalDamage <= 0)
+            if (crit > DataStorage.criticalChance[DataStorage.curWeapon])
+            {
+                temp.GetComponent<Animator>().Play("CBTDamage", -1, 0f);
+            }
+            else
+            {
+                temp.GetComponent<Animator>().Play("CBTDamageCrit", -1, 0f);
+            }
         else
         {
-            temp.GetComponent<Animator>().Play("CBTDamageCrit", -1, 0f);
+            temp.GetComponent<Animator>().Play("CBTDamageTotal", -1, 0f);
+            StartCoroutine(AddDamage(temp, totalDamage, .05f));
+            totalDamage = 0;
+            return temp;
         }
         temp.GetComponent<Text>().text = text;
         Destroy(temp.gameObject, 6);
         return temp;
+    }
+    //animating the machinegun text
+    IEnumerator AddDamage(GameObject temp, float total, float waitTime)
+    {
+        for (int i = 0; i < total; i++)
+        {
+            yield return new WaitForSeconds(waitTime);
+            temp.GetComponent<Text>().text = "-" + i;
+        }
+        Destroy(temp.gameObject, 1f);
+    }
+
+    IEnumerator Blood(int i, float waitTime)
+    {
+        int temp = Random.Range(0, blood1.Length);
+        switch (i)
+        {
+            default:
+                blood1[temp].SetActive(true);
+                yield return new WaitForSeconds(waitTime);
+                blood1[temp].SetActive(false);
+                break;
+            case 1:
+                blood2[temp].SetActive(true);
+                yield return new WaitForSeconds(waitTime);
+                blood2[temp].SetActive(false);
+                break;
+            case 2:
+                blood3[temp].SetActive(true);
+                yield return new WaitForSeconds(waitTime);
+                blood3[temp].SetActive(false);
+                break;
+
+        }
+
     }
 }//end of class
