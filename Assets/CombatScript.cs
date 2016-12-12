@@ -34,8 +34,12 @@ public class CombatScript : MonoBehaviour
     GameObject[] blood2;
     [SerializeField]
     GameObject[] blood3;
+    public int[] enemyFortitude;
+    public int[] xp;//the amount of xp per enemy
+    float dmg = 0f;
+    //public VictoryScript myVictory;//th victory script of this gameobject
 
-    public static int myXP; //the amount of xp that is gained after a battle is won.
+    public int myXP; //the amount of xp that is gained after a battle is won.
         //this variable, after the battle is over, will get converted into xp.
 
 
@@ -43,6 +47,7 @@ public class CombatScript : MonoBehaviour
     {
         for (int i = 0; i < enemyMaxHP.Length; i++)
         {
+            xp[i] = Random.Range(20,25);
             enemyHP[i] = enemyMaxHP[i];
             enemyTarget[i].transform.localScale = new Vector3(enemyTarget[i].transform.localScale.x + DataStorage.accuracy[DataStorage.curWeapon],1,1);
         }
@@ -52,6 +57,9 @@ public class CombatScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+
+
+
         //firing the gun
         if (Input.GetKeyDown(KeyCode.Mouse0) && DataStorage.weaponType[DataStorage.curWeapon] != "Automatic")
             if (DataStorage.holster[DataStorage.curWeapon] > 0)
@@ -171,7 +179,6 @@ public class CombatScript : MonoBehaviour
                 DataStorage.combat.GetComponent<Animator>().speed = 0f;
                 StartCoroutine(TrippleShot(.1f));
                 StartCoroutine(StopWatch(DataStorage.fireRate[DataStorage.curWeapon] / 2));
-                DataStorage.shotsFired++;
                 break;
             case "Silencer":
                 gunShots[6].Play();
@@ -349,11 +356,17 @@ public class CombatScript : MonoBehaviour
     {
         for (int i = 0; i < 3; i++)
         {
-            gunShots[5].Play();
-            DataStorage.holster[DataStorage.curWeapon] -= 1;
-            DataStorage.UpdateHolster();
-            DataStorage.crosshair.GetComponent<Animator>().Play("Hit", -1, 0f);
-            yield return new WaitForSeconds(waitTime);//if gun is still firing, play animation
+            if (DataStorage.holster[DataStorage.curWeapon] > 0)
+            {
+                gunShots[5].Play();
+                DataStorage.holster[DataStorage.curWeapon] -= 1;
+                DataStorage.UpdateHolster();
+                DataStorage.crosshair.GetComponent<Animator>().Play("Hit", -1, 0f);
+                DataStorage.shotsFired++;
+                yield return new WaitForSeconds(waitTime);//if gun is still firing, play animation
+            }
+            else
+                i = 3;
         }
         if (Time.time > fireRate || DataStorage.holster[DataStorage.curWeapon] < 1)
             DataStorage.combat.GetComponent<Animator>().speed = 1f;
@@ -715,7 +728,7 @@ public class CombatScript : MonoBehaviour
     {
         //getting the critical chances
         float crit = Mathf.Round(Random.Range(0.0f, 1)*100)/100;
-        float dmg;
+        dmg = 0f;
         float temp;
         for (int i = 0; i < enemyTarget.Length; i++)
         {
@@ -732,23 +745,25 @@ public class CombatScript : MonoBehaviour
                         temp = enemyTarget[i].transform.position.x/DataStorage.crosshair.transform.position.x;
 
 
-                    if ((DataStorage.weaponDamage[DataStorage.curWeapon] + DataStorage.damage) * temp < enemyHP[i])
+                    if (enemyHP[i] > 0)
                     {
-                        dmg = (Mathf.Round((DataStorage.weaponDamage[DataStorage.curWeapon] + DataStorage.damage) * temp) * 100) / 100;
-                        if (crit <= DataStorage.criticalChance[DataStorage.curWeapon])
-                            dmg *= 2;
-                        //adding to the total amount of damage the player has dalt over a lifetime
-                        DataStorage.damageDealt += dmg;
-                        lastHit = i;
-                    }
-                    else
-                    {
-                        DataStorage.damageDealt +=
-                        dmg = (Mathf.Round(((DataStorage.weaponDamage[DataStorage.curWeapon] + DataStorage.damage) * temp) - enemyHP[i]) * 100) / 100;
-                        if (crit <= DataStorage.criticalChance[DataStorage.curWeapon])
-                            dmg *= 2;
-                        //adding to the total amount of damage the player has dalt over a lifetime
-                        DataStorage.damageDealt += dmg;
+                        if ((DataStorage.weaponDamage[DataStorage.curWeapon] + DataStorage.damage) * temp < enemyHP[i])
+                        {
+                            dmg = (Mathf.Round((DataStorage.weaponDamage[DataStorage.curWeapon] + DataStorage.damage) * temp) * 100) / 100;
+                            if (crit <= DataStorage.criticalChance[DataStorage.curWeapon])
+                                dmg *= 2;
+                            //adding to the total amount of damage the player has dalt over a lifetime
+                            DataStorage.damageDealt += dmg;
+                            lastHit = i;
+                        }
+                        else
+                        {
+                            dmg = (Mathf.Round(((DataStorage.weaponDamage[DataStorage.curWeapon] + DataStorage.damage) * temp) - enemyHP[i]) * 100) / 100;
+                            if (crit <= DataStorage.criticalChance[DataStorage.curWeapon])
+                                //adding to the total amount of damage the player has dalt over a lifetime
+                                DataStorage.damageDealt += dmg;
+                            lastHit = i;
+                        }
                     }
  
                     //adding the damage
@@ -762,12 +777,19 @@ public class CombatScript : MonoBehaviour
                     totalDamage += dmg;
 
                     DataStorage.targetsHit ++;
-                    if (enemyHP[i] <= 0)
+                    if (enemyHP[lastHit] <= 0)
                     {
                         StartCoroutine(WaitAndDisable(i, 2f));
                         DataStorage.enemiesKilled++;
                         //adding xp
-                        myXP += 25;
+                        myXP += xp[lastHit];
+                        //checking to see if all enemies are dead
+                        if (enemyHP[0] <= 0 && enemyHP[1] <= 0 && enemyHP[0] <= 2)
+                        {
+                            GetComponent<VictoryScript>().VictoryScene(myXP);
+                            myXP = 0;
+                        }
+
                     }
                   //preventing any weapon other than the shotgun from doing damage to multiple enemies
                     if (DataStorage.weaponType[DataStorage.curWeapon] != "Shotgun")
@@ -824,9 +846,10 @@ public class CombatScript : MonoBehaviour
             yield return new WaitForSeconds(waitTime);
             temp.GetComponent<Text>().text = "-" + i;
         }
-        Destroy(temp.gameObject, 1f);
+        temp.GetComponent<Animator>().SetTrigger("end");
+        Destroy(temp.gameObject, 10f);
     }
-
+    //randomizing the area of blood spatter depending upon which enemy was struck
     IEnumerator Blood(int i, float waitTime)
     {
         int temp = Random.Range(0, blood1.Length);
@@ -847,7 +870,6 @@ public class CombatScript : MonoBehaviour
                 yield return new WaitForSeconds(waitTime);
                 blood3[temp].SetActive(false);
                 break;
-
         }
 
     }

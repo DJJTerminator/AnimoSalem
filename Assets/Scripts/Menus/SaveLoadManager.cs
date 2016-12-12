@@ -31,7 +31,7 @@ public static class SaveLoadManager{
 		else 
 		{
 			Debug.LogError("No saved data found");
-			return new float[380];
+			return new float[381];
 		}
 	}
 }
@@ -45,7 +45,7 @@ public class PlayerData{
 
 	public PlayerData(DataStorage player)
 	{
-		stats = new float[380];
+		stats = new float[381];
 			stats [0] = DataStorage.money;
 			stats [1] = DataStorage.currentLevel;
 			stats [2] = DataStorage.XP;
@@ -485,6 +485,9 @@ public class PlayerData{
 		stats [377] = DataStorage.itemsSold;
 		stats [378] = DataStorage.itemsBought;
         stats[379] = DataStorage.equippedItem;
+
+        //difficuty
+        stats[380] = DataStorage.difficulty;
 
 
 
