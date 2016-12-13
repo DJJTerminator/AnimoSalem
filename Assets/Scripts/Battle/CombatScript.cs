@@ -37,6 +37,7 @@ public class CombatScript : MonoBehaviour
     public int[] enemyFortitude;
     public int[] xp;//the amount of xp per enemy
     float dmg = 0f;
+    public GameObject Backgrounds;
     //public VictoryScript myVictory;//th victory script of this gameobject
 
     public int myXP; //the amount of xp that is gained after a battle is won.
@@ -45,6 +46,7 @@ public class CombatScript : MonoBehaviour
 
     void OnEnable()
     {
+       // DataStorage.player.GetComponent<Controls>().enabled = false;
         for (int i = 0; i < enemyMaxHP.Length; i++)
         {
             xp[i] = Random.Range(20,25);
@@ -52,7 +54,10 @@ public class CombatScript : MonoBehaviour
             enemyTarget[i].transform.localScale = new Vector3(enemyTarget[i].transform.localScale.x + DataStorage.accuracy[DataStorage.curWeapon],1,1);
         }
     }
+    void Start()
+    {
 
+    }
 
     // Update is called once per frame
     void Update()
@@ -224,6 +229,7 @@ public class CombatScript : MonoBehaviour
                 DataStorage.combat.GetComponent<Animator>().speed = 0f;
                 StartCoroutine(StopWatch(DataStorage.fireRate[DataStorage.curWeapon] / 2));
                 DataStorage.shotsFired++;
+                Backgrounds.GetComponent<Animator>().Play("Shooting", -1, 0f);
                 break;
             case "Orthrus":
                 gunShots[9].Play();

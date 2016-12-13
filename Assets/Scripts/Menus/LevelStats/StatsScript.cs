@@ -111,8 +111,9 @@ public class StatsScript : MonoBehaviour {
 		shotsMissed.text = "Shots Missed: " + DataStorage.damageDealt.ToString();
 
 		damage.text = "Damage " + (Mathf.Round((DataStorage.damage + DataStorage.weaponDamage[DataStorage.curWeapon])*100f)/100f).ToString();
+        ShowStats();
 
-	}
+    }
 
 	//displays and updates all stats
 	void ShowStats()

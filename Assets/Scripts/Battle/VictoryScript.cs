@@ -20,7 +20,7 @@ public class VictoryScript : MonoBehaviour
 
     public void VictoryScene(int xp)
     {
-        xpValue = 10000;
+        xpValue = xp;
         xpText.text = xp.ToString();
         Victory.SetActive(true);
         xpBar.transform.localScale = new Vector3((float)DataStorage.XP + xpValue / (float)DataStorage.maxXP, 1, 1);
@@ -58,9 +58,18 @@ public class VictoryScript : MonoBehaviour
                 //etc
                 yield return new WaitForSeconds(4f);
             }
-            if (xpValue > 0)
             yield return new WaitForSeconds(waitTime);
         }
         xpText.text = null;
+        StartCoroutine (ReturnToGame(3f));
+    }
+
+    IEnumerator ReturnToGame(float waitTime)
+    {
+        yield return new WaitForSeconds(waitTime);
+        DataStorage.player.GetComponent<Controls>().enabled = true;
+        gameObject.SetActive(false);
+        DataStorage.battleSystem.SetActive(false);
+        DataStorage.UpdateHUD();
     }
 }
