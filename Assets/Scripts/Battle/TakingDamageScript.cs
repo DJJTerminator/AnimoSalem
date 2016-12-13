@@ -6,7 +6,7 @@ public class TakingDamageScript : MonoBehaviour {
     public GameObject Backgrounds;
     void Start()
     {
-        TakeDamage();
+        //TakeDamage();
     }
 
     public void TakeDamage()

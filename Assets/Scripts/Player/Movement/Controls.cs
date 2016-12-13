@@ -15,7 +15,10 @@ public class Controls : MonoBehaviour {
     bool canUse = true; //the boolean that allows players to use items
     int addHealth = 0;
 
-
+    void Start()
+    {
+     // DataStorage.player = gameObject;
+    }
 
     // Update is called once per frame
     void Update()
