@@ -58,7 +58,7 @@ public class CombatScript : MonoBehaviour
         reloadBar.SetActive(true);
         reloadText.SetActive(true);
         gameObject.GetComponent<CombatScript>().enabled = true;
-        reloadBar.GetComponent<Animator>().Play("Enabled");
+        gameObject.GetComponent<Animator>().Play("Enabled");
 
     }
     void Start()
@@ -73,7 +73,7 @@ public class CombatScript : MonoBehaviour
 
 
         //firing the gun
-        if (Input.GetKeyDown(KeyCode.Mouse0) && DataStorage.weaponType[DataStorage.curWeapon] != "Automatic")
+        if (Input.GetKeyDown(KeyCode.Mouse0) && DataStorage.weaponType[DataStorage.curWeapon] != "Automatic" && DataStorage.itemBar.GetComponent<Image>().fillAmount == 0)
             if (DataStorage.holster[DataStorage.curWeapon] > 0)
             {
                 if (Time.time > fireRate)
@@ -87,7 +87,7 @@ public class CombatScript : MonoBehaviour
             else
                 gunShots[0].Play();
 
-        if (Input.GetKey(KeyCode.Mouse0) && DataStorage.weaponType[DataStorage.curWeapon] == "Automatic")
+        if (Input.GetKey(KeyCode.Mouse0) && DataStorage.weaponType[DataStorage.curWeapon] == "Automatic" && DataStorage.itemBar.GetComponent<Image>().fillAmount == 0)
             if (DataStorage.holster[DataStorage.curWeapon] > 0)
             {
                 if (Time.time > fireRate)
@@ -152,10 +152,6 @@ public class CombatScript : MonoBehaviour
         }
 
     }//end of update
-
-
-
-
 
     public void Shooting()
     {
@@ -765,6 +761,7 @@ public class CombatScript : MonoBehaviour
         float crit = Mathf.Round(Random.Range(0.0f, 1)*100)/100;
         dmg = 0f;
         float temp;
+
         for (int i = 0; i < enemyTarget.Length; i++)
         {
             if (enemyTarget[i].activeSelf)
@@ -821,15 +818,13 @@ public class CombatScript : MonoBehaviour
                         xp[lastHit] = 0;
 
                         //checking to see if all enemies are dead
-                        if (enemyHP[0] <= 0 && enemyHP[1] <= 0 && enemyHP[0] <= 2)
+                        if (enemyHP[0] <= 0 && enemyHP[1] <= 0 && enemyHP[2] <= 2)
                         {
-                            gameObject.GetComponent<Animator>().Play("Disabled");
                             gameObject.GetComponent<CombatScript>().enabled = false;
                             reloadBar.SetActive(false);
                             reloadText.SetActive(false);
                             StartCoroutine(GoToVictory(4f));
                         }
-
                     }
                   //preventing any weapon other than the shotgun from doing damage to multiple enemies
                     if (DataStorage.weaponType[DataStorage.curWeapon] != "Shotgun")
@@ -911,13 +906,14 @@ public class CombatScript : MonoBehaviour
                 blood3[temp].SetActive(false);
                 break;
         }
-
     }
     //waiting before the victory occurs
     IEnumerator GoToVictory(float waitTime)
     {
-    yield return new WaitForSeconds(waitTime);
-    GetComponent<VictoryScript>().VictoryScene(myXP);
+    yield return new WaitForSeconds(1f);
+        gameObject.GetComponent<Animator>().Play("Disabled");
+        yield return new WaitForSeconds(waitTime - 1f);
+        GetComponent<VictoryScript>().VictoryScene(myXP);
     myXP = 0;
     }
 }//end of class

@@ -11,7 +11,6 @@ public class VictoryScript : MonoBehaviour
     public GameObject LevelUp;
     public AudioSource levelingUp;
     public AudioSource levelUp;
-    float addWait = .05f;
 
     void Enabled()
     {
@@ -24,21 +23,29 @@ public class VictoryScript : MonoBehaviour
         xpText.text = xp.ToString();
         Victory.SetActive(true);
         xpBar.transform.localScale = new Vector3((float)DataStorage.XP + xpValue / (float)DataStorage.maxXP, 1, 1);
-        StartCoroutine(LoadXP(addWait));
+        StartCoroutine(LoadXP(.02f));
     }
 
     IEnumerator LoadXP(float waitTime)
     {
-        addWait = waitTime;
         while (xpValue > 0)
         {
             if (LevelUp.activeSelf)
                 LevelUp.SetActive(false);
             if (!levelingUp.isPlaying)
                 levelingUp.Play();
-            xpValue -= 1;
+            //checking to see if the xp value is greater than the current level
+            if (xpValue > 1 * DataStorage.currentLevel)
+            {
+                xpValue -= 1 * DataStorage.currentLevel;
+                DataStorage.XP += 1 * DataStorage.currentLevel;
+            }
+            else
+            {
+                DataStorage.XP += xpValue;
+                xpValue = 0;
+            }
             xpText.text = xpValue.ToString();
-            DataStorage.XP += 1;
             xpBar.transform.localScale = new Vector3((float)DataStorage.XP/(float)DataStorage.maxXP,1,1);
             if (DataStorage.XP >= DataStorage.maxXP)
             {
@@ -50,9 +57,8 @@ public class VictoryScript : MonoBehaviour
                 xpBar.transform.localScale = new Vector3((float)DataStorage.XP / (float)DataStorage.maxXP, 1, 1);
                 DataStorage.playerStats += 5;
                 //decreasing the wait for the next time the player levels up
-                addWait = addWait / 10f;
-                waitTime = addWait / DataStorage.maxXP;
                 LevelUp.SetActive(true);
+                DataStorage.currentLevel++;
                 //display animation  gain level
                 //play sound
                 //etc
