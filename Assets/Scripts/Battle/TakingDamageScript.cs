@@ -3,7 +3,7 @@ using System.Collections;
 using UnityEngine.UI;
 
 public class TakingDamageScript : MonoBehaviour {
-    int enemyDamage;
+    int enemyDamage = 20;
     public GameObject Backgrounds;
     public GameObject[] arrowKeys;
     public GameObject actionText;
@@ -84,6 +84,7 @@ public class TakingDamageScript : MonoBehaviour {
     IEnumerator TimeFailure(float waitTime)
     {
         yield return new WaitForSeconds(1.5f);
+        TakeDamage();
         failed.Play();
         actionText.GetComponent<Text>().text = "Failed!";
         actionText.GetComponent<Animator>().Play("Failed", -1, 0f);
@@ -96,6 +97,7 @@ public class TakingDamageScript : MonoBehaviour {
     //turning off the action text after waiting for a short duration
     IEnumerator Failed(float waitTime)
         {
+        TakeDamage();
         StopCoroutine(timeFailure);
         failed.Play();
         actionText.GetComponent<Text>().text = "Failed!";
@@ -109,6 +111,8 @@ public class TakingDamageScript : MonoBehaviour {
     //the dodge function
     public void Dodge()
     {
+        //prevent the player from shooting
+        CombatScript.fireRate = Time.time + 1.5f;
         StopCoroutine(timeFailure);
         success.Play();
         direction = 0;
@@ -122,7 +126,14 @@ public class TakingDamageScript : MonoBehaviour {
     //taking a hit
     public void TakeDamage()
     {
-        StartCoroutine (ShakeUntil(.05f));
+        //prevent the player from shooting
+        CombatScript.fireRate = Time.time + 1.5f;
+        DataStorage.health -= enemyDamage;
+        Backgrounds.GetComponent<Animator>().Play("ScreneHitLeft", -1, 0f);
+
+        //StartCoroutine (ShakeUntil(.05f));
+        //play it sound
+        //play voice soun
     }
     //animating the screen for taking damage
     IEnumerator ShakeUntil(float waitTime)

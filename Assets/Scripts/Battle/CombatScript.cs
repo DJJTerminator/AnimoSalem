@@ -5,7 +5,7 @@ using UnityEngine.UI;
 public class CombatScript : MonoBehaviour
 {
     public AudioSource[] gunShots;
-    float fireRate;
+    public static float fireRate;
     bool mgFire = false;
     public static bool isReloading;
     [Tooltip("These are the reload sounds for the weapons")]
@@ -21,6 +21,8 @@ public class CombatScript : MonoBehaviour
     float[] enemyHP = {35,22,18 };
     float[] enemyMaxHP = { 35, 24, 30 };
     public GameObject[] enemyTarget;
+    public GameObject[] enemyTarget2;//these are only used for colors
+    public GameObject[] enemyTarget3;//these are only used for colors
     public GameObject[] enemyHealthBar;
     public GameObject[] enemyBar;
     public GameObject CBTprefab;
@@ -34,7 +36,6 @@ public class CombatScript : MonoBehaviour
     GameObject[] blood2;
     [SerializeField]
     GameObject[] blood3;
-    public int[] enemyFortitude;
     public int[] xp;//the amount of xp per enemy
     float dmg = 0f;
     public GameObject Backgrounds;
@@ -48,7 +49,17 @@ public class CombatScript : MonoBehaviour
 
     void OnEnable()
     {
-       //DataStorage.player.GetComponent<Controls>().enabled = false;
+        //inceasing the alpha color of the target images for each that that is active in battle
+        for (int i = 0; i < enemyTarget.Length; i++)
+        {
+            Color c = enemyTarget[i].GetComponent<Image>().color;
+            c.a = .2f;
+            enemyTarget[i].GetComponent<Image>().color = c;
+            enemyTarget2[i].GetComponent<Image>().color = c;
+            enemyTarget3[i].GetComponent<Image>().color = c;
+        }
+
+        //DataStorage.player.GetComponent<Controls>().enabled = false;
         for (int i = 0; i < enemyMaxHP.Length; i++)
         {
             xp[i] = 50;
@@ -81,7 +92,9 @@ public class CombatScript : MonoBehaviour
                     fireRate = Time.time + DataStorage.fireRate[DataStorage.curWeapon];
                     Shooting();
                     if (enemyHP[0] > 0 || enemyHP[1] > 0 || enemyHP[2] > 0)
-                         Damage();
+                    {
+                        Damage();
+                    }
                 }
             }
             else
@@ -95,7 +108,9 @@ public class CombatScript : MonoBehaviour
                     fireRate = Time.time + DataStorage.fireRate[DataStorage.curWeapon];
                     Shooting();
                     if (enemyHP[0] > 0 || enemyHP[1] > 0 || enemyHP[2] > 0)
+                    {
                         Damage();
+                    }
                 }
             }
             else
@@ -757,16 +772,18 @@ public class CombatScript : MonoBehaviour
     //checking to see if an enemy was hit, if so, deal te appriopriate damage
     public void Damage()
     {
-        //getting the critical chances
-        float crit = Mathf.Round(Random.Range(0.0f, 1)*100)/100;
         dmg = 0f;
         float temp;
+        print("my Shot: " + DataStorage.crosshair.transform.position.x);
 
         for (int i = 0; i < enemyTarget.Length; i++)
         {
+            //getting the critical chances
+            float crit = Mathf.Round(Random.Range(0.0f, 1) * 100) / 100;
+
             if (enemyTarget[i].activeSelf)
             {
-                if (DataStorage.crosshair.transform.position.x >= enemyTarget[i].transform.position.x - (enemyTarget[i].transform.localScale.x / 4) && DataStorage.crosshair.transform.position.x <= enemyTarget[i].transform.position.x + (enemyTarget[i].transform.localScale.x/4))
+                if (DataStorage.crosshair.transform.position.x >= enemyTarget[i].transform.position.x - (enemyTarget[i].transform.localScale.x / 4) && DataStorage.crosshair.transform.position.x < enemyTarget[i].transform.position.x + (enemyTarget[i].transform.localScale.x/4))
                 {
                     //calling the blood
                     StartCoroutine(Blood(i, 1f));
@@ -794,6 +811,13 @@ public class CombatScript : MonoBehaviour
                             //adding to the total amount of damage the player has dalt over a lifetime
                             if (crit <= DataStorage.criticalChance[DataStorage.curWeapon])
                                 DataStorage.damageDealt += dmg;
+                            //changing the color of the target to 0 alpha as there is no longer any reason to see the health bar after the enemy
+                            //is dead
+                            Color c = enemyTarget[i].GetComponent<Image>().color;
+                            c.a = 0;
+                            enemyTarget[i].GetComponent<Image>().color = c;
+                            enemyTarget2[i].GetComponent<Image>().color = c;
+                            enemyTarget3[i].GetComponent<Image>().color = c;
                             lastHit = i;
                         }
                     }
@@ -809,21 +833,21 @@ public class CombatScript : MonoBehaviour
                     totalDamage += dmg;
 
                     DataStorage.targetsHit ++;
-                    if (enemyHP[lastHit] <= 0 && xp[lastHit] > 0)
+                    if (enemyHP[i] <= 0 && xp[i] > 0)
                     {
                         StartCoroutine(WaitAndDisable(i, 2f));
                         DataStorage.enemiesKilled++;
                         //adding xp
-                        myXP += xp[lastHit];
-                        xp[lastHit] = 0;
+                        myXP += xp[i];
+                        xp[i] = 0;
 
                         //checking to see if all enemies are dead
-                        if (enemyHP[0] <= 0 && enemyHP[1] <= 0 && enemyHP[2] <= 2)
+                        if (enemyHP[0] <= 0 && enemyHP[1] <= 0 && enemyHP[2] <= 0)
                         {
                             gameObject.GetComponent<CombatScript>().enabled = false;
                             reloadBar.SetActive(false);
                             reloadText.SetActive(false);
-                            StartCoroutine(GoToVictory(4f));
+                            StartCoroutine(GoToVictory(3f));
                         }
                     }
                   //preventing any weapon other than the shotgun from doing damage to multiple enemies
@@ -833,7 +857,7 @@ public class CombatScript : MonoBehaviour
                 //else
                    // 
             }
-        }
+        }//end of forloop
     }
     //disable gameobjects after 2 seconds, so that the text can be seen.
     //otherwise, the game objects get disabled, and the text is never seen
