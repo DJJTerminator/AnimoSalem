@@ -134,10 +134,16 @@ public class InventoryItem : MonoBehaviour {
     {
         gameObject.GetComponent<Animator>().enabled = false;
     }
-
+    //changing the view to the currently selected item
     public void OnClick()
 	{
-        content.transform.localPosition = new Vector3(0, -gameObject.transform.localPosition.y,0);
+        //getting the temp position
+            Vector3 temp = new Vector3(0, -gameObject.transform.localPosition.y, 0);
+            StartCoroutine(MyLerp(content.transform.localPosition, temp, .2f));
+
+         //   StartCoroutine(MyLerp(gameObject.transform.localPosition, temp, 1f));
+   
+
 
 
         if (Input.GetKeyDown ("return")) 
@@ -175,4 +181,15 @@ public class InventoryItem : MonoBehaviour {
 					myDescription.GetComponent<Text> ().text = "\n" + "\n" + "\n" + "\n" + "\n" + "\n" + "\n" + "\n" + "\n" + myDesc;
 				}//end of third else
 	}//end of function
+    IEnumerator MyLerp(Vector3 source, Vector3 target, float overTime)
+    {
+        float startTime = Time.time;
+        while (Time.time < startTime + overTime)
+        {
+            content.transform.localPosition = Vector3.Lerp(source, target, (Time.time - startTime) / overTime);
+            //content.transform.localPosition = new Vector3(0, -gameObject.transform.localPosition.y,0);
+            yield return null;
+        }
+             content.transform.localPosition = target;
+    }
 }//end of class

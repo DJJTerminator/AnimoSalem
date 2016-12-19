@@ -82,6 +82,8 @@ public class CombatScript : MonoBehaviour
     {
 
 
+            print("my Shot: " + DataStorage.crosshair.transform.position.x);
+
 
         //firing the gun
         if (Input.GetKeyDown(KeyCode.Mouse0) && DataStorage.weaponType[DataStorage.curWeapon] != "Automatic" && DataStorage.itemBar.GetComponent<Image>().fillAmount == 0)
@@ -91,10 +93,6 @@ public class CombatScript : MonoBehaviour
                 {
                     fireRate = Time.time + DataStorage.fireRate[DataStorage.curWeapon];
                     Shooting();
-                    if (enemyHP[0] > 0 || enemyHP[1] > 0 || enemyHP[2] > 0)
-                    {
-                        Damage();
-                    }
                 }
             }
             else
@@ -174,6 +172,11 @@ public class CombatScript : MonoBehaviour
         switch (DataStorage.weaponName[DataStorage.curWeapon])
         {
             default:
+                //checking to see if any enemies are still alive
+                if (enemyHP[0] > 0 || enemyHP[1] > 0 || enemyHP[2] > 0)
+                {
+                    Damage();
+                }
                 gunShots[2].Play();
                 DataStorage.holster[DataStorage.curWeapon] -= 1;
                 DataStorage.UpdateHolster();
@@ -184,6 +187,11 @@ public class CombatScript : MonoBehaviour
                 Backgrounds.GetComponent<Animator>().Play("ShootingSmall", -1, 0f);
                 break;
             case "Oppressor":
+                //checking to see if any enemies are still alive
+                if (enemyHP[0] > 0 || enemyHP[1] > 0 || enemyHP[2] > 0)
+                {
+                    Damage();
+                }
                 gunShots[3].Play();
                 DataStorage.holster[DataStorage.curWeapon] -= 1;
                 DataStorage.UpdateHolster();
@@ -194,6 +202,11 @@ public class CombatScript : MonoBehaviour
                 Backgrounds.GetComponent<Animator>().Play("ShootingSmall", -1, 0f);
                 break;
             case "The Blacklist":
+                //checking to see if any enemies are still alive
+                if (enemyHP[0] > 0 || enemyHP[1] > 0 || enemyHP[2] > 0)
+                {
+                    Damage();
+                }
                 gunShots[4].Play();
                 DataStorage.holster[DataStorage.curWeapon] -= 1;
                 DataStorage.UpdateHolster();
@@ -204,12 +217,22 @@ public class CombatScript : MonoBehaviour
                 Backgrounds.GetComponent<Animator>().Play("ShootingSmall", -1, 0f);
                 break;
             case "Trident":
+                //checking to see if any enemies are still alive
+                if (enemyHP[0] > 0 || enemyHP[1] > 0 || enemyHP[2] > 0)
+                {
+                    Damage();
+                }
                 DataStorage.combat.GetComponent<Animator>().speed = 0f;
                 StartCoroutine(TrippleShot(.1f));
                 StartCoroutine(StopWatch(DataStorage.fireRate[DataStorage.curWeapon] / 2));
                 Backgrounds.GetComponent<Animator>().Play("ShootingSmall", -1, 0f);
                 break;
             case "Silencer":
+                //checking to see if any enemies are still alive
+                if (enemyHP[0] > 0 || enemyHP[1] > 0 || enemyHP[2] > 0)
+                {
+                    Damage();
+                }
                 gunShots[6].Play();
                 DataStorage.holster[DataStorage.curWeapon] -= 1;
                 DataStorage.UpdateHolster();
@@ -220,6 +243,11 @@ public class CombatScript : MonoBehaviour
                 Backgrounds.GetComponent<Animator>().Play("ShootingSmall", -1, 0f);
                 break;
             case "Seeker":
+                //checking to see if any enemies are still alive
+                if (enemyHP[0] > 0 || enemyHP[1] > 0 || enemyHP[2] > 0)
+                {
+                    Damage();
+                }
                 gunShots[5].Play();
                 DataStorage.holster[DataStorage.curWeapon] -= 1;
                 DataStorage.UpdateHolster();
@@ -230,6 +258,11 @@ public class CombatScript : MonoBehaviour
                 Backgrounds.GetComponent<Animator>().Play("ShootingSmall", -1, 0f);
                 break;
             case "Hunter Killer":
+                //checking to see if any enemies are still alive
+                if (enemyHP[0] > 0 || enemyHP[1] > 0 || enemyHP[2] > 0)
+                {
+                    Damage();
+                }
                 gunShots[7].Play();
                 DataStorage.holster[DataStorage.curWeapon] -= 1;
                 DataStorage.UpdateHolster();
@@ -240,6 +273,11 @@ public class CombatScript : MonoBehaviour
                 Backgrounds.GetComponent<Animator>().Play("ShootingSmall", -1, 0f);
                 break;
             case "Crow's Nest":
+                //checking to see if any enemies are still alive
+                if (enemyHP[0] > 0 || enemyHP[1] > 0 || enemyHP[2] > 0)
+                {
+                    Damage();
+                }
                 gunShots[8].Play();
                 DataStorage.holster[DataStorage.curWeapon] -= 1;
                 DataStorage.UpdateHolster();
@@ -250,6 +288,11 @@ public class CombatScript : MonoBehaviour
                 Backgrounds.GetComponent<Animator>().Play("ShootingSmall", -1, 0f);
                 break;
             case "12 Gauge":
+                //checking to see if any enemies are still alive
+                if (enemyHP[0] > 0 || enemyHP[1] > 0 || enemyHP[2] > 0)
+                {
+                    Damage();
+                }
                 gunShots[12].Play();
                 DataStorage.holster[DataStorage.curWeapon] -= 1;
                 DataStorage.UpdateHolster();
@@ -260,6 +303,11 @@ public class CombatScript : MonoBehaviour
                 Backgrounds.GetComponent<Animator>().Play("Shooting", -1, 0f);
                 break;
             case "Orthrus":
+                //checking to see if any enemies are still alive
+                if (enemyHP[0] > 0 || enemyHP[1] > 0 || enemyHP[2] > 0)
+                {
+                    Damage();
+                }
                 gunShots[9].Play();
                 DataStorage.holster[DataStorage.curWeapon] -= 1;
                 DataStorage.UpdateHolster();
@@ -270,6 +318,11 @@ public class CombatScript : MonoBehaviour
                 Backgrounds.GetComponent<Animator>().Play("Shooting", -1, 0f);
                 break;
             case "Cerberus":
+                //checking to see if any enemies are still alive
+                if (enemyHP[0] > 0 || enemyHP[1] > 0 || enemyHP[2] > 0)
+                {
+                    Damage();
+                }
                 gunShots[10].Play();
                 DataStorage.holster[DataStorage.curWeapon] -= 1;
                 DataStorage.UpdateHolster();
@@ -280,6 +333,11 @@ public class CombatScript : MonoBehaviour
                 Backgrounds.GetComponent<Animator>().Play("Shooting", -1, 0f);
                 break;
             case "Devestator":
+                //checking to see if any enemies are still alive
+                if (enemyHP[0] > 0 || enemyHP[1] > 0 || enemyHP[2] > 0)
+                {
+                    Damage();
+                }
                 gunShots[11].Play();
                 DataStorage.holster[DataStorage.curWeapon] -= 1;
                 DataStorage.UpdateHolster();
@@ -290,6 +348,11 @@ public class CombatScript : MonoBehaviour
                 Backgrounds.GetComponent<Animator>().Play("Shooting", -1, 0f);
                 break;
             case "Savage One":
+                //checking to see if any enemies are still alive
+                if (enemyHP[0] > 0 || enemyHP[1] > 0 || enemyHP[2] > 0)
+                {
+                    Damage();
+                }
                 gunShots[12].Play();
                 DataStorage.holster[DataStorage.curWeapon] -= 1;
                 DataStorage.UpdateHolster();
@@ -300,6 +363,11 @@ public class CombatScript : MonoBehaviour
                 Backgrounds.GetComponent<Animator>().Play("Shooting", -1, 0f);
                 break;
             case "Diminisher":
+                //checking to see if any enemies are still alive
+                if (enemyHP[0] > 0 || enemyHP[1] > 0 || enemyHP[2] > 0)
+                {
+                    Damage();
+                }
                 gunShots[16].Play();
                 DataStorage.holster[DataStorage.curWeapon] -= 1;
                 DataStorage.UpdateHolster();
@@ -318,6 +386,11 @@ public class CombatScript : MonoBehaviour
                 DataStorage.shotsFired++;
                 break;
             case "Revolver":
+                //checking to see if any enemies are still alive
+                if (enemyHP[0] > 0 || enemyHP[1] > 0 || enemyHP[2] > 0)
+                {
+                    Damage();
+                }
                 gunShots[13].Play();
                 DataStorage.holster[DataStorage.curWeapon] -= 1;
                 DataStorage.UpdateHolster();
@@ -328,6 +401,11 @@ public class CombatScript : MonoBehaviour
                 Backgrounds.GetComponent<Animator>().Play("ShootingSmall", -1, 0f);
                 break;
             case "Scylla":
+                //checking to see if any enemies are still alive
+                if (enemyHP[0] > 0 || enemyHP[1] > 0 || enemyHP[2] > 0)
+                {
+                    Damage();
+                }
                 gunShots[13].Play();
                 DataStorage.holster[DataStorage.curWeapon] -= 1;
                 DataStorage.UpdateHolster();
@@ -338,6 +416,11 @@ public class CombatScript : MonoBehaviour
                 Backgrounds.GetComponent<Animator>().Play("ShootingSmall", -1, 0f);
                 break;
             case "Day Ender":
+                //checking to see if any enemies are still alive
+                if (enemyHP[0] > 0 || enemyHP[1] > 0 || enemyHP[2] > 0)
+                {
+                    Damage();
+                }
                 gunShots[13].Play();
                 DataStorage.holster[DataStorage.curWeapon] -= 1;
                 DataStorage.UpdateHolster();
@@ -348,6 +431,11 @@ public class CombatScript : MonoBehaviour
                 Backgrounds.GetComponent<Animator>().Play("ShootingSmall", -1, 0f);
                 break;
             case "Redeemer":
+                //checking to see if any enemies are still alive
+                if (enemyHP[0] > 0 || enemyHP[1] > 0 || enemyHP[2] > 0)
+                {
+                    Damage();
+                }
                 gunShots[12].Play();
                 DataStorage.holster[DataStorage.curWeapon] -= 1;
                 DataStorage.UpdateHolster();
@@ -358,6 +446,11 @@ public class CombatScript : MonoBehaviour
                 Backgrounds.GetComponent<Animator>().Play("Shooting", -1, 0f);
                 break;
             case "Hellfire":
+                //checking to see if any enemies are still alive
+                if (enemyHP[0] > 0 || enemyHP[1] > 0 || enemyHP[2] > 0)
+                {
+                    Damage();
+                }
                 gunShots[2].Play();
                 DataStorage.holster[DataStorage.curWeapon] -= 1;
                 DataStorage.UpdateHolster();
@@ -376,6 +469,11 @@ public class CombatScript : MonoBehaviour
                 DataStorage.shotsFired++;
                 break;
             case "Energy Rifle":
+                //checking to see if any enemies are still alive
+                if (enemyHP[0] > 0 || enemyHP[1] > 0 || enemyHP[2] > 0)
+                {
+                    Damage();
+                }
                 gunShots[14].Play();
                 DataStorage.holster[DataStorage.curWeapon] -= 1;
                 DataStorage.UpdateHolster();
@@ -386,6 +484,11 @@ public class CombatScript : MonoBehaviour
                 Backgrounds.GetComponent<Animator>().Play("ShootingSmall", -1, 0f);
                 break;
             case "Eradicator":
+                //checking to see if any enemies are still alive
+                if (enemyHP[0] > 0 || enemyHP[1] > 0 || enemyHP[2] > 0)
+                {
+                    Damage();
+                }
                 gunShots[15].Play();
                 DataStorage.holster[DataStorage.curWeapon] -= 1;
                 DataStorage.UpdateHolster();
@@ -412,7 +515,12 @@ public class CombatScript : MonoBehaviour
                 yield return new WaitForSeconds(waitTime);//if gun is still firing, play animation
             }
             else
-                i = 3;
+            {
+                gunShots[0].Play();
+                DataStorage.crosshair.GetComponent<Animator>().Play("Hit", -1, 0f);
+                yield return new WaitForSeconds(waitTime);//if gun is still firing, play animation
+            }
+                
         }
         if (Time.time > fireRate || DataStorage.holster[DataStorage.curWeapon] < 1)
             DataStorage.combat.GetComponent<Animator>().speed = 1f;
@@ -774,7 +882,6 @@ public class CombatScript : MonoBehaviour
     {
         dmg = 0f;
         float temp;
-        print("my Shot: " + DataStorage.crosshair.transform.position.x);
 
         for (int i = 0; i < enemyTarget.Length; i++)
         {
