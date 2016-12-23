@@ -143,9 +143,6 @@ public class InventoryItem : MonoBehaviour {
 
          //   StartCoroutine(MyLerp(gameObject.transform.localPosition, temp, 1f));
    
-
-
-
         if (Input.GetKeyDown ("return")) 
 		{
 			decide.Decide (gameObject);

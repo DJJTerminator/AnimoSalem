@@ -41,6 +41,7 @@ public class CombatScript : MonoBehaviour
     public GameObject Backgrounds;
     public GameObject reloadBar;
     public GameObject reloadText;
+	public GameObject textXP;//this is used for the text that displays the amount of xp gained
 
 
     public int myXP; //the amount of xp that is gained after a battle is won.
@@ -78,13 +79,8 @@ public class CombatScript : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
-
-
-            print("my Shot: " + DataStorage.crosshair.transform.position.x);
-
-
         //firing the gun
         if (Input.GetKeyDown(KeyCode.Mouse0) && DataStorage.weaponType[DataStorage.curWeapon] != "Automatic" && DataStorage.itemBar.GetComponent<Image>().fillAmount == 0)
             if (DataStorage.holster[DataStorage.curWeapon] > 0)
@@ -882,6 +878,7 @@ public class CombatScript : MonoBehaviour
     {
         dmg = 0f;
         float temp;
+		int totalXP = 0;//this is used to tally up the xp in case of double kills
 
         for (int i = 0; i < enemyTarget.Length; i++)
         {
@@ -945,7 +942,8 @@ public class CombatScript : MonoBehaviour
                         StartCoroutine(WaitAndDisable(i, 2f));
                         DataStorage.enemiesKilled++;
                         //adding xp
-                        myXP += xp[i];
+                        myXP += xp[i] + (DataStorage.intelligence/2);
+						totalXP += xp[i] + (DataStorage.intelligence/2);
                         xp[i] = 0;
 
                         //checking to see if all enemies are dead
@@ -965,6 +963,12 @@ public class CombatScript : MonoBehaviour
                    // 
             }
         }//end of forloop
+		if (totalXP > 0)
+		{
+		textXP.GetComponent<Text>().text = "+ " + totalXP + "  XP";
+		textXP.GetComponent<Animator>().Play("XPGain", -1, 0f);
+		totalXP = 0;
+		}
     }
     //disable gameobjects after 2 seconds, so that the text can be seen.
     //otherwise, the game objects get disabled, and the text is never seen

@@ -121,6 +121,12 @@ public class TakingDamageScript : MonoBehaviour {
         Backgrounds.GetComponent<Animator>().Play("Dodge", -1, 0f);
         actionText.GetComponent<Animator>().Play("Success", -1, 0f);
         actionText.GetComponent<Text>().text = "Success";
+		//adding xp for the successful dodge
+		//GameObject xpGain= gameObject.GetComponent<CombatScript>().textXP;
+		gameObject.GetComponent<CombatScript>().textXP.GetComponent<Text>().text = "+ " + (5 * DataStorage.currentLevel + (DataStorage.intelligence/4)) + "  XP";
+		gameObject.GetComponent<CombatScript>().textXP.GetComponent<Animator>().Play("XPGain", -1, 0f);
+		gameObject.GetComponent<CombatScript>().myXP += (5 * DataStorage.currentLevel + (DataStorage.intelligence/4));
+		//textXP.GetComponent<Animator>().Play("XPGain", -1, 0f);
     }
 
     //taking a hit

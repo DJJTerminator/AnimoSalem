@@ -59,9 +59,8 @@ public class VictoryScript : MonoBehaviour
                 //decreasing the wait for the next time the player levels up
                 LevelUp.SetActive(true);
                 DataStorage.currentLevel++;
-                //display animation  gain level
-                //play sound
-                //etc
+				DataStorage.levelBackground.Play("StatsRemain");
+				DataStorage.levelNumber.text = DataStorage.currentLevel.ToString();
                 yield return new WaitForSeconds(4f);
             }
             yield return new WaitForSeconds(waitTime);
@@ -72,6 +71,7 @@ public class VictoryScript : MonoBehaviour
 
     IEnumerator ReturnToGame(float waitTime)
     {
+		levelingUp.Stop();
         yield return new WaitForSeconds(waitTime);
         DataStorage.player.GetComponent<Controls>().enabled = true;
         gameObject.SetActive(false);
