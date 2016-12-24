@@ -105,10 +105,10 @@ public class StatsScript : MonoBehaviour {
 		totalMoney.text = "Earned: " + "$"+ DataStorage.totalMoneyEarned.ToString();
 		moneySpent.text = "Money Spent: " + DataStorage.moneySpent.ToString();
 		totalTime.text = "Total Time: " + DataStorage.currentTime.ToString();
-		hitRatio.text = "Accuracy: " + ((float)DataStorage.targetsHit/(float)DataStorage.shotsFired*100).ToString() + "%";
+		hitRatio.text = "Accuracy: " + (Mathf.Round((((float)DataStorage.targetsHit/(float)DataStorage.shotsFired)*1000)/10)).ToString() + "%";
 		targetsHit.text = "Shots Hit: " + DataStorage.targetsHit.ToString();
 		shotsFired.text = "Shots Fired: " + DataStorage.shotsFired.ToString();
-		shotsMissed.text = "Shots Missed: " + DataStorage.damageDealt.ToString();
+		shotsMissed.text = "Shots Missed: " + DataStorage.shotsMissed.ToString();
 
 		damage.text = "Damage " + (Mathf.Round((DataStorage.damage + DataStorage.weaponDamage[DataStorage.curWeapon])*100f)/100f).ToString();
         ShowStats();
