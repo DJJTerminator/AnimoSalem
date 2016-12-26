@@ -73,6 +73,9 @@ public class VictoryScript : MonoBehaviour
     {
 		levelingUp.Stop();
         yield return new WaitForSeconds(waitTime);
+		DataStorage.gameManager.GetComponent<StatActivation> ().enabled = true;
+		DataStorage.gameManager.GetComponent<InventoryActivation> ().enabled = true;
+		DataStorage.pauseMenus.GetComponent<PauseMenu2>().enabled = true;
         DataStorage.player.GetComponent<Controls>().enabled = true;
         gameObject.SetActive(false);
         DataStorage.battleSystem.SetActive(false);

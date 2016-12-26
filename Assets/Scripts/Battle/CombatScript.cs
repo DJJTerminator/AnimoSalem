@@ -67,6 +67,27 @@ public class CombatScript : MonoBehaviour
             enemyHP[i] = enemyMaxHP[i];
             enemyTarget[i].transform.localScale = new Vector3(enemyTarget[i].transform.localScale.x + DataStorage.accuracy[DataStorage.curWeapon],1,1);
         }
+					//finding any remaining inactive gameobjects
+		if (DataStorage.combat != null)
+		{
+			DataStorage.gameManager.GetComponent<StatActivation> ().enabled = false;
+			DataStorage.gameManager.GetComponent<InventoryActivation> ().enabled = false;
+			DataStorage.pauseMenus.GetComponent<PauseMenu2>().enabled = false;
+		}
+		else
+		{
+			DataStorage.gameManager = GameObject.Find ("GameManager");
+			DataStorage.pauseMenus = GameObject.Find ("All Canvases/Canvas/PauseMenus");
+			DataStorage.crosshair = GameObject.Find("All Canvases/BattleSystem/Combat/HandleSlideArea/Crosshair");
+			DataStorage.combat = GameObject.Find("All Canvases/BattleSystem/Combat");
+			DataStorage.battleSystem = GameObject.Find("All Canvases/BattleSystem");
+			DataStorage.reloadingText = GameObject.Find("All Canvases/BattleSystem/ReloadingText");
+			DataStorage.reloadBar = GameObject.Find("All Canvases/BattleSystem/ReloadBar/Image");
+			DataStorage.reloadPiBar = GameObject.Find("All Canvases/BattleSystem/ReloadBar");
+			DataStorage.gameManager.GetComponent<StatActivation> ().enabled = false;
+			DataStorage.gameManager.GetComponent<InventoryActivation> ().enabled = false;
+			DataStorage.pauseMenus.GetComponent<PauseMenu2>().enabled = false;
+		}
         reloadBar.SetActive(true);
         reloadText.SetActive(true);
         gameObject.GetComponent<CombatScript>().enabled = true;
@@ -952,6 +973,7 @@ public class CombatScript : MonoBehaviour
                             gameObject.GetComponent<CombatScript>().enabled = false;
                             reloadBar.SetActive(false);
                             reloadText.SetActive(false);
+							DataStorage.battlesWon +=1;
                             StartCoroutine(GoToVictory(3f));
                         }
                     }
