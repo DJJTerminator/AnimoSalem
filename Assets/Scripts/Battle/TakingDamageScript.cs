@@ -3,7 +3,7 @@ using System.Collections;
 using UnityEngine.UI;
 
 public class TakingDamageScript : MonoBehaviour {
-    int enemyDamage = 20;
+public int enemyDamage;
     public GameObject Backgrounds;
     public GameObject[] arrowKeys;
     public GameObject actionText;
@@ -134,12 +134,14 @@ public class TakingDamageScript : MonoBehaviour {
     {
         //prevent the player from shooting
         CombatScript.fireRate = Time.time + 1.5f;
-        DataStorage.health -= enemyDamage;
+		DataStorage.health -= enemyDamage;
+		//if (DataStorage.health <= 0)
         Backgrounds.GetComponent<Animator>().Play("ScreneHitLeft", -1, 0f);
+		DataStorage.screenFader.Play("DamageEffect", -1, 0f);
 
         //StartCoroutine (ShakeUntil(.05f));
-        //play it sound
-        //play voice soun
+        //play hit sound
+        //play voice sound
     }
     //animating the screen for taking damage
     IEnumerator ShakeUntil(float waitTime)

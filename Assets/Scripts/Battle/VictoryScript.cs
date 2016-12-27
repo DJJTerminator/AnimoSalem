@@ -11,6 +11,8 @@ public class VictoryScript : MonoBehaviour
     public GameObject LevelUp;
     public AudioSource levelingUp;
     public AudioSource levelUp;
+	[SerializeField]
+	GameObject prizes;
 
     void Enabled()
     {
@@ -66,12 +68,21 @@ public class VictoryScript : MonoBehaviour
             yield return new WaitForSeconds(waitTime);
         }
         xpText.text = null;
-        StartCoroutine (ReturnToGame(3f));
+        StartCoroutine (MysteryBox(3f));
+		//StartCoroutine (ReturnToGame(3f));
+    }
+	//activating the mysterybox
+	    IEnumerator MysteryBox(float waitTime)
+    {
+		levelingUp.Stop();
+        yield return new WaitForSeconds(waitTime);
+		prizes.SetActive(true);
     }
 
     IEnumerator ReturnToGame(float waitTime)
     {
 		levelingUp.Stop();
+		prizes.SetActive(false);
         yield return new WaitForSeconds(waitTime);
 		DataStorage.gameManager.GetComponent<StatActivation> ().enabled = true;
 		DataStorage.gameManager.GetComponent<InventoryActivation> ().enabled = true;

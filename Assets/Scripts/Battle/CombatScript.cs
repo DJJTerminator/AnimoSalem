@@ -110,6 +110,10 @@ public class CombatScript : MonoBehaviour
                 {
                     fireRate = Time.time + DataStorage.fireRate[DataStorage.curWeapon];
                     Shooting();
+					//turning the crosshair yellow
+					DataStorage.crosshair.GetComponent<Image>().color = Color.yellow;
+					//waiting untilt he color reverts back to normal
+					StartCoroutine (RevertTargetColor(fireRate - Time.time));
                 }
             }
             else
@@ -122,10 +126,10 @@ public class CombatScript : MonoBehaviour
                 {
                     fireRate = Time.time + DataStorage.fireRate[DataStorage.curWeapon];
                     Shooting();
-                    if (enemyHP[0] > 0 || enemyHP[1] > 0 || enemyHP[2] > 0)
-                    {
-                        Damage();
-                    }
+										//turning the crosshair yellow
+					DataStorage.crosshair.GetComponent<Image>().color = Color.yellow;
+					//waiting untilt he color reverts back to normal
+					StartCoroutine (RevertTargetColor(fireRate - Time.time));
                 }
             }
             else
@@ -918,7 +922,6 @@ public class CombatScript : MonoBehaviour
                     else
                         temp = enemyTarget[i].transform.position.x/DataStorage.crosshair.transform.position.x;
 
-
                     if (enemyHP[i] > 0)
                     {
                         if ((DataStorage.weaponDamage[DataStorage.curWeapon] + DataStorage.damage) * temp < enemyHP[i])
@@ -1067,10 +1070,19 @@ public class CombatScript : MonoBehaviour
     //waiting before the victory occurs
     IEnumerator GoToVictory(float waitTime)
     {
-    yield return new WaitForSeconds(1f);
-        gameObject.GetComponent<Animator>().Play("Disabled");
+		yield return new WaitForSeconds(1f);
+		gameObject.GetComponent<Animator>().Play("Disabled", -1, 0f);
         yield return new WaitForSeconds(waitTime - 1f);
         GetComponent<VictoryScript>().VictoryScene(myXP);
     myXP = 0;
     }
+
+	//waiting to turn the color back to normal
+	IEnumerator RevertTargetColor (float waitTime)
+	{
+	yield return new WaitForSeconds (waitTime);
+	//turning the crosshair red
+	DataStorage.crosshair.GetComponent<Image>().color = Color.red;
+	}
+
 }//end of class
