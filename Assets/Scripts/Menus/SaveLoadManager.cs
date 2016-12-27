@@ -45,7 +45,7 @@ public class PlayerData{
 
 	public PlayerData(DataStorage player)
 	{
-		stats = new float[383];
+			stats = new float[383];
 			stats [0] = DataStorage.money;
 			stats [1] = DataStorage.currentLevel;
 			stats [2] = DataStorage.XP;
@@ -484,14 +484,14 @@ public class PlayerData{
 
 		stats [377] = DataStorage.itemsSold;
 		stats [378] = DataStorage.itemsBought;
-        stats[379] = DataStorage.equippedItem;
+        stats [379] = DataStorage.equippedItem;
 
         //difficuty
-        stats[380] = DataStorage.difficulty;
+        stats [380] = DataStorage.difficulty;
 		//shotsMissed
-        stats[381] = DataStorage.shotsMissed;
+        stats [381] = DataStorage.shotsMissed;
 		//battlesWon
-        stats[382] = DataStorage.battlesWon;
+        stats [382] = DataStorage.battlesWon;
 
 
 

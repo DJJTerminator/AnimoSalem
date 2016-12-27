@@ -3,11 +3,12 @@ using System.Collections;
 using UnityEngine.UI;
 
 public class TakingDamageScript : MonoBehaviour {
-public int enemyDamage;
+	public int enemyDamage = 20;
     public GameObject Backgrounds;
     public GameObject[] arrowKeys;
     public GameObject actionText;
     int direction;
+	//for the arrow keys,
     //0 is turned off
     //1 is left
     //2 is right
@@ -138,6 +139,7 @@ public int enemyDamage;
 		//if (DataStorage.health <= 0)
         Backgrounds.GetComponent<Animator>().Play("ScreneHitLeft", -1, 0f);
 		DataStorage.screenFader.Play("DamageEffect", -1, 0f);
+		StartCoroutine (HealthDrain(enemyDamage));
 
         //StartCoroutine (ShakeUntil(.05f));
         //play hit sound
@@ -151,5 +153,28 @@ public int enemyDamage;
             yield return new WaitForSeconds(waitTime);
             Backgrounds.GetComponent<Animator>().Play("ScreenShake", -1, 0f);
         }
+    }
+	//drain health function
+	    IEnumerator HealthDrain(float damageTaken)
+    {
+		while (damageTaken > 0 && DataStorage.health > 0)
+		{
+			yield return new WaitForSeconds(.016f);
+			DataStorage.health -=1;
+			damageTaken-=1;
+			DataStorage.UpdateHUDHealth();
+		}
+		if (DataStorage.health <= 0)
+		{
+			DataStorage.screenFader.Play("Dead");
+			GetComponent<CombatScript>().enabled = false;
+			DataStorage.HUD.SetActive(false);
+			yield return new WaitForSeconds(15f);
+			DataStorage.screenFader.Play("Default");
+			GetComponent<CombatScript>().enabled = true;
+			DataStorage.HUD.SetActive(false);
+			DataStorage.battleSystem.SetActive(false);
+			DataStorage.GameOver();
+		}
     }
 }

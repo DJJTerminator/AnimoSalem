@@ -68,8 +68,8 @@ public class VictoryScript : MonoBehaviour
             yield return new WaitForSeconds(waitTime);
         }
         xpText.text = null;
-        StartCoroutine (MysteryBox(3f));
-		//StartCoroutine (ReturnToGame(3f));
+        //StartCoroutine (MysteryBox(3f));
+		StartCoroutine (ReturnToGame(3f));
     }
 	//activating the mysterybox
 	    IEnumerator MysteryBox(float waitTime)
