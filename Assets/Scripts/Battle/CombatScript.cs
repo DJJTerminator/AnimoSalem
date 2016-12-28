@@ -12,9 +12,9 @@ public class CombatScript : MonoBehaviour
     public AudioSource[] reloadSounds;
     [Tooltip("The sound that plays when a gun is loaded")]
     public AudioSource[] loadedSounds;
-    public AudioSource healing;
-    public AudioSource healed;
-    public AudioSource cycleItems;
+    AudioSource healing;
+    AudioSource healed;
+    AudioSource cycleItems;
     bool canUse = true; //the boolean that allows players to use items
     int addHealth = 0;
     //enemy hp and enemy targets
@@ -98,7 +98,9 @@ public class CombatScript : MonoBehaviour
     }
     void Start()
     {
-
+	    healing = GameObject.Find ("GameManager/Sounds/ItemsHUD/Healing").GetComponent<AudioSource>();
+		healed = GameObject.Find ("GameManager/Sounds/ItemsHUD/Healed").GetComponent<AudioSource>();
+	    cycleItems = GameObject.Find ("GameManager/Sounds/ItemsHUD/CycleItems").GetComponent<AudioSource>();
     }
 
     // Update is called once per frame
@@ -114,7 +116,7 @@ public class CombatScript : MonoBehaviour
                     Shooting();
 					//turning the crosshair yellow
 					DataStorage.crosshair.GetComponent<Image>().color = Color.yellow;
-					//waiting untilt he color reverts back to normal
+					//waiting until the color reverts back to normal
 					StartCoroutine (RevertTargetColor(fireRate - Time.time));
                 }
             }
@@ -130,7 +132,7 @@ public class CombatScript : MonoBehaviour
                     Shooting();
 										//turning the crosshair yellow
 					DataStorage.crosshair.GetComponent<Image>().color = Color.yellow;
-					//waiting untilt he color reverts back to normal
+					//waiting until the color reverts back to normal
 					StartCoroutine (RevertTargetColor(fireRate - Time.time));
                 }
             }
@@ -903,6 +905,8 @@ public class CombatScript : MonoBehaviour
     //checking to see if an enemy was hit, if so, deal te appriopriate damage
     public void Damage()
     {
+	print ("my shot is " + DataStorage.crosshair.transform.position.x);
+		print ("my target is " + enemyTarget[0].transform.position.x);
         dmg = 0f;
         float temp;
 		int totalXP = 0;//this is used to tally up the xp in case of double kills

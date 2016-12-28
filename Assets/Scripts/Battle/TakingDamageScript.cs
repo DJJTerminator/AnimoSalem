@@ -166,6 +166,7 @@ public class TakingDamageScript : MonoBehaviour {
 		}
 		if (DataStorage.health <= 0)
 		{
+		   // gameObject.GetComponent<Animator>().Play("Disabled");
 			DataStorage.screenFader.Play("Dead");
 			GetComponent<CombatScript>().enabled = false;
 			DataStorage.HUD.SetActive(false);
@@ -173,6 +174,10 @@ public class TakingDamageScript : MonoBehaviour {
 			DataStorage.screenFader.Play("Default");
 			GetComponent<CombatScript>().enabled = true;
 			DataStorage.HUD.SetActive(true);
+			DataStorage.player.GetComponent<Controls>().enabled = true;
+		//	DataStorage.gameManager.GetComponent<StatActivation> ().enabled = true;
+		//	DataStorage.gameManager.GetComponent<InventoryActivation> ().enabled = true;
+		//	DataStorage.pauseMenus.GetComponent<PauseMenu2>().enabled = true;
 			DataStorage.battleSystem.SetActive(false);
 			DataStorage.GameOver();
 		}

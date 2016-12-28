@@ -9,15 +9,17 @@ public class Controls : MonoBehaviour {
     RaycastHit hit;
     public LayerMask targetLayer;
     public Rigidbody myBody;
-    public AudioSource healing;
-    public AudioSource healed;
-    public AudioSource cycleItems;
+    AudioSource healing;
+    AudioSource healed;
+    AudioSource cycleItems;
     bool canUse = true; //the boolean that allows players to use items
     int addHealth = 0;
 
     void Start()
     {
-     // DataStorage.player = gameObject;
+        healing = GameObject.Find ("GameManager/Sounds/ItemsHUD/Healing").GetComponent<AudioSource>();
+		healed = GameObject.Find ("GameManager/Sounds/ItemsHUD/Healed").GetComponent<AudioSource>();
+	    cycleItems = GameObject.Find ("GameManager/Sounds/ItemsHUD/CycleItems").GetComponent<AudioSource>();
     }
 
     // Update is called once per frame
