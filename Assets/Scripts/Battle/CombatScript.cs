@@ -20,7 +20,7 @@ public class CombatScript : MonoBehaviour
     //enemy hp and enemy targets
     float[] enemyHP = {35,22,18 };
     float[] enemyMaxHP = { 35, 24, 30 };
-    public GameObject[] enemyTarget;
+    public GameObject[] enemyTarget;//this is used for accuracy
     public GameObject[] enemyTarget2;//these are only used for colors
     public GameObject[] enemyTarget3;//these are only used for colors
     public GameObject[] enemyHealthBar;
@@ -59,13 +59,14 @@ public class CombatScript : MonoBehaviour
             enemyTarget2[i].GetComponent<Image>().color = c;
             enemyTarget3[i].GetComponent<Image>().color = c;
         }
-
         //DataStorage.player.GetComponent<Controls>().enabled = false;
         for (int i = 0; i < enemyMaxHP.Length; i++)
         {
             xp[i] = 50;
             enemyHP[i] = enemyMaxHP[i];
-            enemyTarget[i].transform.localScale = new Vector3(enemyTarget[i].transform.localScale.x + DataStorage.accuracy[DataStorage.curWeapon],1,1);
+			enemyTarget[i].transform.localScale = new Vector3(1,1,1);
+			enemyTarget[i].transform.localScale = new Vector3(enemyTarget[i].transform.localScale.x + DataStorage.accuracy[DataStorage.curWeapon],1,1);
+
         }
 					//finding any remaining inactive gameobjects
 		if (DataStorage.combat != null)
@@ -84,6 +85,7 @@ public class CombatScript : MonoBehaviour
 			DataStorage.reloadingText = GameObject.Find("All Canvases/BattleSystem/ReloadingText");
 			DataStorage.reloadBar = GameObject.Find("All Canvases/BattleSystem/ReloadBar/Image");
 			DataStorage.reloadPiBar = GameObject.Find("All Canvases/BattleSystem/ReloadBar");
+			DataStorage.itemBar =  GameObject.Find("All Canvases/Canvas/HUD/Equipment/Items/LoadingBar");
 			DataStorage.gameManager.GetComponent<StatActivation> ().enabled = false;
 			DataStorage.gameManager.GetComponent<InventoryActivation> ().enabled = false;
 			DataStorage.pauseMenus.GetComponent<PauseMenu2>().enabled = false;

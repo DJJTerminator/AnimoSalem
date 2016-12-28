@@ -172,7 +172,7 @@ public class TakingDamageScript : MonoBehaviour {
 			yield return new WaitForSeconds(15f);
 			DataStorage.screenFader.Play("Default");
 			GetComponent<CombatScript>().enabled = true;
-			DataStorage.HUD.SetActive(false);
+			DataStorage.HUD.SetActive(true);
 			DataStorage.battleSystem.SetActive(false);
 			DataStorage.GameOver();
 		}
