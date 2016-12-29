@@ -101,6 +101,7 @@ public class CombatScript : MonoBehaviour
 	    healing = GameObject.Find ("GameManager/Sounds/ItemsHUD/Healing").GetComponent<AudioSource>();
 		healed = GameObject.Find ("GameManager/Sounds/ItemsHUD/Healed").GetComponent<AudioSource>();
 	    cycleItems = GameObject.Find ("GameManager/Sounds/ItemsHUD/CycleItems").GetComponent<AudioSource>();
+		DataStorage.battleSystem.GetComponent<Canvas>().worldCamera = GameObject.Find("Main Camera").GetComponent<Camera>();
     }
 
     // Update is called once per frame
@@ -905,8 +906,6 @@ public class CombatScript : MonoBehaviour
     //checking to see if an enemy was hit, if so, deal te appriopriate damage
     public void Damage()
     {
-	print ("my shot is " + DataStorage.crosshair.transform.position.x);
-		print ("my target is " + enemyTarget[0].transform.position.x);
         dmg = 0f;
         float temp;
 		int totalXP = 0;//this is used to tally up the xp in case of double kills

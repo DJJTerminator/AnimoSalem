@@ -209,7 +209,11 @@ public class MainMenu : MonoBehaviour
     // Go to Specific Level
     public void LoadLevel(string _levelName)
     {
+	GameObject canvas = GameObject.Find ("All Canvases/Canvas");
+		canvas.SetActive(false);
+		canvas.SetActive(true);
         SceneManager.LoadScene(_levelName);
+
     }
 
     // Allows navigation with "W,S,Up, and Down Keys" between buttons
