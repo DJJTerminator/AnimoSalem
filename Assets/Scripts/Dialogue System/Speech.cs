@@ -13,7 +13,7 @@ public class Speech : MonoBehaviour {
 	public int endAtLine;
 
 	public bool destroyWhenActivated;
-	private bool active;
+	bool isActive;
 
 	public string[] portraitOrder; //order at which the portraits (for TextManager) are displayed
 	public GameObject[] portrait; 
@@ -24,14 +24,23 @@ public class Speech : MonoBehaviour {
 		theTextBox = FindObjectOfType <TextManager>();
         //turning script off from the start
         GetComponent<Speech>().enabled = false;
-       
+
+	//finding all portraits that have the same name as the given string
+	//assigning the gameobject (image) a new array equal to that string
+	//that way, we can prevent any future null references
+       		portrait = new GameObject[portraitOrder.Length];
+
+		for (int i = 0; i < portraitOrder.Length; i++)
+		{
+			portrait[i] = GameObject.Find ("All Canvases/Canvas/TextManager/DialogueBox/CharacterPortraits/" + portraitOrder[i]);
+		}
 
 	}
 	
 	// Update is called once per frame
 	void Update () {
 		if (DataStorage.pauseMenus.GetComponent<PauseMenu2>().pause == false && DataStorage.canDo) 
-		if (active)
+		if (isActive)
 		if  (Input.GetKeyDown(KeyCode.Return))
 		{
 			//activating the textbox and text message
@@ -44,7 +53,7 @@ public class Speech : MonoBehaviour {
 
 			Portrait ();
 
-			active = false;
+			isActive = false;
 			DataStorage.exclamation.SetActive (false);
 			theTextBox.ReloadScript(theText[randomText]);
 			theTextBox.theText.text = theTextBox.textLines[0]; 
@@ -59,7 +68,7 @@ public class Speech : MonoBehaviour {
 			DataStorage.gameManager.GetComponent<InventoryActivation> ().enabled = true;
 			if (!destroyWhenActivated)
             DataStorage.exclamation.SetActive(true);
-            active = true;
+            isActive = true;
 			DataStorage.canDo = true;
 			if (destroyWhenActivated)
 				Destroy (gameObject);
@@ -68,11 +77,16 @@ public class Speech : MonoBehaviour {
 	}
 	void OnTriggerEnter (Collider other)
 	{
-
+		//checking for any null references
+			if (DataStorage.exclamation == null || DataStorage.player == null)
+			{
+				DataStorage.exclamation = GameObject.Find ("Player/PlayerIcons/Exclamation");
+				DataStorage.player = GameObject.Find ("Player");
+			}
 		if (other.name == "Player")
 		{
             GetComponent<Speech>().enabled = true;
-			active = true;
+			isActive = true;
 			DataStorage.exclamation.SetActive (true);
 		}
 	}
@@ -82,7 +96,7 @@ public class Speech : MonoBehaviour {
 		if (other.name == "Player") 
 		{
 			DataStorage.exclamation.SetActive (false);
-			active = false;
+			isActive = false;
             GetComponent<Speech>().enabled = false;
 			DataStorage.canDo = true;
 		}

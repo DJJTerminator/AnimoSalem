@@ -17,6 +17,8 @@ public class VictoryScript : MonoBehaviour
     void Enabled()
     {
         xpBar.transform.localScale = new Vector3((float)DataStorage.XP + xpValue / (float)DataStorage.maxXP, 1, 1);
+		if (DataStorage.player == null)
+			DataStorage.player = GameObject.Find ("Player");
     }
 
     public void VictoryScene(int xp)
@@ -87,7 +89,15 @@ public class VictoryScript : MonoBehaviour
 		DataStorage.gameManager.GetComponent<StatActivation> ().enabled = true;
 		DataStorage.gameManager.GetComponent<InventoryActivation> ().enabled = true;
 		DataStorage.pauseMenus.GetComponent<PauseMenu2>().enabled = true;
-        DataStorage.player.GetComponent<Controls>().enabled = true;
+		try
+		{
+			DataStorage.player.GetComponent<Controls>().enabled = true;
+		}
+		catch
+		{
+			DataStorage.player = GameObject.Find ("Player");
+			DataStorage.player.GetComponent<Controls>().enabled = true;
+		}
         gameObject.SetActive(false);
         DataStorage.battleSystem.SetActive(false);
         DataStorage.UpdateHUD();

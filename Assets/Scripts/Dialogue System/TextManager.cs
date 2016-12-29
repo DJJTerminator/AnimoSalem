@@ -23,13 +23,6 @@ public class TextManager : MonoBehaviour {
 	private float textSpeed = .06f;
 	
 	private int resumeCourotine; //used to resume the forloop of the courotine
-
-
-	// Use this for initialization
-
-	void Start () {
-
-	}
 	
 	// Update is called once per frame
 	void Update () 

@@ -4,13 +4,14 @@ using UnityEngine.UI;
 
 public class EnterDybbukShop : MonoBehaviour {
 
-    public GameObject curMoney;
+    Text curMoney;
 
 
 	void Start()
 	{
         //turning the script off from the start
         gameObject.GetComponent<EnterDybbukShop>().enabled = false;
+		curMoney  = GameObject.Find ("All Canvases/Canvas/TheItemShop/CurrentMoney").GetComponent<Text>();
 	}
 
     void Update()
@@ -23,7 +24,7 @@ public class EnterDybbukShop : MonoBehaviour {
 				DataStorage.upgrade.SetActive (false);
 				DataStorage.sell.SetActive (false);
 				DataStorage.buy.SetActive (true);
-				curMoney.GetComponent<Text> ().text = "$" + DataStorage.money;
+				curMoney.text = "$" + DataStorage.money;
 				DataStorage.player.GetComponent<Controls> ().enabled = false;
 				DataStorage.pauseMenus.SetActive (false);
 				DataStorage.gameManager.GetComponent<StatActivation> ().enabled = false;
