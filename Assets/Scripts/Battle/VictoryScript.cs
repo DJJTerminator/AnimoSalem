@@ -98,6 +98,10 @@ public class VictoryScript : MonoBehaviour
 			DataStorage.player = GameObject.Find ("Player");
 			DataStorage.player.GetComponent<Controls>().enabled = true;
 		}
+				//getting the camera and turning off the follow script
+		Camera myCamera = GameObject.Find ("Main Camera").GetComponent<Camera>();
+		if (myCamera != null)
+			myCamera.GetComponent<CameraFollow>().enabled = true;
         gameObject.SetActive(false);
         DataStorage.battleSystem.SetActive(false);
         DataStorage.UpdateHUD();

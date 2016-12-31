@@ -3,24 +3,21 @@ using System.Collections;
 
 public class Teleportation : MonoBehaviour {
 	public bool transition;
-	GameObject player;
-	bool active = false;
+	bool isActive = false;
 	public GameObject otherTeleporter;
 	public GameObject fade;
-	public GameObject myPause;
 
 	// Use this for initialization
-	void Start () {
-
-		player = GameObject.FindGameObjectWithTag ("Player");
+	void Start () 
+	{
 	}
 	 void OnTriggerEnter(Collider other)
 	{
-		if (!active && other.tag == ("Player"))
+		if (!isActive && other.tag == ("Player"))
         {
-			myPause.GetComponent<PauseMenu2>().canUnPause = false;
-			active = true;
-			player.GetComponent<Controls>().enabled=false;
+			DataStorage.pauseMenus.GetComponent<PauseMenu2>().canUnPause = false;
+			isActive = true;
+			DataStorage.player.GetComponent<Controls>().enabled=false;
 			if (transition == true)
 			StartCoroutine(WaitAndSpawn(4.0F));
 		}
@@ -28,17 +25,18 @@ public class Teleportation : MonoBehaviour {
 
 	void OnTriggerExit(Collider other)
 	{
-		if (active && other.tag == ("Player")) {
-			active = false;
+		if (isActive && other.tag == ("Player"))
+		 {
+			isActive = false;
 		}
 	}
 
 	IEnumerator WaitAndSpawn(float waitTime) {
-		fade.GetComponent<ScreenFade>().anim.SetTrigger("FadeOut");
+		DataStorage.screenFader.SetTrigger("FadeOut");
 		yield return new WaitForSeconds(waitTime);
-		player.GetComponent<Controls>().enabled=true;
-		otherTeleporter.GetComponent<Teleportation>().active = true;
-		player.transform.position = new Vector3 (otherTeleporter.transform.position.x,otherTeleporter.transform.position.y,otherTeleporter.transform.position.z);
-		myPause.GetComponent<PauseMenu2>().canUnPause = true;
+		DataStorage.player.GetComponent<Controls>().enabled=true;
+		otherTeleporter.GetComponent<Teleportation>().isActive = true;
+		DataStorage.player.transform.position = new Vector3 (otherTeleporter.transform.position.x,otherTeleporter.transform.position.y,otherTeleporter.transform.position.z);
+		DataStorage.pauseMenus.GetComponent<PauseMenu2>().canUnPause = true;
 		}
 }

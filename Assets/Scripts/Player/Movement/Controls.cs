@@ -55,7 +55,6 @@ public class Controls : MonoBehaviour {
         {
             SwitchItemsRight();
         }
-
     }//end of update
 
     //switch items left
@@ -133,18 +132,21 @@ public class Controls : MonoBehaviour {
                 case 1:
                     DataStorage.CBTHealth.GetComponent<Text>().text = "+ " + (addHealth += 20 + (DataStorage.intelligence / 2)).ToString();
                     DataStorage.itemSmallAid -= 1;
+					DataStorage.itemsUsed +=1;
                     addHealth += 20 +(DataStorage.intelligence/2);
                     StartCoroutine(AddToHealth(.02f));
                     break;
                 case 2:
                     DataStorage.CBTHealth.GetComponent<Text>().text = "+ " + (addHealth += 40 + (DataStorage.intelligence / 2)).ToString();
                     DataStorage.itemMedAid -= 1;
+					DataStorage.itemsUsed +=1;
                     addHealth += 40 + (DataStorage.intelligence / 2);
                     StartCoroutine(AddToHealth(.02f));
                     break;
                 case 3:
                     DataStorage.CBTHealth.GetComponent<Text>().text = "+ " + (addHealth += 80 + (DataStorage.intelligence / 2)).ToString();
                     DataStorage.itemLargeAid -=1;
+					DataStorage.itemsUsed +=1;
                     addHealth += 80 + (DataStorage.intelligence / 2);
                     StartCoroutine(AddToHealth(.02f));
                     break;
