@@ -32,7 +32,6 @@ public class InventoryItem : MonoBehaviour {
     Text _accuracy;
     Text _fireRate;
     Text _reload;
-	public GameObject weaponStats;
 
 
     public enum ItemType
@@ -74,7 +73,6 @@ public class InventoryItem : MonoBehaviour {
         crit= GameObject.Find("All Canvases/Canvas/StorageMenu/Inventory/Display/WeaponStats/CriticalChance/Image/Bar");
         rg= GameObject.Find("All Canvases/Canvas/StorageMenu/Inventory/Display/WeaponStats/Range/Image/Bar");
 
-		weaponStats = GameObject.Find("All Canvases/Canvas/StorageMenu/Inventory/Display/WeaponStats");
         _damage = GameObject.Find("All Canvases/Canvas/StorageMenu/Inventory/Display/WeaponStats/Damage/Value").GetComponent<Text>();
         _capacity = GameObject.Find("All Canvases/Canvas/StorageMenu/Inventory/Display/WeaponStats/Capacity/Value").GetComponent<Text>();
         _crit = GameObject.Find("All Canvases/Canvas/StorageMenu/Inventory/Display/WeaponStats/CriticalChance/Value").GetComponent<Text>();
@@ -153,8 +151,7 @@ public class InventoryItem : MonoBehaviour {
 				//if it was not double clciked or if eneter was not hit, then we will display the item's content
 				if (type == ItemType.itemWeapon) 
 				{
-					weaponStats.SetActive(true);
-					//myDescription.GetComponent<Text> ().lineSpacing = 1.8f;
+					myDescription.GetComponent<Text> ().lineSpacing = 1.8f;
 					myName.GetComponent<Text> ().text = DataStorage.weaponName [weaponNumber];
                      //assinging the percentage bar accordingly to the weapon that is selected
                      dmg.transform.localScale = new Vector3((float)DataStorage.curDamage[weaponNumber] / 5f, 1, 0);
@@ -167,7 +164,7 @@ public class InventoryItem : MonoBehaviour {
                         //assigning the values to each text
                      _damage.text = DataStorage.weaponDamage[weaponNumber].ToString();
                      _reload.text = (Mathf.Round(DataStorage.reload[weaponNumber] * 100f) / 100f).ToString(); 
-					  _fireRate.text = DataStorage.fireRate[weaponNumber].ToString();
+            _fireRate.text = DataStorage.fireRate[weaponNumber].ToString();
                      _capacity.text = DataStorage.capacity[weaponNumber].ToString();
                      _crit.text = DataStorage.criticalChance[weaponNumber].ToString();
                      _range.text = DataStorage.range[weaponNumber].ToString();
@@ -176,10 +173,9 @@ public class InventoryItem : MonoBehaviour {
         } 
 				else 
 				{
-					weaponStats.SetActive(false);
 					myDescription.GetComponent<Text> ().lineSpacing = 1f;
-					myName.GetComponent<Text> ().text = itemName;
-					myDescription.GetComponent<Text> ().text = myDesc;
+			myName.GetComponent<Text> ().text = itemName;
+					myDescription.GetComponent<Text> ().text = "\n" + "\n" + "\n" + "\n" + "\n" + "\n" + "\n" + "\n" + "\n" + myDesc;
 				}//end of third else
 	}//end of function
     IEnumerator MyLerp(Vector3 source, Vector3 target, float overTime)
