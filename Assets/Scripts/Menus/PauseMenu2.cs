@@ -59,7 +59,17 @@ public class PauseMenu2 : MonoBehaviour
 	{
 
 		if (Input.GetKeyDown (KeyCode.Escape) && canUnPause == true && !dialogueBox.activeSelf && !storageMenu.activeSelf) {
-			if (!pause) {
+			if (!pause)
+				{
+				try 
+				{
+					DataStorage.HUD.SetActive(false);
+				}
+				catch
+				{
+					DataStorage.HUD = GameObject.Find("All Canvases/Canvas/HUD");
+					DataStorage.HUD.SetActive(false);
+				}
 				//Unlocks the (Mouse)Cursor and makes it visible
 				Cursor.lockState = CursorLockMode.None;
 				Cursor.visible = true;
@@ -87,6 +97,7 @@ public class PauseMenu2 : MonoBehaviour
 				DataStorage.gameManager.GetComponent<InventoryActivation>().enabled = true;
 				DataStorage.canDo = true;
 				Time.timeScale = 1;
+				DataStorage.HUD.SetActive(true);
             }
 
         }
@@ -104,6 +115,7 @@ public class PauseMenu2 : MonoBehaviour
 		DataStorage.gameManager.GetComponent<InventoryActivation>().enabled = true;
 		DataStorage.canDo = true;
 		Time.timeScale = 1;
+		DataStorage.HUD.SetActive(true);
     }
 
     //entering advance options

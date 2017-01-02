@@ -154,7 +154,7 @@ public class UpgradeItems : MonoBehaviour {
 			
 
 		//display current money and price
-		curMoney.GetComponent<Text> ().text = "$" + DataStorage.money;
+		curMoney.GetComponent<Text> ().text = "$" + DataStorage.money.ToString("n0");;
 		if (DataStorage.curDamage[DataStorage.curWeapon] < 5)
 			price.GetComponent<Text> ().text = "Cost: $" + _price;
 	}
@@ -178,7 +178,7 @@ public class UpgradeItems : MonoBehaviour {
 		else
 			nextText.GetComponent<Text> ().text = " ";	
 
-		curMoney.GetComponent<Text> ().text = "$" + DataStorage.money;
+		curMoney.GetComponent<Text> ().text = "$" + DataStorage.money.ToString("n0");;
 		price.GetComponent<Text> ().text = "Cost: $" + _price;
 	}
 	public void HoverOverCapacity()
@@ -202,7 +202,7 @@ public class UpgradeItems : MonoBehaviour {
 			nextText.GetComponent<Text> ().text = " ";	
 
 		//display current money and price
-		curMoney.GetComponent<Text> ().text = "$" + DataStorage.money;
+		curMoney.GetComponent<Text> ().text = "$" + DataStorage.money.ToString("n0");;
 		price.GetComponent<Text> ().text = "Cost: $" + _price;
 	}
 	public void HoverOverFireRate()
@@ -226,7 +226,7 @@ public class UpgradeItems : MonoBehaviour {
 			nextText.GetComponent<Text> ().text = " ";	
 
 		//display current money and price
-		curMoney.GetComponent<Text> ().text = "$" + DataStorage.money;
+		curMoney.GetComponent<Text> ().text = "$" + DataStorage.money.ToString("n0");;
 		price.GetComponent<Text> ().text = "Cost: $" + _price;
 	}
 	public void HoverOverCritical()
@@ -251,7 +251,7 @@ public class UpgradeItems : MonoBehaviour {
 		//upgradeSelect.GetComponent<RawImage>().texture = _critical;
 
 		//display current money and price
-		curMoney.GetComponent<Text> ().text = "$" + DataStorage.money;
+		curMoney.GetComponent<Text> ().text = "$" + DataStorage.money.ToString("n0");;
 		price.GetComponent<Text> ().text = "Cost: $" + _price;
 	}
 	public void HoverOverAccuracy()
@@ -277,7 +277,7 @@ public class UpgradeItems : MonoBehaviour {
 		//upgradeSelect.GetComponent<RawImage>().texture = _accuracy;
 
 		//display current money and price
-		curMoney.GetComponent<Text> ().text = "$" + DataStorage.money;
+		curMoney.GetComponent<Text> ().text = "$" + DataStorage.money.ToString("n0");;
 		price.GetComponent<Text> ().text = "Cost: $" + _price;
 	}
 	public void HoverOverRange()
@@ -304,7 +304,7 @@ public class UpgradeItems : MonoBehaviour {
 
 
 		//display current money and price
-		curMoney.GetComponent<Text> ().text = "$" + DataStorage.money;
+		curMoney.GetComponent<Text> ().text = "$" + DataStorage.money.ToString("n0");;
 		price.GetComponent<Text> ().text = "Cost: $" + _price;
 	}
 

@@ -108,7 +108,7 @@ public class PurchaseItems : MonoBehaviour {
 				DataStorage.moneySpent += (int)price;
 
 				//display current money and price
-				curMoney.GetComponent<Text> ().text = "$" + DataStorage.money;
+				curMoney.GetComponent<Text> ().text = "$" + DataStorage.money.ToString("n0");
 				//subtracting from the shop
 				DataStorage.shopHandgunAmmo -= 1;
 				DataStorage.itemsBought += 1;
@@ -142,7 +142,7 @@ public class PurchaseItems : MonoBehaviour {
 			DataStorage.moneySpent += (int)price;
 
 			//display current money and price
-			curMoney.GetComponent<Text> ().text = "$" + DataStorage.money;
+			curMoney.GetComponent<Text> ().text = "$" + DataStorage.money.ToString("n0");
 			//subtracting from the shop
 			DataStorage.shopShotgunAmmo -= 1;
 			DataStorage.itemsBought += 1;
@@ -176,7 +176,7 @@ public class PurchaseItems : MonoBehaviour {
 			DataStorage.moneySpent += (int)price;
 
 			//display current money and price
-			curMoney.GetComponent<Text> ().text = "$" + DataStorage.money;
+			curMoney.GetComponent<Text> ().text = "$" + DataStorage.money.ToString("n0");
 			//subtracting from the shop
 			DataStorage.shopMachinegunAmmo -= 1;
 			DataStorage.itemsBought += 1;
@@ -210,7 +210,7 @@ public class PurchaseItems : MonoBehaviour {
 			DataStorage.moneySpent += (int)price;
 
 			//display current money and price
-			curMoney.GetComponent<Text> ().text = "$" + DataStorage.money;
+			curMoney.GetComponent<Text> ().text = "$" + DataStorage.money.ToString("n0");
 			//subtracting from the shop
 			DataStorage.shopRifleAmmo -= 1;
 			DataStorage.itemsBought += 1;
@@ -243,7 +243,7 @@ public class PurchaseItems : MonoBehaviour {
 			DataStorage.money -= (int)price;
 			DataStorage.moneySpent += (int)price;
 			//display current money and price
-			curMoney.GetComponent<Text> ().text = "$" + DataStorage.money;
+			curMoney.GetComponent<Text> ().text = "$" + DataStorage.money.ToString("n0");
 			//subtracting from the shop
 			DataStorage.shopMagnumAmmo -= 1;
 			DataStorage.itemsBought += 1;
