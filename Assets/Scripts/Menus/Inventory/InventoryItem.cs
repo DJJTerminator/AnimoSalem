@@ -32,6 +32,7 @@ public class InventoryItem : MonoBehaviour {
     Text _accuracy;
     Text _fireRate;
     Text _reload;
+	GameObject weaponStats;
 
 
     public enum ItemType
@@ -73,6 +74,7 @@ public class InventoryItem : MonoBehaviour {
         crit= GameObject.Find("All Canvases/Canvas/StorageMenu/Inventory/Display/WeaponStats/CriticalChance/Image/Bar");
         rg= GameObject.Find("All Canvases/Canvas/StorageMenu/Inventory/Display/WeaponStats/Range/Image/Bar");
 
+		weaponStats = GameObject.Find("All Canvases/Canvas/StorageMenu/Inventory/Display/WeaponStats");
         _damage = GameObject.Find("All Canvases/Canvas/StorageMenu/Inventory/Display/WeaponStats/Damage/Value").GetComponent<Text>();
         _capacity = GameObject.Find("All Canvases/Canvas/StorageMenu/Inventory/Display/WeaponStats/Capacity/Value").GetComponent<Text>();
         _crit = GameObject.Find("All Canvases/Canvas/StorageMenu/Inventory/Display/WeaponStats/CriticalChance/Value").GetComponent<Text>();
@@ -151,7 +153,8 @@ public class InventoryItem : MonoBehaviour {
 				//if it was not double clciked or if eneter was not hit, then we will display the item's content
 				if (type == ItemType.itemWeapon) 
 				{
-					myDescription.GetComponent<Text> ().lineSpacing = 1.8f;
+					weaponStats.SetActive(true);
+					myDescription.GetComponent<Text> ().lineSpacing = .8f;
 					myName.GetComponent<Text> ().text = DataStorage.weaponName [weaponNumber];
                      //assinging the percentage bar accordingly to the weapon that is selected
                      dmg.transform.localScale = new Vector3((float)DataStorage.curDamage[weaponNumber] / 5f, 1, 0);
@@ -173,7 +176,8 @@ public class InventoryItem : MonoBehaviour {
         } 
 				else 
 				{
-					myDescription.GetComponent<Text> ().lineSpacing = 1f;
+					weaponStats.SetActive(false);
+					myDescription.GetComponent<Text> ().lineSpacing = .8f;
 			myName.GetComponent<Text> ().text = itemName;
 					myDescription.GetComponent<Text> ().text = "\n" + "\n" + "\n" + "\n" + "\n" + "\n" + "\n" + "\n" + "\n" + myDesc;
 				}//end of third else

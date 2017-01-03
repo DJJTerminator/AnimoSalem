@@ -26,6 +26,7 @@ public class InventoryListWindow : MonoBehaviour {
 	public Text invNextXp;
 	public Text invMoney;
 	public GameObject xpBar;
+	
 
     int itemCount;
 
