@@ -1,7 +1,7 @@
-Microsoft Visual Studio Solution File, Format Version 11.00
-# Visual Studio 2008
-
-Project("{F69BA105-EFD5-A431-6D26-6BC5F6979030}") = "AnimoSalem", "Assembly-CSharp.csproj", "{F6D706E5-6578-E065-70FC-4C9854EF27C7}"
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2015
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AnimoSalem", "AnimoSalem.csproj", "{1CFAA4D0-B459-0448-05EF-C7DB87C16BA3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -9,15 +9,12 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{F6D706E5-6578-E065-70FC-4C9854EF27C7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{F6D706E5-6578-E065-70FC-4C9854EF27C7}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{F6D706E5-6578-E065-70FC-4C9854EF27C7}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{F6D706E5-6578-E065-70FC-4C9854EF27C7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1CFAA4D0-B459-0448-05EF-C7DB87C16BA3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1CFAA4D0-B459-0448-05EF-C7DB87C16BA3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1CFAA4D0-B459-0448-05EF-C7DB87C16BA3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1CFAA4D0-B459-0448-05EF-C7DB87C16BA3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
-	EndGlobalSection
-	GlobalSection(MonoDevelopProperties) = preSolution
-		StartupItem = Assembly-CSharp.csproj
 	EndGlobalSection
 EndGlobal
