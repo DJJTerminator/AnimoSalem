@@ -20,12 +20,12 @@ public class CanvasCameraFinder : MonoBehaviour
 
 		void OnRenderObject()
 	{
-	//finding the main camera and attaching it to the canvas as son as a new scene has loaded
+	//finding the main camera and attaching it to the canvas as soon as a new scene has loaded
 			if (gameObject.GetComponent<Canvas>().worldCamera == null)
 			{
 			GameObject myCanvas = GameObject.Find ("All Canvases/Canvas");
 			myCanvas.GetComponent<Canvas>().worldCamera = GameObject.Find("Main Camera").GetComponent<Camera>();
-			DataStorage.battleSystem.GetComponent<Canvas>().worldCamera = GameObject.Find("Main Camera").GetComponent<Camera>();
+			//DataStorage.battleSystem.GetComponent<Canvas>().worldCamera = GameObject.Find("Main Camera").GetComponent<Camera>();
 			}
 	}
 }

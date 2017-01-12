@@ -16,6 +16,11 @@ public class TakingDamageScript : MonoBehaviour {
     //4 is down
     public AudioSource success;
     public AudioSource failed;
+    public AudioSource gameOver;
+    public AudioSource gameOver2;
+    public AudioSource gameOver3;
+    public AudioSource gameOver4;
+
     IEnumerator timeFailure;
 
     void Start()
@@ -86,7 +91,6 @@ public class TakingDamageScript : MonoBehaviour {
     {
         yield return new WaitForSeconds(1.5f);
         TakeDamage();
-        failed.Play();
         actionText.GetComponent<Text>().text = "Failed!";
         actionText.GetComponent<Animator>().Play("Failed", -1, 0f);
         direction = 0;
@@ -100,7 +104,6 @@ public class TakingDamageScript : MonoBehaviour {
         {
         TakeDamage();
         StopCoroutine(timeFailure);
-        failed.Play();
         actionText.GetComponent<Text>().text = "Failed!";
         actionText.GetComponent<Animator>().Play("Failed", -1, 0f);
         direction = 0;
@@ -136,9 +139,17 @@ public class TakingDamageScript : MonoBehaviour {
         //prevent the player from shooting
         CombatScript.fireRate = Time.time + 1.5f;
 		DataStorage.health -= enemyDamage;
-		//if (DataStorage.health <= 0)
-        Backgrounds.GetComponent<Animator>().Play("ScreneHitLeft", -1, 0f);
-		DataStorage.screenFader.Play("DamageEffect", -1, 0f);
+        if (DataStorage.health > enemyDamage)
+        {
+            Backgrounds.GetComponent<Animator>().Play("ScreneHitLeft", -1, 0f);
+            DataStorage.screenFader.Play("DamageEffect", -1, 0f);
+            failed.Play();
+        }
+        else
+        {
+            Backgrounds.GetComponent<Animator>().Play("PlayerDead", -1, 0f);
+            StartCoroutine(DeathSound(1f));
+        }
 		StartCoroutine (HealthDrain(enemyDamage));
 
         //StartCoroutine (ShakeUntil(.05f));
@@ -157,29 +168,59 @@ public class TakingDamageScript : MonoBehaviour {
 	//drain health function
 	    IEnumerator HealthDrain(float damageTaken)
     {
-		while (damageTaken > 0 && DataStorage.health > 0)
+        while (damageTaken > 0 && DataStorage.health > 0)
 		{
 			yield return new WaitForSeconds(.016f);
 			DataStorage.health -=1;
 			damageTaken-=1;
 			DataStorage.UpdateHUDHealth();
 		}
+        //Player dies
 		if (DataStorage.health <= 0)
 		{
-		   // gameObject.GetComponent<Animator>().Play("Disabled");
-			DataStorage.screenFader.Play("Dead");
+            //setting the death animation
+            DataStorage.screenFader.Play("Dead");
 			GetComponent<CombatScript>().enabled = false;
 			DataStorage.HUD.SetActive(false);
 			yield return new WaitForSeconds(15f);
 			DataStorage.screenFader.Play("Default");
-			GetComponent<CombatScript>().enabled = true;
+		//	GetComponent<CombatScript>().enabled = true;
 			DataStorage.HUD.SetActive(true);
 			DataStorage.player.GetComponent<Controls>().enabled = true;
 		//	DataStorage.gameManager.GetComponent<StatActivation> ().enabled = true;
 		//	DataStorage.gameManager.GetComponent<InventoryActivation> ().enabled = true;
 		//	DataStorage.pauseMenus.GetComponent<PauseMenu2>().enabled = true;
 			DataStorage.battleSystem.SetActive(false);
-			DataStorage.GameOver();
+            DataStorage.GameOver();
 		}
+    }
+    IEnumerator DeathSound(float waitTime)
+    {
+        //modifying the sound and playing multiple choruses
+        gameOver.Play();
+        yield return new WaitForSeconds(3f);
+        gameOver2.Play();
+        yield return new WaitForSeconds(1.5f);
+        gameOver3.Play();
+        yield return new WaitForSeconds(2.5f);
+        gameOver4.Play();
+        gameOver4.time = 3f;
+        gameOver4.volume = 0f;
+        //starting the echo sound
+        StartCoroutine(DeathSoundEcho(.2f));
+    }
+    //this is the echo sound. This is usd so that it plys in the background of the death sound
+    IEnumerator DeathSoundEcho(float waitTime)
+    {
+        while (gameOver4.volume < 1)
+        {
+            yield return new WaitForSeconds(.2f);
+            gameOver4.volume += .1f;
+        }
+        while (gameOver4.volume > 0)
+        {
+            yield return new WaitForSeconds(.2f);
+            gameOver4.volume -= .1f;
+        }
     }
 }

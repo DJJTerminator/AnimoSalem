@@ -13,7 +13,13 @@ public class CameraFollow : MonoBehaviour {
     [SerializeField]
     AudioSource zoomOut;
 
-    private Vector3 dir= Vector3.zero;
+    private Vector3 dir = Vector3.zero;
+
+    void OnRenderObject()
+    {
+        if (!target)
+        target = GameObject.Find("Player").GetComponent<Transform>();
+    }
 
 	void Update () {
 		//getting the target position

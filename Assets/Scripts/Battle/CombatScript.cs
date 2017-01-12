@@ -42,17 +42,18 @@ public class CombatScript : MonoBehaviour
     public GameObject reloadBar;
     public GameObject reloadText;
 	public GameObject textXP;//this is used for the text that displays the amount of xp gained
+    bool isSlow; //this checks to see if the function, slowMo, is running.
 
 
     public int myXP; //the amount of xp that is gained after a battle is won.
-        //this variable, after the battle is over, will get converted into xp.
+                     //this variable, after the battle is over, will get converted into xp.
 
     void OnEnable()
     {
 	//getting the camera and turning off the follow script
-		Camera myCamera = GameObject.Find ("Main Camera").GetComponent<Camera>();
-		if (myCamera != null)
-			myCamera.GetComponent<CameraFollow>().enabled = false;
+        Camera myCamera = GameObject.Find("Main Camera").GetComponent<Camera>();
+        myCamera.GetComponent<CameraFollow>().enabled = false;
+     
         //inceasing the alpha color of the target images for each that that is active in battle
         for (int i = 0; i < enemyTarget.Length; i++)
         {
@@ -97,7 +98,6 @@ public class CombatScript : MonoBehaviour
         reloadText.SetActive(true);
         gameObject.GetComponent<CombatScript>().enabled = true;
         gameObject.GetComponent<Animator>().Play("Enabled");
-
     }
     void Start()
     {
@@ -156,17 +156,6 @@ public class CombatScript : MonoBehaviour
         if (Input.GetKeyDown("r") && DataStorage.holster[DataStorage.curWeapon] < DataStorage.capacity[DataStorage.curWeapon] && !isReloading && DataStorage.itemBar.GetComponent<Image>().fillAmount <= 0)
             Reload();
 
-        //No Ammo
-        if (DataStorage.holster[DataStorage.curWeapon] <= 0 && !isReloading)
-        {
-            DataStorage.reloadingText.SetActive(true);
-            if (!DataStorage.reloadingText.GetComponent<Animator>().GetCurrentAnimatorStateInfo(0).IsName("Reload"))
-            {
-                DataStorage.reloadingText.GetComponent<Animator>().Play("Reload", -1, 0f);
-                DataStorage.reloadingText.GetComponent<Text>().text = "Reload";
-            }
-        }
-
         //using hotkeys for items
         if ((Input.GetMouseButton(1) || Input.GetKey("space")) && DataStorage.itemBar.GetComponent<Image>().fillAmount < 1 && canUse == true && int.Parse(DataStorage.itemCount.text) > 0 && !CombatScript.isReloading)
         {
@@ -189,7 +178,7 @@ public class CombatScript : MonoBehaviour
             SwitchItemsRight();
         }
 
-    }//end of update
+    }//end of fixed update
 
     public void Shooting()
     {
@@ -204,6 +193,12 @@ public class CombatScript : MonoBehaviour
                 }
                 gunShots[2].Play();
                 DataStorage.holster[DataStorage.curWeapon] -= 1;
+                //checking to see how much ammo is left over that last shot that was fired
+                if (DataStorage.holster[DataStorage.curWeapon] == 0)
+                    if (DataStorage.HGAmmo > 0)
+                        NeedToRelad();
+                    else
+                        NoAmmo();
                 DataStorage.UpdateHolster();
                 DataStorage.crosshair.GetComponent<Animator>().Play("Hit", -1, 0f);
                 DataStorage.combat.GetComponent<Animator>().speed = 0f;
@@ -219,6 +214,12 @@ public class CombatScript : MonoBehaviour
                 }
                 gunShots[3].Play();
                 DataStorage.holster[DataStorage.curWeapon] -= 1;
+                //checking to see how much ammo is left over that last shot that was fired
+                if (DataStorage.holster[DataStorage.curWeapon] == 0)
+                    if (DataStorage.HGAmmo > 0)
+                        NeedToRelad();
+                    else
+                        NoAmmo();
                 DataStorage.UpdateHolster();
                 DataStorage.crosshair.GetComponent<Animator>().Play("Hit", -1, 0f);
                 DataStorage.combat.GetComponent<Animator>().speed = 0f;
@@ -234,6 +235,12 @@ public class CombatScript : MonoBehaviour
                 }
                 gunShots[4].Play();
                 DataStorage.holster[DataStorage.curWeapon] -= 1;
+                //checking to see how much ammo is left over that last shot that was fired
+                if (DataStorage.holster[DataStorage.curWeapon] == 0)
+                    if (DataStorage.HGAmmo > 0)
+                        NeedToRelad();
+                    else
+                        NoAmmo();
                 DataStorage.UpdateHolster();
                 DataStorage.crosshair.GetComponent<Animator>().Play("Hit", -1, 0f);
                 DataStorage.combat.GetComponent<Animator>().speed = 0f;
@@ -260,11 +267,19 @@ public class CombatScript : MonoBehaviour
                 }
                 gunShots[6].Play();
                 DataStorage.holster[DataStorage.curWeapon] -= 1;
+                //checking to see how much ammo is left over that last shot that was fired
+                if (DataStorage.holster[DataStorage.curWeapon] == 0)
+                    if (DataStorage.rifleAmmo > 0)
+                        NeedToRelad();
+                    else
+                        NoAmmo();
                 DataStorage.UpdateHolster();
                 DataStorage.crosshair.GetComponent<Animator>().Play("Hit", -1, 0f);
                 DataStorage.combat.GetComponent<Animator>().speed = 0f;
-                StartCoroutine(StopWatch(DataStorage.fireRate[DataStorage.curWeapon] / 2));
-                DataStorage.shotsFired++;
+                if (DataStorage.holster[DataStorage.curWeapon] > 2)
+                    StartCoroutine(StopWatch(DataStorage.fireRate[DataStorage.curWeapon] / 2));
+                else
+                    StartCoroutine(StopWatch(1f));
                 Backgrounds.GetComponent<Animator>().Play("ShootingSmall", -1, 0f);
                 break;
             case "Seeker":
@@ -275,6 +290,12 @@ public class CombatScript : MonoBehaviour
                 }
                 gunShots[5].Play();
                 DataStorage.holster[DataStorage.curWeapon] -= 1;
+                //checking to see how much ammo is left over that last shot that was fired
+                if (DataStorage.holster[DataStorage.curWeapon] == 0)
+                    if (DataStorage.rifleAmmo > 0)
+                        NeedToRelad();
+                    else
+                        NoAmmo();
                 DataStorage.UpdateHolster();
                 DataStorage.crosshair.GetComponent<Animator>().Play("Hit", -1, 0f);
                 DataStorage.combat.GetComponent<Animator>().speed = 0f;
@@ -290,6 +311,12 @@ public class CombatScript : MonoBehaviour
                 }
                 gunShots[7].Play();
                 DataStorage.holster[DataStorage.curWeapon] -= 1;
+                //checking to see how much ammo is left over that last shot that was fired
+                if (DataStorage.holster[DataStorage.curWeapon] == 0)
+                    if (DataStorage.rifleAmmo > 0)
+                        NeedToRelad();
+                    else
+                        NoAmmo();
                 DataStorage.UpdateHolster();
                 DataStorage.crosshair.GetComponent<Animator>().Play("Hit", -1, 0f);
                 DataStorage.combat.GetComponent<Animator>().speed = 0f;
@@ -305,6 +332,12 @@ public class CombatScript : MonoBehaviour
                 }
                 gunShots[8].Play();
                 DataStorage.holster[DataStorage.curWeapon] -= 1;
+                //checking to see how much ammo is left over that last shot that was fired
+                if (DataStorage.holster[DataStorage.curWeapon] == 0)
+                    if (DataStorage.rifleAmmo > 0)
+                        NeedToRelad();
+                    else
+                        NoAmmo();
                 DataStorage.UpdateHolster();
                 DataStorage.crosshair.GetComponent<Animator>().Play("Hit", -1, 0f);
                 DataStorage.combat.GetComponent<Animator>().speed = 0f;
@@ -320,6 +353,12 @@ public class CombatScript : MonoBehaviour
                 }
                 gunShots[12].Play();
                 DataStorage.holster[DataStorage.curWeapon] -= 1;
+                //checking to see how much ammo is left over that last shot that was fired
+                if (DataStorage.holster[DataStorage.curWeapon] == 0)
+                    if (DataStorage.SGAmmo > 0)
+                        NeedToRelad();
+                    else
+                        NoAmmo();
                 DataStorage.UpdateHolster();
                 DataStorage.crosshair.GetComponent<Animator>().Play("Hit", -1, 0f);
                 DataStorage.combat.GetComponent<Animator>().speed = 0f;
@@ -335,6 +374,12 @@ public class CombatScript : MonoBehaviour
                 }
                 gunShots[9].Play();
                 DataStorage.holster[DataStorage.curWeapon] -= 1;
+                //checking to see how much ammo is left over that last shot that was fired
+                if (DataStorage.holster[DataStorage.curWeapon] == 0)
+                    if (DataStorage.SGAmmo > 0)
+                        NeedToRelad();
+                    else
+                        NoAmmo();
                 DataStorage.UpdateHolster();
                 DataStorage.crosshair.GetComponent<Animator>().Play("Hit", -1, 0f);
                 DataStorage.combat.GetComponent<Animator>().speed = 0f;
@@ -350,6 +395,12 @@ public class CombatScript : MonoBehaviour
                 }
                 gunShots[10].Play();
                 DataStorage.holster[DataStorage.curWeapon] -= 1;
+                //checking to see how much ammo is left over that last shot that was fired
+                if (DataStorage.holster[DataStorage.curWeapon] == 0)
+                    if (DataStorage.SGAmmo > 0)
+                        NeedToRelad();
+                    else
+                        NoAmmo();
                 DataStorage.UpdateHolster();
                 DataStorage.crosshair.GetComponent<Animator>().Play("Hit", -1, 0f);
                 DataStorage.combat.GetComponent<Animator>().speed = 0f;
@@ -365,6 +416,12 @@ public class CombatScript : MonoBehaviour
                 }
                 gunShots[11].Play();
                 DataStorage.holster[DataStorage.curWeapon] -= 1;
+                //checking to see how much ammo is left over that last shot that was fired
+                if (DataStorage.holster[DataStorage.curWeapon] == 0)
+                    if (DataStorage.SGAmmo > 0)
+                        NeedToRelad();
+                    else
+                        NoAmmo();
                 DataStorage.UpdateHolster();
                 DataStorage.crosshair.GetComponent<Animator>().Play("Hit", -1, 0f);
                 DataStorage.combat.GetComponent<Animator>().speed = 0f;
@@ -380,6 +437,12 @@ public class CombatScript : MonoBehaviour
                 }
                 gunShots[12].Play();
                 DataStorage.holster[DataStorage.curWeapon] -= 1;
+                //checking to see how much ammo is left over that last shot that was fired
+                if (DataStorage.holster[DataStorage.curWeapon] == 0)
+                    if (DataStorage.SGAmmo > 0)
+                        NeedToRelad();
+                    else
+                        NoAmmo();
                 DataStorage.UpdateHolster();
                 DataStorage.crosshair.GetComponent<Animator>().Play("Hit", -1, 0f);
                 DataStorage.combat.GetComponent<Animator>().speed = 0f;
@@ -395,25 +458,40 @@ public class CombatScript : MonoBehaviour
                 }
                 gunShots[16].Play();
                 DataStorage.holster[DataStorage.curWeapon] -= 1;
+                //checking to see how much ammo is left over that last shot that was fired
+                if (DataStorage.holster[DataStorage.curWeapon] == 0)
+                    if (DataStorage.MGAmmo > 0)
+                        NeedToRelad();
+                    else
+                        NoAmmo();
                 DataStorage.UpdateHolster();
                 DataStorage.crosshair.GetComponent<Animator>().Play("Hit", -1, 0f);
                 Backgrounds.GetComponent<Animator>().Play("ShootingSmall", -1, 0f);
                 if (!mgFire)
                 {
-                    DataStorage.combat.GetComponent<Animator>().speed = 0f;
-                    StartCoroutine(StopWatch(.5f));
+                    if (!isSlow)
+                    {
+                        DataStorage.combat.GetComponent<Animator>().speed = 0f;
+                        StartCoroutine(StopWatch(.5f));
+                    }
                 }
                 else
                 {
 					if (DataStorage.holster[DataStorage.curWeapon] > 1)
 					{
-						DataStorage.combat.GetComponent<Animator>().speed = .1f;
-						StartCoroutine(SlowMo(1f));
+                        if (!isSlow)
+                        {
+                            DataStorage.combat.GetComponent<Animator>().speed = .1f;
+                            StartCoroutine(SlowMo(1f));
+                        }
 					}
 					else
 					{
-						DataStorage.combat.GetComponent<Animator>().speed = 0f;
-						StartCoroutine(SlowMo(1f));
+                        if (!isSlow)
+                        {
+                            DataStorage.combat.GetComponent<Animator>().speed = 0f;
+                            StartCoroutine(SlowMo(1f));
+                        }
 					}
                 }
                 DataStorage.shotsFired++;
@@ -426,6 +504,12 @@ public class CombatScript : MonoBehaviour
                 }
                 gunShots[13].Play();
                 DataStorage.holster[DataStorage.curWeapon] -= 1;
+                //checking to see how much ammo is left over that last shot that was fired
+                if (DataStorage.holster[DataStorage.curWeapon] == 0)
+                    if (DataStorage.magnumAmmo > 0)
+                        NeedToRelad();
+                    else
+                        NoAmmo();
                 DataStorage.UpdateHolster();
                 DataStorage.crosshair.GetComponent<Animator>().Play("Hit", -1, 0f);
                 DataStorage.combat.GetComponent<Animator>().speed = 0f;
@@ -441,6 +525,12 @@ public class CombatScript : MonoBehaviour
                 }
                 gunShots[13].Play();
                 DataStorage.holster[DataStorage.curWeapon] -= 1;
+                //checking to see how much ammo is left over that last shot that was fired
+                if (DataStorage.holster[DataStorage.curWeapon] == 0)
+                    if (DataStorage.magnumAmmo > 0)
+                        NeedToRelad();
+                    else
+                        NoAmmo();
                 DataStorage.UpdateHolster();
                 DataStorage.crosshair.GetComponent<Animator>().Play("Hit", -1, 0f);
                 DataStorage.combat.GetComponent<Animator>().speed = 0f;
@@ -456,6 +546,12 @@ public class CombatScript : MonoBehaviour
                 }
                 gunShots[13].Play();
                 DataStorage.holster[DataStorage.curWeapon] -= 1;
+                //checking to see how much ammo is left over that last shot that was fired
+                if (DataStorage.holster[DataStorage.curWeapon] == 0)
+                    if (DataStorage.magnumAmmo > 0)
+                        NeedToRelad();
+                    else
+                        NoAmmo();
                 DataStorage.UpdateHolster();
                 DataStorage.crosshair.GetComponent<Animator>().Play("Hit", -1, 0f);
                 DataStorage.combat.GetComponent<Animator>().speed = 0f;
@@ -471,6 +567,12 @@ public class CombatScript : MonoBehaviour
                 }
                 gunShots[12].Play();
                 DataStorage.holster[DataStorage.curWeapon] -= 1;
+                //checking to see how much ammo is left over that last shot that was fired
+                if (DataStorage.holster[DataStorage.curWeapon] == 0)
+                    if (DataStorage.SGAmmo > 0)
+                        NeedToRelad();
+                    else
+                        NoAmmo();
                 DataStorage.UpdateHolster();
                 DataStorage.crosshair.GetComponent<Animator>().Play("Hit", -1, 0f);
                 DataStorage.combat.GetComponent<Animator>().speed = 0f;
@@ -486,6 +588,12 @@ public class CombatScript : MonoBehaviour
                 }
                 gunShots[2].Play();
                 DataStorage.holster[DataStorage.curWeapon] -= 1;
+                //checking to see how much ammo is left over that last shot that was fired
+                if (DataStorage.holster[DataStorage.curWeapon] == 0)
+                    if (DataStorage.MGAmmo > 0)
+                        NeedToRelad();
+                    else
+                        NoAmmo();
                 DataStorage.UpdateHolster();
                 DataStorage.crosshair.GetComponent<Animator>().Play("Hit", -1, 0f);
                 Backgrounds.GetComponent<Animator>().Play("ShootingSmall", -1, 0f);
@@ -517,6 +625,12 @@ public class CombatScript : MonoBehaviour
                 }
                 gunShots[14].Play();
                 DataStorage.holster[DataStorage.curWeapon] -= 1;
+                //checking to see how much ammo is left over that last shot that was fired
+                if (DataStorage.holster[DataStorage.curWeapon] == 0)
+                    if (DataStorage.rifleAmmo > 0)
+                        NeedToRelad();
+                    else
+                        NoAmmo();
                 DataStorage.UpdateHolster();
                 DataStorage.crosshair.GetComponent<Animator>().Play("Hit", -1, 0f);
                 DataStorage.combat.GetComponent<Animator>().speed = 0f;
@@ -532,6 +646,12 @@ public class CombatScript : MonoBehaviour
                 }
                 gunShots[15].Play();
                 DataStorage.holster[DataStorage.curWeapon] -= 1;
+                //checking to see how much ammo is left over that last shot that was fired
+                if (DataStorage.holster[DataStorage.curWeapon] == 0)
+                    if (DataStorage.explosiveAmmo > 0)
+                        NeedToRelad();
+                    else
+                        NoAmmo();
                 DataStorage.UpdateHolster();
                 DataStorage.crosshair.GetComponent<Animator>().Play("Hit", -1, 0f);
                 DataStorage.combat.GetComponent<Animator>().speed = 0f;
@@ -550,6 +670,12 @@ public class CombatScript : MonoBehaviour
             {
                 gunShots[5].Play();
                 DataStorage.holster[DataStorage.curWeapon] -= 1;
+                //checking to see how much ammo is left over that last shot that was fired
+                if (DataStorage.holster[DataStorage.curWeapon] == 0)
+                    if (DataStorage.HGAmmo > 0)
+                        NeedToRelad();
+                    else
+                        NoAmmo();
                 DataStorage.UpdateHolster();
                 DataStorage.crosshair.GetComponent<Animator>().Play("Hit", -1, 0f);
                 DataStorage.shotsFired++;
@@ -559,6 +685,8 @@ public class CombatScript : MonoBehaviour
             {
                 gunShots[0].Play();
                 DataStorage.crosshair.GetComponent<Animator>().Play("Hit", -1, 0f);
+                DataStorage.combat.GetComponent<Animator>().speed = 0f;
+                StartCoroutine(StopWatch(1f));
                 yield return new WaitForSeconds(waitTime);//if gun is still firing, play animation
             }
                 
@@ -569,6 +697,7 @@ public class CombatScript : MonoBehaviour
 
     IEnumerator SlowMo(float waitTime)
     {//this function is for automatics only
+        isSlow = true;
         yield return new WaitForSeconds(waitTime);//if gun is still firing, play animation
         if (!Input.GetKey(KeyCode.Mouse0) || DataStorage.holster[DataStorage.curWeapon] == 0)
         {
@@ -577,6 +706,7 @@ public class CombatScript : MonoBehaviour
         DataStorage.combat.GetComponent<Animator>().speed = 1f;
         mgFire = false;
         }
+        isSlow = false;
 
     }
 	//this function prevents the target from moving
@@ -590,6 +720,7 @@ public class CombatScript : MonoBehaviour
           if (!mgFire)
 			{
 			StartCoroutine (SlowMo(DataStorage.fireRate[DataStorage.curWeapon]));
+            if (!isSlow)
 			DataStorage.combat.GetComponent<Animator>().speed = .1f;
 			mgFire = true;
 			}
@@ -663,10 +794,10 @@ public class CombatScript : MonoBehaviour
                 else break;
                 break;
             case "Explosive":
-                if (DataStorage.magnumAmmo > 0)
+                if (DataStorage.explosiveAmmo > 0)
                 {
                     isReloading = true;
-                    DataStorage.magnumAmmo += DataStorage.holster[DataStorage.curWeapon];
+                    DataStorage.explosiveAmmo += DataStorage.holster[DataStorage.curWeapon];
                     DataStorage.holster[DataStorage.curWeapon] = 0;
                     reloadSounds[4].Play();
                     DataStorage.UpdateHolster();
@@ -1098,7 +1229,8 @@ public class CombatScript : MonoBehaviour
     IEnumerator GoToVictory(float waitTime)
     {
 		yield return new WaitForSeconds(1f);
-		gameObject.GetComponent<Animator>().Play("Disabled", -1, 0f);
+        GetComponent<Animator>().Play("Disabled");
+        GetComponent<Animator>().speed = 1f;
         yield return new WaitForSeconds(waitTime - 1f);
         GetComponent<VictoryScript>().VictoryScene(myXP);
     myXP = 0;
@@ -1113,5 +1245,18 @@ public class CombatScript : MonoBehaviour
 	//turning the crosshair red
 	DataStorage.crosshair.GetComponent<Image>().color = Color.red;
 	}
+    //if the player's weapon is dry and holster is dry
+    void NoAmmo()
+    {
+        //tell the player there no longer is any ammmo that remains
+        DataStorage.reloadingText.GetComponent<Animator>().Play("Reload");
+        DataStorage.reloadingText.GetComponent<Text>().text = "No Ammo";
+    }
+    //if player has ammo but none in holster
+    void NeedToRelad()
+    {
+        //asking the player to reload
+     DataStorage.reloadingText.GetComponent<Animator>().Play("Reload", -1, 0f);
+    }
 
 }//end of class
