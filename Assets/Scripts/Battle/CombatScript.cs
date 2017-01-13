@@ -256,7 +256,10 @@ public class CombatScript : MonoBehaviour
                 }
                 DataStorage.combat.GetComponent<Animator>().speed = 0f;
                 StartCoroutine(TrippleShot(.1f));
-                StartCoroutine(StopWatch(DataStorage.fireRate[DataStorage.curWeapon] / 2));
+                if (DataStorage.holster[DataStorage.curWeapon] > 3)
+                    StartCoroutine(StopWatch(DataStorage.fireRate[DataStorage.curWeapon] / 2));
+                else
+                    StartCoroutine(StopWatch(2f));
                 Backgrounds.GetComponent<Animator>().Play("ShootingSmall", -1, 0f);
                 break;
             case "Silencer":
@@ -685,14 +688,12 @@ public class CombatScript : MonoBehaviour
             {
                 gunShots[0].Play();
                 DataStorage.crosshair.GetComponent<Animator>().Play("Hit", -1, 0f);
-                DataStorage.combat.GetComponent<Animator>().speed = 0f;
-                StartCoroutine(StopWatch(1f));
                 yield return new WaitForSeconds(waitTime);//if gun is still firing, play animation
             }
                 
         }
-        if (Time.time > fireRate || DataStorage.holster[DataStorage.curWeapon] < 1)
-            DataStorage.combat.GetComponent<Animator>().speed = 1f;
+       // if (Time.time > fireRate || DataStorage.holster[DataStorage.curWeapon] < 1)
+           // DataStorage.combat.GetComponent<Animator>().speed = 1f;
     }
 
     IEnumerator SlowMo(float waitTime)
@@ -844,7 +845,7 @@ public class CombatScript : MonoBehaviour
             }
         }
 
-        //checking to see which gun wa equipped before reloading
+        //checking to see which gun was equipped before reloading
         switch (DataStorage.weaponType[DataStorage.curWeapon])
         {
             case "Handgun":
@@ -858,7 +859,7 @@ public class CombatScript : MonoBehaviour
                     DataStorage.holster[DataStorage.curWeapon] = DataStorage.HGAmmo;
                     DataStorage.HGAmmo = 0;
                 }
-                loadedSounds[0].Play();
+                    loadedSounds[0].Play();
                 break;
             case "Shotgun":
                 if (DataStorage.SGAmmo > DataStorage.capacity[DataStorage.curWeapon])
@@ -871,7 +872,7 @@ public class CombatScript : MonoBehaviour
                     DataStorage.holster[DataStorage.curWeapon] = DataStorage.SGAmmo;
                     DataStorage.SGAmmo = 0;
                 }
-                loadedSounds[1].Play();
+                    loadedSounds[1].Play();
                 break;
             case "Automatic":
                 if (DataStorage.MGAmmo > DataStorage.capacity[DataStorage.curWeapon])
@@ -884,7 +885,7 @@ public class CombatScript : MonoBehaviour
                     DataStorage.holster[DataStorage.curWeapon] = DataStorage.MGAmmo;
                     DataStorage.MGAmmo = 0;
                 }
-                loadedSounds[2].Play();
+                    loadedSounds[2].Play();
                 break;
             case "Rifle":
                 if (DataStorage.rifleAmmo > DataStorage.capacity[DataStorage.curWeapon])
@@ -897,7 +898,7 @@ public class CombatScript : MonoBehaviour
                     DataStorage.holster[DataStorage.curWeapon] = DataStorage.rifleAmmo;
                     DataStorage.rifleAmmo = 0;
                 }
-                loadedSounds[3].Play();
+                    loadedSounds[3].Play();
                 break;
             case "Magnum":
                 if (DataStorage.magnumAmmo > DataStorage.capacity[DataStorage.curWeapon])
@@ -910,7 +911,7 @@ public class CombatScript : MonoBehaviour
                     DataStorage.holster[DataStorage.curWeapon] = DataStorage.magnumAmmo;
                     DataStorage.magnumAmmo = 0;
                 }
-                loadedSounds[4].Play();
+                    loadedSounds[4].Play();
                 break;
             case "Explosive":
                 if (DataStorage.explosiveAmmo > DataStorage.capacity[DataStorage.curWeapon])
@@ -923,16 +924,135 @@ public class CombatScript : MonoBehaviour
                     DataStorage.holster[DataStorage.curWeapon] = DataStorage.explosiveAmmo;
                     DataStorage.explosiveAmmo = 0;
                 }
-                loadedSounds[5].Play();
+                    loadedSounds[5].Play();
                 break;
         }
-        DataStorage.reloadingText.GetComponent<Animator>().Play("Reloaded", -1, 0f);
-        DataStorage.reloadingText.GetComponent<Text>().text = "Reloaded";
-        //    DataStorage.reloadBar.GetComponent<Image>().fillAmount = 1f;
-        DataStorage.reloadPiBar.GetComponent<Animator>().Play("ReloadBar", -1, 0f);
-        isReloading = false;
-        DataStorage.UpdateHolster();
+            DataStorage.reloadingText.GetComponent<Animator>().Play("Reloaded", -1, 0f);
+            DataStorage.reloadingText.GetComponent<Text>().text = "Reloaded";
+            //DataStorage.reloadBar.GetComponent<Image>().fillAmount = 1f;
+            DataStorage.reloadPiBar.GetComponent<Animator>().Play("ReloadBar", -1, 0f);
+         isReloading = false;
+         DataStorage.UpdateHolster();
     }
+
+    IEnumerator ResetAmmo(float waitTime)
+    {
+        yield return new WaitForSeconds(waitTime);
+        //setting the ammo after the battle is over, so the player doesn't have to do it during the beginning
+        //of next round
+        switch (DataStorage.weaponType[DataStorage.curWeapon])
+        {
+            case "Handgun":
+                if (DataStorage.HGAmmo + DataStorage.holster[DataStorage.curWeapon] > DataStorage.capacity[DataStorage.curWeapon])
+                {
+                    DataStorage.HGAmmo += DataStorage.holster[DataStorage.curWeapon];
+                    DataStorage.holster[DataStorage.curWeapon] = 0;
+                    DataStorage.HGAmmo -= DataStorage.capacity[DataStorage.curWeapon];
+                    DataStorage.holster[DataStorage.curWeapon] = DataStorage.capacity[DataStorage.curWeapon];
+                }
+                else
+                {
+                    DataStorage.HGAmmo += DataStorage.holster[DataStorage.curWeapon];
+                    DataStorage.holster[DataStorage.curWeapon] = 0;
+
+                    DataStorage.holster[DataStorage.curWeapon] = DataStorage.HGAmmo;
+                    DataStorage.HGAmmo = 0;
+                }
+                DataStorage.UpdateHolster();
+                break;
+            case "Shotgun":
+                if (DataStorage.SGAmmo + DataStorage.holster[DataStorage.curWeapon] > DataStorage.capacity[DataStorage.curWeapon])
+                {
+                    DataStorage.SGAmmo += DataStorage.holster[DataStorage.curWeapon];
+                    DataStorage.holster[DataStorage.curWeapon] = 0;
+                    DataStorage.SGAmmo -= DataStorage.capacity[DataStorage.curWeapon];
+                    DataStorage.holster[DataStorage.curWeapon] = DataStorage.capacity[DataStorage.curWeapon];
+                }
+                else
+                {
+                    DataStorage.SGAmmo += DataStorage.holster[DataStorage.curWeapon];
+                    DataStorage.holster[DataStorage.curWeapon] = 0;
+
+                    DataStorage.holster[DataStorage.curWeapon] = DataStorage.SGAmmo;
+                    DataStorage.SGAmmo = 0;
+                }
+                DataStorage.UpdateHolster();
+                break;
+            case "Automatic":
+                if (DataStorage.MGAmmo + DataStorage.holster[DataStorage.curWeapon] > DataStorage.capacity[DataStorage.curWeapon])
+                {
+                    DataStorage.MGAmmo += DataStorage.holster[DataStorage.curWeapon];
+                    DataStorage.holster[DataStorage.curWeapon] = 0;
+                    DataStorage.MGAmmo -= DataStorage.capacity[DataStorage.curWeapon];
+                    DataStorage.holster[DataStorage.curWeapon] = DataStorage.capacity[DataStorage.curWeapon];
+                }
+                else
+                {
+                    DataStorage.MGAmmo += DataStorage.holster[DataStorage.curWeapon];
+                    DataStorage.holster[DataStorage.curWeapon] = 0;
+
+                    DataStorage.holster[DataStorage.curWeapon] = DataStorage.MGAmmo;
+                    DataStorage.MGAmmo = 0;
+                }
+                DataStorage.UpdateHolster();
+                break;
+            case "Rifle":
+                if (DataStorage.rifleAmmo + DataStorage.holster[DataStorage.curWeapon] > DataStorage.capacity[DataStorage.curWeapon])
+                {
+                    DataStorage.rifleAmmo += DataStorage.holster[DataStorage.curWeapon];
+                    DataStorage.holster[DataStorage.curWeapon] = 0;
+                    DataStorage.rifleAmmo -= DataStorage.capacity[DataStorage.curWeapon];
+                    DataStorage.holster[DataStorage.curWeapon] = DataStorage.capacity[DataStorage.curWeapon];
+                }
+                else
+                {
+                    DataStorage.rifleAmmo += DataStorage.holster[DataStorage.curWeapon];
+                    DataStorage.holster[DataStorage.curWeapon] = 0;
+
+                    DataStorage.holster[DataStorage.curWeapon] = DataStorage.rifleAmmo;
+                    DataStorage.rifleAmmo = 0;
+                }
+                DataStorage.UpdateHolster();
+                break;
+            case "Magnum":
+                if (DataStorage.magnumAmmo + DataStorage.holster[DataStorage.curWeapon] > DataStorage.capacity[DataStorage.curWeapon])
+                {
+                    DataStorage.magnumAmmo += DataStorage.holster[DataStorage.curWeapon];
+                    DataStorage.holster[DataStorage.curWeapon] = 0;
+                    DataStorage.magnumAmmo -= DataStorage.capacity[DataStorage.curWeapon];
+                    DataStorage.holster[DataStorage.curWeapon] = DataStorage.capacity[DataStorage.curWeapon];
+                }
+                else
+                {
+                    DataStorage.magnumAmmo += DataStorage.holster[DataStorage.curWeapon];
+                    DataStorage.holster[DataStorage.curWeapon] = 0;
+
+                    DataStorage.holster[DataStorage.curWeapon] = DataStorage.magnumAmmo;
+                    DataStorage.magnumAmmo = 0;
+                }
+                DataStorage.UpdateHolster();
+                break;
+            case "Explosive":
+                if (DataStorage.explosiveAmmo + DataStorage.holster[DataStorage.curWeapon] > DataStorage.capacity[DataStorage.curWeapon])
+                {
+                    DataStorage.explosiveAmmo += DataStorage.holster[DataStorage.curWeapon];
+                    DataStorage.holster[DataStorage.curWeapon] = 0;
+                    DataStorage.explosiveAmmo -= DataStorage.capacity[DataStorage.curWeapon];
+                    DataStorage.holster[DataStorage.curWeapon] = DataStorage.capacity[DataStorage.curWeapon];
+                }
+                else
+                {
+                    DataStorage.explosiveAmmo += DataStorage.holster[DataStorage.curWeapon];
+                    DataStorage.holster[DataStorage.curWeapon] = 0;
+
+                    DataStorage.holster[DataStorage.curWeapon] = DataStorage.explosiveAmmo;
+                    DataStorage.explosiveAmmo = 0;
+                }
+                DataStorage.UpdateHolster();
+                break;
+        }
+    }//end of resetting ammo
+
     //switch items left
     void SwitchItemsLeft()
     {
@@ -1080,43 +1200,48 @@ public class CombatScript : MonoBehaviour
                     else
                         temp = enemyTarget[i].transform.position.x/DataStorage.crosshair.transform.position.x;
 
-                    if (enemyHP[i] > 0)
-                    {
-                        if ((DataStorage.weaponDamage[DataStorage.curWeapon] + DataStorage.damage) * temp < enemyHP[i])
-                        {
-                            dmg = (Mathf.Round((DataStorage.weaponDamage[DataStorage.curWeapon] + DataStorage.damage) * temp) * 100) / 100;
-                            if (crit <= DataStorage.criticalChance[DataStorage.curWeapon])
-                                dmg *= 2;
-                            //adding to the total amount of damage the player has dalt over a lifetime
-                            DataStorage.damageDealt += dmg;
-                            lastHit = i;
-                        }
+                    dmg = (Mathf.Round((DataStorage.weaponDamage[DataStorage.curWeapon] + DataStorage.damage) * temp) * 100) / 100;
+                    if (crit <= DataStorage.criticalChance[DataStorage.curWeapon])
+                        dmg *= 2;
+                    //amplifying the damage by the amount of bullets fired (if weapon that is used is the Trident tripple shot)
+                    if (DataStorage.weaponName[DataStorage.curWeapon] == "Trident")
+                        if (DataStorage.holster[DataStorage.curWeapon] > 3)
+                            dmg *= 3;
                         else
-                        {
-                            dmg = (Mathf.Round(((DataStorage.weaponDamage[DataStorage.curWeapon] + DataStorage.damage) * temp) - enemyHP[i]) * 100) / 100;
-                            //adding to the total amount of damage the player has dalt over a lifetime
-                            if (crit <= DataStorage.criticalChance[DataStorage.curWeapon])
-                                DataStorage.damageDealt += dmg;
-                            //changing the color of the target to 0 alpha as there is no longer any reason to see the health bar after the enemy
-                            //is dead
-                            Color c = enemyTarget[i].GetComponent<Image>().color;
-                            c.a = 0;
-                            enemyTarget[i].GetComponent<Image>().color = c;
-                            enemyTarget2[i].GetComponent<Image>().color = c;
-                            enemyTarget3[i].GetComponent<Image>().color = c;
-                            lastHit = i;
-                        }
+                            dmg *= DataStorage.holster[DataStorage.curWeapon];
+
+                    if (enemyHP[i] > dmg)
+                    {
+
+                        //adding to the total amount of damage the player has dealt over a lifetime
+                        DataStorage.damageDealt += dmg;
+                        lastHit = i;
+                        //adding the damage
+                        enemyHP[i] -= dmg;
                     }
- 
-                    //adding the damage
-                    enemyHP[i] -= (DataStorage.weaponDamage[DataStorage.curWeapon] + DataStorage.damage)*temp;
+                     else
+                     {
+                        dmg = enemyHP[i];
+                        //adding to the total amount of damage the player has dealt over a lifetime
+                        DataStorage.damageDealt += dmg;
+                        //changing the color of the target to 0 alpha as there is no longer any reason to see the enemy target after the enemy
+                        //is dead    
+                        Color c = enemyTarget[i].GetComponent<Image>().color;    
+                        c.a = 0;    
+                        enemyTarget[i].GetComponent<Image>().color = c;
+                        enemyTarget2[i].GetComponent<Image>().color = c;    
+                        enemyTarget3[i].GetComponent<Image>().color = c;
+                        lastHit = i;    
+                        //setting hp to 0
+                         enemyHP[i] = 0;
+                     }
                     //calculating the current health bar for the enemy
                     enemyHealthBar[i].transform.localScale = new Vector3 (enemyHP[i] / enemyMaxHP[i],1,1);
                     //initiating the amount of damage to a foating text
                     if (DataStorage.weaponType[DataStorage.curWeapon] != "Automatic")
-                    InitCBT(crit, i, "-" + dmg.ToString());
+                        InitCBT(crit, i, "-" + dmg.ToString());
                     else
-                    totalDamage += dmg;
+                        totalDamage += dmg;
 
                     DataStorage.targetsHit ++;
                     if (enemyHP[i] <= 0 && xp[i] > 0)
@@ -1131,7 +1256,11 @@ public class CombatScript : MonoBehaviour
                         //checking to see if all enemies are dead
                         if (enemyHP[0] <= 0 && enemyHP[1] <= 0 && enemyHP[2] <= 0)
                         {
-                            gameObject.GetComponent<CombatScript>().enabled = false;
+                            //resetting the ammo, so the player doesnt have to reload at the beginning of the next round
+                            StartCoroutine (ResetAmmo(.2f));
+                            fireRate = Time.time + 1f;
+                            if (totalDamage > 0)
+                            InitCBT(0, lastHit, "-" + totalDamage.ToString());
                             reloadBar.SetActive(false);
                             reloadText.SetActive(false);
 							DataStorage.battlesWon +=1;
@@ -1228,12 +1357,13 @@ public class CombatScript : MonoBehaviour
     //waiting before the victory occurs
     IEnumerator GoToVictory(float waitTime)
     {
-		yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(1f);
+        gameObject.GetComponent<CombatScript>().enabled = false;
         GetComponent<Animator>().Play("Disabled");
         GetComponent<Animator>().speed = 1f;
         yield return new WaitForSeconds(waitTime - 1f);
         GetComponent<VictoryScript>().VictoryScene(myXP);
-    myXP = 0;
+        myXP = 0;
     }
 
 	//waiting to turn the color back to normal
@@ -1258,5 +1388,4 @@ public class CombatScript : MonoBehaviour
         //asking the player to reload
      DataStorage.reloadingText.GetComponent<Animator>().Play("Reload", -1, 0f);
     }
-
 }//end of class
