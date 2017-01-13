@@ -17,6 +17,7 @@ public class UpgradeItems : MonoBehaviour {
 	Text price;
 	[SerializeField]
 	Text _weaponName;
+	int returnWeapon; //returns weapon back to what was originally equipped after the player leaves the shop
 
 	[SerializeField]
 	GameObject[] myActive;
@@ -31,6 +32,15 @@ public class UpgradeItems : MonoBehaviour {
 	public AudioSource noMoney;
 	public AudioSource maxedOut;
 	public AudioSource hoverOver;
+
+	void OnEnable()
+	{
+		returnWeapon = DataStorage.curWeapon;
+	}
+	void OnDisable()
+	{
+		DataStorage.curWeapon = returnWeapon;
+	}
 
 
 	//cycling weapons to the left
@@ -116,6 +126,8 @@ public class UpgradeItems : MonoBehaviour {
 	//these are the hover over functions
 	public void HoverOverDamage()
 	{
+		float _price = Exchange (DataStorage.damageCost [DataStorage.curWeapon]);
+
 		if (!upgradeSuccessful.isPlaying)
 			hoverOver.Play();
 		
@@ -142,12 +154,13 @@ public class UpgradeItems : MonoBehaviour {
 			
 
 		//display current money and price
-		curMoney.GetComponent<Text> ().text = "$" + DataStorage.money;
+		curMoney.GetComponent<Text> ().text = "$" + DataStorage.money.ToString("n0");;
 		if (DataStorage.curDamage[DataStorage.curWeapon] < 5)
-		price.GetComponent<Text> ().text = "Cost: $" + DataStorage.damageCost[DataStorage.curWeapon];
+			price.GetComponent<Text> ().text = "Cost: $" + _price;
 	}
 	public void HoverOverReload()
 	{
+		float _price = Exchange (DataStorage.reloadCost [DataStorage.curWeapon]);
 		if (!upgradeSuccessful.isPlaying)
 			hoverOver.Play();
 		//updates current upgrade
@@ -159,17 +172,18 @@ public class UpgradeItems : MonoBehaviour {
 			DeactivateUpgrades ();
 
 		//display current upgrade and next upgrade
-		curText.GetComponent<Text> ().text = "Reload: " + DataStorage.reload [DataStorage.curWeapon];
+		curText.GetComponent<Text> ().text = "Reload: " + Mathf.Round(DataStorage.reload [DataStorage.curWeapon]*100f)/100f;
 		if (DataStorage.curReload [DataStorage.curWeapon] < 5)
-            nextText.GetComponent<Text>().text = "Next Level: " + (DataStorage.reload[DataStorage.curWeapon] + DataStorage.upReload[DataStorage.curWeapon]);
+            nextText.GetComponent<Text>().text = "Next Level: " + Mathf.Round((DataStorage.reload[DataStorage.curWeapon] - DataStorage.upReload[DataStorage.curWeapon]) * 100f)/100f;
 		else
 			nextText.GetComponent<Text> ().text = " ";	
 
-		curMoney.GetComponent<Text> ().text = "$" + DataStorage.money;
-		price.GetComponent<Text> ().text = "Cost: $" + DataStorage.reloadCost[DataStorage.curWeapon];
+		curMoney.GetComponent<Text> ().text = "$" + DataStorage.money.ToString("n0");;
+		price.GetComponent<Text> ().text = "Cost: $" + _price;
 	}
 	public void HoverOverCapacity()
 	{
+		float _price = Exchange (DataStorage.capacityCost [DataStorage.curWeapon]);
 		if (!upgradeSuccessful.isPlaying)
 			hoverOver.Play();
 		//updates current upgrade
@@ -188,11 +202,12 @@ public class UpgradeItems : MonoBehaviour {
 			nextText.GetComponent<Text> ().text = " ";	
 
 		//display current money and price
-		curMoney.GetComponent<Text> ().text = "$" + DataStorage.money;
-		price.GetComponent<Text> ().text = "Cost: $" + DataStorage.capacityCost[DataStorage.curWeapon];
+		curMoney.GetComponent<Text> ().text = "$" + DataStorage.money.ToString("n0");;
+		price.GetComponent<Text> ().text = "Cost: $" + _price;
 	}
 	public void HoverOverFireRate()
 	{
+		float _price = Exchange (DataStorage.frCost [DataStorage.curWeapon]);
 		if (!upgradeSuccessful.isPlaying)
 			hoverOver.Play();
 		//updates current upgrade
@@ -206,16 +221,17 @@ public class UpgradeItems : MonoBehaviour {
 		//display current upgrade and next upgrade
         curText.GetComponent<Text>().text = "Fire Rate: " + Mathf.Round(DataStorage.fireRate[DataStorage.curWeapon] * 100.0f) + "%";
 		if (DataStorage.curFireRate [DataStorage.curWeapon] < 5)
-            nextText.GetComponent<Text>().text = "Next Level: " + Mathf.Round((DataStorage.fireRate[DataStorage.curWeapon] + DataStorage.upFireRate[DataStorage.curWeapon]) * 100.0f) + "%";
+            nextText.GetComponent<Text>().text = "Next Level: " + Mathf.Round((DataStorage.fireRate[DataStorage.curWeapon] - DataStorage.upFireRate[DataStorage.curWeapon]) * 100.0f) + "%";
 		else
 			nextText.GetComponent<Text> ().text = " ";	
 
 		//display current money and price
-		curMoney.GetComponent<Text> ().text = "$" + DataStorage.money;
-		price.GetComponent<Text> ().text = "Cost: $" + DataStorage.frCost[DataStorage.curWeapon];
+		curMoney.GetComponent<Text> ().text = "$" + DataStorage.money.ToString("n0");;
+		price.GetComponent<Text> ().text = "Cost: $" + _price;
 	}
 	public void HoverOverCritical()
 	{
+		float _price = Exchange (DataStorage.CCCost [DataStorage.curWeapon]);
 		if (!upgradeSuccessful.isPlaying)
 			hoverOver.Play();
 		//updates current upgrade
@@ -235,11 +251,12 @@ public class UpgradeItems : MonoBehaviour {
 		//upgradeSelect.GetComponent<RawImage>().texture = _critical;
 
 		//display current money and price
-		curMoney.GetComponent<Text> ().text = "$" + DataStorage.money;
-		price.GetComponent<Text> ().text = "Cost: $" + DataStorage.CCCost[DataStorage.curWeapon];
+		curMoney.GetComponent<Text> ().text = "$" + DataStorage.money.ToString("n0");;
+		price.GetComponent<Text> ().text = "Cost: $" + _price;
 	}
 	public void HoverOverAccuracy()
 	{
+		float _price = Exchange (DataStorage.acCost [DataStorage.curWeapon]);
 		if (!upgradeSuccessful.isPlaying)
 			hoverOver.Play();
 		//updates current upgrade
@@ -260,11 +277,12 @@ public class UpgradeItems : MonoBehaviour {
 		//upgradeSelect.GetComponent<RawImage>().texture = _accuracy;
 
 		//display current money and price
-		curMoney.GetComponent<Text> ().text = "$" + DataStorage.money;
-		price.GetComponent<Text> ().text = "Cost: $" + DataStorage.acCost[DataStorage.curWeapon];
+		curMoney.GetComponent<Text> ().text = "$" + DataStorage.money.ToString("n0");;
+		price.GetComponent<Text> ().text = "Cost: $" + _price;
 	}
 	public void HoverOverRange()
 	{
+		float _price = Exchange (DataStorage.rangeCost [DataStorage.curWeapon]);
 		if (!upgradeSuccessful.isPlaying)
 			hoverOver.Play();
 		//updates current upgrade
@@ -275,7 +293,7 @@ public class UpgradeItems : MonoBehaviour {
 			DeactivateUpgrades ();
 
 		//display current upgrade and next upgrade
-        curText.GetComponent<Text>().text = "Range: " + (DataStorage.range[DataStorage.curWeapon] * 10)/1 + "%";
+        curText.GetComponent<Text>().text = "Recoil: " + (DataStorage.range[DataStorage.curWeapon] * 10)/1 + "%";
 		if (DataStorage.curRange [DataStorage.curWeapon] < 5)
             nextText.GetComponent<Text>().text = "Next Level: " + Mathf.Round((DataStorage.range[DataStorage.curWeapon] + DataStorage.upRange[DataStorage.curWeapon]) * 10)/1  + "%";
 		else
@@ -286,26 +304,40 @@ public class UpgradeItems : MonoBehaviour {
 
 
 		//display current money and price
-		curMoney.GetComponent<Text> ().text = "$" + DataStorage.money;
-		price.GetComponent<Text> ().text = "Cost: $" + DataStorage.rangeCost[DataStorage.curWeapon];
+		curMoney.GetComponent<Text> ().text = "$" + DataStorage.money.ToString("n0");;
+		price.GetComponent<Text> ().text = "Cost: $" + _price;
 	}
 
+
+
+	//returning the exchange
+	public float Exchange(float value)
+	{
+		//DataStorage.money - value;
+		if (DataStorage.charisma > value * .4f)
+			value -= value * .4f;
+		else
+			value -= DataStorage.charisma;
+		return value;
+	}
 
 
 	//Upgrade Damage of current equiped weapon
 	public void UpDamage()
 	{
+		float price = Exchange (DataStorage.damageCost [DataStorage.curWeapon]);
 		//upgrade damage and sbtracting the cost
 		//checking to see if weapon is not fully maxed
 		if (DataStorage.curDamage[DataStorage.curWeapon] < 5)
 			//checking to see if the player has enough money
-		if (DataStorage.money > DataStorage.damageCost[DataStorage.curWeapon]) {
-			DataStorage.money -= DataStorage.damageCost [DataStorage.curWeapon];
+		if (DataStorage.money > price) 
+		{
+			DataStorage.money -= (int)price;
 			DataStorage.damageCost [DataStorage.curWeapon] += 25;
             DataStorage.weaponDamage[DataStorage.curWeapon] += DataStorage.upDamage[DataStorage.curWeapon];
 			DataStorage.sellValue[DataStorage.curWeapon] += 8;
 			//adding stats
-			DataStorage.moneySpent += DataStorage.damageCost [DataStorage.curWeapon];
+			DataStorage.moneySpent += (int)price;
 			//play sound
 			upgradeSuccessful.Play();
 			//display current upgrade and next upgrade
@@ -336,15 +368,16 @@ public class UpgradeItems : MonoBehaviour {
 	//Upgrade Reload of current equiped weapon
 	public void UpReload()
 	{
+		float price = Exchange (DataStorage.reloadCost[DataStorage.curWeapon]);
 		//checking to see if weapon is not fully maxed
 		if (DataStorage.curReload[DataStorage.curWeapon] < 5)
-		if (DataStorage.money > DataStorage.reloadCost[DataStorage.curWeapon]) {
-			DataStorage.money -= DataStorage.reloadCost [DataStorage.curWeapon];
+		if (DataStorage.money > (int)price) {
+			DataStorage.money -= (int)price;
 			DataStorage.reloadCost [DataStorage.curWeapon] += 25;
-            DataStorage.reload[DataStorage.curWeapon] += DataStorage.upReload[DataStorage.curWeapon];
+            DataStorage.reload[DataStorage.curWeapon] -= DataStorage.upReload[DataStorage.curWeapon];
 			DataStorage.sellValue[DataStorage.curWeapon] += 8;
 			//adding stats
-			DataStorage.moneySpent += DataStorage.reloadCost [DataStorage.curWeapon];
+			DataStorage.moneySpent += (int)price;
 			//play sound
 			upgradeSuccessful.Play();
 
@@ -376,15 +409,16 @@ public class UpgradeItems : MonoBehaviour {
 	//Upgrade Damage of current equiped weapon
 	public void UpCapacity()
 	{
+		float price = Exchange (DataStorage.capacityCost [DataStorage.curWeapon]);
 		//checking to see if weapon is not fully maxed
 		if (DataStorage.curCapacity[DataStorage.curWeapon] < 5)
-		if (DataStorage.money > DataStorage.capacityCost [DataStorage.curWeapon]) {
-			DataStorage.money -= DataStorage.capacityCost [DataStorage.curWeapon];
+		if (DataStorage.money > (int)price) {
+			DataStorage.money -= (int)price;
 			DataStorage.capacityCost [DataStorage.curWeapon] += 25;
             DataStorage.capacity[DataStorage.curWeapon] += DataStorage.upCapacity[DataStorage.curWeapon];
 			DataStorage.sellValue [DataStorage.curWeapon] += 8;
 			//adding stats
-			DataStorage.moneySpent += DataStorage.capacityCost [DataStorage.curWeapon];
+			DataStorage.moneySpent += (DataStorage.capacityCost [DataStorage.curWeapon]- DataStorage.charisma);
 			//play sound
 			upgradeSuccessful.Play();
 			//display current upgrade and next upgrade
@@ -414,15 +448,16 @@ public class UpgradeItems : MonoBehaviour {
 	//Upgrade Fire Rate of current equiped weapon
 	public void UpFireRate()
 	{
+		float price = Exchange (DataStorage.frCost [DataStorage.curWeapon]);
 		//checking to see if weapon is not fully maxed
 		if (DataStorage.curFireRate[DataStorage.curWeapon] < 5)
-		if (DataStorage.money > DataStorage.frCost[DataStorage.curWeapon]) {
-			DataStorage.money -= DataStorage.frCost [DataStorage.curWeapon];
+		if (DataStorage.money > (int)price) {
+			DataStorage.money -= (int)price;
 			DataStorage.frCost [DataStorage.curWeapon] += 25;
-			DataStorage.fireRate[DataStorage.curWeapon] += DataStorage.upFireRate[DataStorage.curWeapon];
+			DataStorage.fireRate[DataStorage.curWeapon] -= DataStorage.upFireRate[DataStorage.curWeapon];
 			DataStorage.sellValue[DataStorage.curWeapon] += 8;
 			//adding stats
-			DataStorage.moneySpent += DataStorage.frCost [DataStorage.curWeapon];
+			DataStorage.moneySpent += (DataStorage.frCost[DataStorage.curWeapon]- DataStorage.charisma);
 			//play sound
 			upgradeSuccessful.Play();
 			//display current upgrade and next upgrade
@@ -455,16 +490,16 @@ public class UpgradeItems : MonoBehaviour {
 	//Upgrade accuracy of current equiped weapon
 	public void UpAccuracy()
 	{
+		float price = Exchange (DataStorage.acCost [DataStorage.curWeapon]);
 		//checking to see if weapon is not fully maxed
 		if (DataStorage.curAccuracy[DataStorage.curWeapon] < 5)
-		if (DataStorage.money > DataStorage.acCost[DataStorage.curWeapon]) 
-		{
-			DataStorage.money -= DataStorage.acCost [DataStorage.curWeapon];
+		if (DataStorage.money > (int)price) {
+			DataStorage.money -= (int)price;
 			DataStorage.acCost [DataStorage.curWeapon] += 25;
 			DataStorage.accuracy[DataStorage.curWeapon] += DataStorage.upAccuracy[DataStorage.curWeapon];
 			DataStorage.sellValue[DataStorage.curWeapon] += 8;
 			//adding stats
-			DataStorage.moneySpent += DataStorage.acCost [DataStorage.curWeapon];
+			DataStorage.moneySpent += (DataStorage.acCost[DataStorage.curWeapon]- DataStorage.charisma);
 			//play sound
 			upgradeSuccessful.Play();
 			//display current upgrade and next upgrade
@@ -495,15 +530,16 @@ public class UpgradeItems : MonoBehaviour {
 	//Upgrade accuracy of current equiped weapon
 	public void UpRange()
 	{
+		float price = Exchange (DataStorage.rangeCost [DataStorage.curWeapon]);
 		//checking to see if weapon is not fully maxed
 		if (DataStorage.curRange[DataStorage.curWeapon] < 5)
-		if (DataStorage.money > DataStorage.rangeCost[DataStorage.curWeapon]) {
-			DataStorage.money -= DataStorage.rangeCost [DataStorage.curWeapon];
+		if (DataStorage.money > (int)price) {
+			DataStorage.money -= (int)price;
 			DataStorage.rangeCost [DataStorage.curWeapon] += 25;
             DataStorage.range[DataStorage.curWeapon] += DataStorage.upRange[DataStorage.curWeapon];
 			DataStorage.sellValue[DataStorage.curWeapon] += 8;
 			//adding stats
-			DataStorage.moneySpent += DataStorage.rangeCost [DataStorage.curWeapon];
+			DataStorage.moneySpent += (DataStorage.rangeCost[DataStorage.curWeapon]- DataStorage.charisma) ;
 			//play sound
 			upgradeSuccessful.Play();
 			//display current upgrade and next upgrade
@@ -533,19 +569,19 @@ public class UpgradeItems : MonoBehaviour {
 	//Upgrade accuracy of current equiped weapon
 	public void UpCritical()
 	{
-		
+		float price = Exchange (DataStorage.CCCost [DataStorage.curWeapon]);
 		//display current upgrade and next upgrade
 
 		//checking to see if weapon is not fully maxed
 		if (DataStorage.curCrit[DataStorage.curWeapon] < 5)
-		if (DataStorage.money > DataStorage.CCCost [DataStorage.curWeapon]) {
-			DataStorage.money -= DataStorage.CCCost [DataStorage.curWeapon];
+		if (DataStorage.money > (int)price) {
+			DataStorage.money -= (int)price;
 			DataStorage.CCCost [DataStorage.curWeapon] += 25;
 			DataStorage.criticalChance [DataStorage.curWeapon] += DataStorage.upCritical[DataStorage.curWeapon];
 			DataStorage.criticalChance [DataStorage.curWeapon] = Mathf.Round(DataStorage.criticalChance [DataStorage.curWeapon]*100.0f)/100.0f;
 			DataStorage.sellValue [DataStorage.curWeapon] += 8;
 			//adding stats
-			DataStorage.moneySpent += DataStorage.CCCost [DataStorage.curWeapon];
+			DataStorage.moneySpent += (DataStorage.CCCost [DataStorage.curWeapon]- DataStorage.charisma);
 			//play sound
 			upgradeSuccessful.Play();
 

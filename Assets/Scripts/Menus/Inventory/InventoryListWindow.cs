@@ -11,20 +11,30 @@ public class InventoryListWindow : MonoBehaviour {
     int yPos = 0;
     GameObject itemSlot;
 
-    int itemCount;
+	public Text invStrngth;
+	public Text invConst;
+	public Text invFort;
+	public Text invDex;
+	public Text invAgil;
+	public Text invLuck;
+	public Text invChar;
+	public Text invPerc;
+	public Text invInt;
+	public Text invHP;
+	public Text invCurLevel;
+	public Text invCurXp;
+	public Text invNextXp;
+	public Text invMoney;
+	public GameObject xpBar;
+	
 
-	// Use this for initialization
-	void Start () {
-       // CreateInventorySlotWindow();
-	}
-	
-	// Update is called once per frame
-	void Update () {
-	
-	}
+    int itemCount;
 
     void OnEnable()
     {
+	//calling the function that will set up the stats
+		SetUpStats();
+
         //resetting itemCount
         itemCount = 0;
         
@@ -243,14 +253,43 @@ public class InventoryListWindow : MonoBehaviour {
             CreateInventorySlotWindow();
         }
     }
+	//displaying information and content
+	void SetUpStats()
+	{
+		try 
+		{
+			DataStorage.HUD.SetActive(false);
+		}
+		catch
+		{
+			DataStorage.HUD = GameObject.Find("All Canvases/Canvas/HUD");
+			DataStorage.HUD.SetActive(false);
+		}
+		invStrngth.text = "Strength: " + DataStorage.strength.ToString();
+		invConst.text = "Constitution: " + DataStorage.constitution.ToString();
+		invFort.text = "Fortitude: " + DataStorage.fortitude.ToString();
+		invDex.text = "Dexterity: " + DataStorage.dexterity.ToString();
+		invAgil.text = "Agility: " + DataStorage.agility.ToString();
+		invLuck.text = "Luck: " + DataStorage.luck.ToString();
+		invChar.text = "Charisma: " + DataStorage.charisma.ToString();
+		invPerc.text = "Perception: " + DataStorage.perception.ToString();
+		invInt.text = "Intelligence: " + DataStorage.intelligence.ToString();
+		invHP.text = "Health: " + DataStorage.health.ToString() + " / " + DataStorage.maxHealth;
+		invMoney.text = "$" + DataStorage.money.ToString("n0");
+		invCurLevel.text = "Level: " + DataStorage.currentLevel.ToString();
+		invCurXp.text = DataStorage.XP.ToString("n0");
+		invNextXp.text = DataStorage.maxXP.ToString("n0");
+		xpBar.transform.localScale = new Vector3 ((float)DataStorage.XP/DataStorage.maxXP,1,1);
+	}
 
-    //destroying the items upon exit
+    //destroying the items upon exit, so that when we enable the inventory, it wont double the items
     void OnDisable()
     {
         foreach (Transform child in content.transform)
         {
             GameObject.Destroy(child.gameObject);
         }
+		DataStorage.HUD.SetActive(true);
      }
     //creating the width, height, and transform of each game object
     private void CreateInventorySlotWindow()

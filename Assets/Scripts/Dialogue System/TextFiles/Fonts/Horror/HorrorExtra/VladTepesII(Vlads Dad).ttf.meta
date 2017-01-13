@@ -1,0 +1,20 @@
+fileFormatVersion: 2
+guid: 213bb1db9f8f0fa4eab62b2698bff82f
+timeCreated: 1479071187
+licenseType: Free
+TrueTypeFontImporter:
+  serializedVersion: 4
+  fontSize: 16
+  forceTextureCase: -2
+  characterSpacing: 0
+  characterPadding: 1
+  includeFontData: 1
+  fontNames:
+  - VladTepesII (Vlads Dad)
+  fallbackFontReferences: []
+  customCharacters: 
+  fontRenderingMode: 0
+  ascentCalculationMode: 1
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

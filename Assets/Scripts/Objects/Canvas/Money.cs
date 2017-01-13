@@ -17,10 +17,7 @@ public class Money : MonoBehaviour {
     {
         target = GameObject.FindWithTag("Player").transform;
         icons = GameObject.Find("Icons");
-
 	}
-
-
     void Update()
     {
         if (isCoin)
@@ -31,27 +28,24 @@ public class Money : MonoBehaviour {
             transform.position = Vector3.SmoothDamp(transform.position, targetPos, ref dir, .2f);
         }
     }
-
-
     void OnTriggerEnter(Collider other)
     {
-        if (other.tag == "Player")
-        {
-            if (isCoin)
-            {
-                GetComponent<Money>().enabled = true;
-                GetComponent<AudioSource>().Play();
-                value = Random.Range(1, 5);
-                StartCoroutine(Wait(.2f));
-            }
-            else
-            {
-                GetComponent<AudioSource>().Play();
-                value = Random.Range(10, 25);
-                StartCoroutine(Wait(.2f));
-            }
-        }
-
+		if (other.tag == "Player")
+		{
+			if (isCoin) 
+			{
+				GetComponent<Money> ().enabled = true;
+				GetComponent<AudioSource> ().Play ();
+				value = Random.Range (1, 5);
+				StartCoroutine (Wait (.2f));
+			} 
+			else 
+			{
+				GetComponent<AudioSource> ().Play ();
+				value = Random.Range (10, 25);
+				StartCoroutine (Wait (.2f));
+			}
+		}
     }
     //pick up normal coin
     IEnumerator Wait(float waitTime)
@@ -78,6 +72,7 @@ public class Money : MonoBehaviour {
 
     GameObject InitCBT(string text)
     {
+		DataStorage.DisplayGold ();
         GameObject temp = Instantiate(CBTMoney) as GameObject;
         RectTransform tempRect = temp.GetComponent<RectTransform>();
         temp.transform.SetParent(icons.transform.FindChild("MoneyValue"));

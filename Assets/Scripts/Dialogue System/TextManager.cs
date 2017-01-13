@@ -3,10 +3,7 @@ using System.Collections;
 using UnityEngine.UI;
 
 public class TextManager : MonoBehaviour {
-	
 
-	public GameObject textBox;
-	public GameObject player;
 	public Text theText;
 
 	[HideInInspector]
@@ -26,13 +23,6 @@ public class TextManager : MonoBehaviour {
 	private float textSpeed = .06f;
 	
 	private int resumeCourotine; //used to resume the forloop of the courotine
-
-
-	// Use this for initialization
-
-	void Start () {
-
-	}
 	
 	// Update is called once per frame
 	void Update () 
@@ -67,7 +57,6 @@ public class TextManager : MonoBehaviour {
 		{
 			SkipToNextText();
 			StartCoroutine(AnimateText());
-
 		}
 
 	}
@@ -84,7 +73,7 @@ public class TextManager : MonoBehaviour {
 		//disable text box once the array reaches its end
 		if (curLine > endLine) 
 		{
-			player.GetComponent<Controls> ().enabled = true;
+			DataStorage.player.GetComponent<Controls> ().enabled = true;
 			curLine = 0;
 			DisableText();
 		}
@@ -122,16 +111,16 @@ public class TextManager : MonoBehaviour {
 		//			theText.text = textLines[curLine];
 		wait = true;
 		StartCoroutine(AnimateText());
-		player.GetComponent<Controls> ().enabled = false;
-		textBox.SetActive (true);
+		DataStorage.player.GetComponent<Controls> ().enabled = false;
+		DataStorage.textBox.SetActive (true);
 	}
 	//disabling or turning the dialogue box off
 	public void DisableText()
 	{
 		curLine = 0;
 		wait = false;
-		player.GetComponent<Controls> ().enabled = true;
-		textBox.SetActive (false);
+		DataStorage.player.GetComponent<Controls> ().enabled = true;
+		DataStorage.textBox.SetActive (false);
 	}
 	//this little function will change the text file completely. 
 	//that way, every NPC will have a different conversations based upon which text document is loaded
@@ -155,7 +144,7 @@ public class TextManager : MonoBehaviour {
 		{
 			if (scan > 0)
 			{
-				scan -= 1;
+			scan -= 1;
 			portrait[scan].gameObject.SetActive(false);
 			}
 			portrait[curLine].gameObject.SetActive(true);

@@ -20,7 +20,8 @@ public static class SaveLoadManager{
 
 	public static float[] LoadGame()
 	{
-		if (File.Exists (Application.persistentDataPath + "/DataStorage.sav")) {
+		if (File.Exists (Application.persistentDataPath + "/DataStorage.sav"))
+		{
 			BinaryFormatter bf = new BinaryFormatter ();
 			FileStream stream = new FileStream (Application.persistentDataPath + "/DataStorage.sav", FileMode.Open);
 			PlayerData data = bf.Deserialize (stream) as PlayerData;
@@ -30,7 +31,7 @@ public static class SaveLoadManager{
 		else 
 		{
 			Debug.LogError("No saved data found");
-			return new float[313];
+			return new float[383];
 		}
 	}
 }
@@ -44,7 +45,7 @@ public class PlayerData{
 
 	public PlayerData(DataStorage player)
 	{
-		stats = new float[313];
+			stats = new float[383];
 			stats [0] = DataStorage.money;
 			stats [1] = DataStorage.currentLevel;
 			stats [2] = DataStorage.XP;
@@ -127,7 +128,6 @@ public class PlayerData{
 		stats [72] = DataStorage.reload[16];
 
 		//accuracy
-
 		stats [73] = DataStorage.accuracy[0];
 		stats [74] = DataStorage.accuracy[1];
 		stats [75] = DataStorage.accuracy[2];
@@ -402,11 +402,101 @@ public class PlayerData{
 		stats [309] = DataStorage.totalXP;
 		stats [310] = DataStorage.shopKeepTimer;
         stats[311] = DataStorage.maxWeight;
-        stats[312] = DataStorage.maxWeight;
+        stats[312] = DataStorage.curItems;
+		stats[313] = DataStorage.curWeight;
 
-        
-			//PlayerDisplay.UpdateDisplay();
+		//curent holsters
+		stats[314] = DataStorage.holster[0];
+		stats[315] = DataStorage.holster[1];
+		stats[316] = DataStorage.holster[2];
+		stats[317] = DataStorage.holster[3];
+		stats[318] = DataStorage.holster[4];
+		stats[319] = DataStorage.holster[5];
+		stats[320] = DataStorage.holster[6];
+		stats[321] = DataStorage.holster[7];
+		stats[322] = DataStorage.holster[8];
+		stats[323] = DataStorage.holster[9];
+		stats[324] = DataStorage.holster[10];
+		stats[325] = DataStorage.holster[11];
+		stats[326] = DataStorage.holster[12];
+		stats[327] = DataStorage.holster[13];
+		stats[328] = DataStorage.holster[14];
+		stats[329] = DataStorage.holster[15];
+		stats[330] = DataStorage.holster[16];
+		stats[331] = DataStorage.holster[17];
+		stats[332] = DataStorage.holster[18];
+		stats[333] = DataStorage.holster[19];
+		stats[334] = DataStorage.holster[20];
+		stats[335] = DataStorage.damage;
 
-	}
+		//player stats (attributes)
+
+		stats[336] = DataStorage.strength;
+		stats[337] = DataStorage.constitution;
+		stats[338] = DataStorage.fortitude;
+		stats[339] = DataStorage.dexterity;
+		stats[340] = DataStorage.luck;
+		stats[341] = DataStorage.perception;
+		stats[342] = DataStorage.agility;
+		stats[343] = DataStorage.intelligence;
+		stats[344] = DataStorage.charisma;
+		stats[345] = DataStorage.playerStats;
+		stats [346] = DataStorage.lightAngle;
+		stats [347] = DataStorage.lightRange;
+		stats [348] = DataStorage.speed;
+
+
+		//need to add save/load upgrades for the new weapons
+		stats [349] = DataStorage.weaponDamage[17];
+		stats [350] = DataStorage.weaponDamage[18];
+		stats [351] = DataStorage.weaponDamage[19];
+		stats [352] = DataStorage.weaponDamage[20];
+
+		stats [353] = DataStorage.capacity[17];
+		stats [354] = DataStorage.capacity[18];
+		stats [355] = DataStorage.capacity[19];
+		stats [356] = DataStorage.capacity[20];
+
+		stats [357] = DataStorage.reload[17];
+		stats [358] = DataStorage.reload[18];
+		stats [359] = DataStorage.reload[19];
+		stats [360] = DataStorage.reload[20];
+
+		stats [361] = DataStorage.accuracy[17];
+		stats [362] = DataStorage.accuracy[18];
+		stats [363] = DataStorage.accuracy[19];
+		stats [364] = DataStorage.accuracy[20];
+
+		stats [365] = DataStorage.range[17];
+		stats [366] = DataStorage.range[18];
+		stats [367] = DataStorage.range[19];
+		stats [368] = DataStorage.range[20];
+
+		stats [369] = DataStorage.criticalChance[17];
+		stats [370] = DataStorage.criticalChance[18];
+		stats [371] = DataStorage.criticalChance[19];
+		stats [372] = DataStorage.criticalChance[20];
+
+		stats [373] = DataStorage.fireRate[17];
+		stats [374] = DataStorage.fireRate[18];
+		stats [375] = DataStorage.fireRate[19];
+		stats [376] = DataStorage.fireRate[20];
+
+		stats [377] = DataStorage.itemsSold;
+		stats [378] = DataStorage.itemsBought;
+        stats [379] = DataStorage.equippedItem;
+
+        //difficuty
+        stats [380] = DataStorage.difficulty;
+		//shotsMissed
+        stats [381] = DataStorage.shotsMissed;
+		//battlesWon
+        stats [382] = DataStorage.battlesWon;
+
+
+
+        //PlayerDisplay.UpdateDisplay();
+
+    }
 }
 
