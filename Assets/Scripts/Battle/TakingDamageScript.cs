@@ -101,7 +101,8 @@ public class TakingDamageScript : MonoBehaviour {
     }
     //turning off the action text after waiting for a short duration
     IEnumerator Failed(float waitTime)
-        {
+    {
+        DataStorage.failedDodges++;
         TakeDamage();
         StopCoroutine(timeFailure);
         actionText.GetComponent<Text>().text = "Failed!";
@@ -115,6 +116,7 @@ public class TakingDamageScript : MonoBehaviour {
     //the dodge function
     public void Dodge()
     {
+        DataStorage.successfulDodges++;
         //prevent the player from shooting
         CombatScript.fireRate = Time.time + 1.5f;
         StopCoroutine(timeFailure);
@@ -130,7 +132,8 @@ public class TakingDamageScript : MonoBehaviour {
 		gameObject.GetComponent<CombatScript>().textXP.GetComponent<Text>().text = "+ " + (5 * DataStorage.currentLevel + (DataStorage.intelligence/4)) + "  XP";
 		gameObject.GetComponent<CombatScript>().textXP.GetComponent<Animator>().Play("XPGain", -1, 0f);
 		gameObject.GetComponent<CombatScript>().myXP += (5 * DataStorage.currentLevel + (DataStorage.intelligence/4));
-		//textXP.GetComponent<Animator>().Play("XPGain", -1, 0f);
+        //adding to the amount of xp that is gained for this battle
+        CombatScript.xpGained += (5 * DataStorage.currentLevel + (DataStorage.intelligence / 4));
     }
 
     //taking a hit
@@ -139,6 +142,8 @@ public class TakingDamageScript : MonoBehaviour {
         //prevent the player from shooting
         CombatScript.fireRate = Time.time + 1.5f;
 		DataStorage.health -= enemyDamage;
+        DataStorage.damageTaken += enemyDamage;
+        CombatScript.damageRecieved += enemyDamage;
         if (DataStorage.health > enemyDamage)
         {
             Backgrounds.GetComponent<Animator>().Play("ScreneHitLeft", -1, 0f);

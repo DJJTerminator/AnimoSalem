@@ -43,10 +43,15 @@ public class StatsScript : MonoBehaviour {
 	Text targetsHit;
 	Text itemsBought;
 	Text battlesWon;
+    Text criticalHits;
+    Text successfulDodges;
+    Text failedDodges;
+    Text shortestBattle;
+    Text longestBattle;
 
 
-	// Use this for initialization
-	void Awake () 
+    // Use this for initialization
+    void Awake () 
 	{
 		//finding all game objects
 		strengthV = GameObject.Find ("All Canvases/Canvas/LevelStats/Panel/Strength/Button/Value/Text").GetComponent<Text>();
@@ -89,33 +94,44 @@ public class StatsScript : MonoBehaviour {
 		targetsHit= GameObject.Find ("All Canvases/Canvas/LevelStats/GameInfo/Image/Frame/Info/ShotsHit").GetComponent<Text>();
 		itemsBought= GameObject.Find ("All Canvases/Canvas/LevelStats/GameInfo/Image/Frame/Info/ItemsBought").GetComponent<Text>();
 		battlesWon = GameObject.Find ("All Canvases/Canvas/LevelStats/GameInfo/Image/Frame/Info/BattlesWon").GetComponent<Text>();
-	
+        criticalHits = GameObject.Find("All Canvases/Canvas/LevelStats/GameInfo/Image/Frame/Info/CriticalHits").GetComponent<Text>();
+        successfulDodges = GameObject.Find("All Canvases/Canvas/LevelStats/GameInfo/Image/Frame/Info/SuccessfulDodges").GetComponent<Text>();
+        failedDodges = GameObject.Find("All Canvases/Canvas/LevelStats/GameInfo/Image/Frame/Info/FailedDodges").GetComponent<Text>();
+        longestBattle = GameObject.Find("All Canvases/Canvas/LevelStats/GameInfo/Image/Frame/Info/LongestBattle").GetComponent<Text>();
+        shortestBattle = GameObject.Find("All Canvases/Canvas/LevelStats/GameInfo/Image/Frame/Info/ShortestBattle").GetComponent<Text>();
 
-		ShowStats ();
+
+        ShowStats ();
 	}
 
 	void OnEnable()
 	{
-		dmgTaken.text = "Damage Taken: " + DataStorage.damageTaken.ToString();
+        shortestBattle.text = "Shortest Battle: " + DataStorage.shortestBattle.ToString();
+        longestBattle.text = "Longest Battle: " + DataStorage.longestBattle.ToString();
+        dmgTaken.text = "Damage Taken: " + DataStorage.damageTaken.ToString();
+        dmgTaken.text = "Damage Taken: " + DataStorage.damageTaken.ToString();
 		dmgDealt.text = "Damage Dealt: " + DataStorage.damageDealt.ToString();
-		itemsUsed.text = "Items Used: " + DataStorage.itemsUsed.ToString();
+        criticalHits.text = "Critical Hits: " + DataStorage.criticalHits.ToString();
+        itemsUsed.text = "Items Used: " + DataStorage.itemsUsed.ToString();
 		itemsSold.text = "Items Sold: " + DataStorage.itemsSold.ToString();
 		itemsBought.text = "Items Bought: " + DataStorage.itemsBought.ToString();
 		totalSaves.text = "Games Saved: " + DataStorage.numberOfSaves.ToString();
 		enemiesKilled.text = "Kills: " + DataStorage.enemiesKilled.ToString();
 		battlesWon.text = "Battles Won: " + DataStorage.battlesWon.ToString();
-		totalXP.text = "Total XP: " + DataStorage.totalXP.ToString();
+        successfulDodges.text = "Critical Hits: " + DataStorage.successfulDodges.ToString();
+        failedDodges.text = "Critical Hits: " + DataStorage.failedDodges.ToString();
+        totalXP.text = "Total XP: " + DataStorage.totalXP.ToString();
 		totalMoney.text = "Earned: " + "$"+ DataStorage.totalMoneyEarned.ToString();
 		moneySpent.text = "Money Spent: " + DataStorage.moneySpent.ToString();
 		totalTime.text = "Total Time: " + DataStorage.currentTime.ToString();
 		hitRatio.text = "Accuracy: " + (Mathf.Round((((float)DataStorage.targetsHit/(float)DataStorage.shotsFired)*1000)/10)).ToString() + "%";
 		targetsHit.text = "Shots Hit: " + DataStorage.targetsHit.ToString();
 		shotsFired.text = "Shots Fired: " + DataStorage.shotsFired.ToString();
-		shotsMissed.text = "Shots Missed: " + DataStorage.shotsMissed.ToString();
-
+        successfulDodges.text = "Successful QTE: " + DataStorage.successfulDodges.ToString();
+        failedDodges.text = "Failed QTE: " + DataStorage.failedDodges.ToString();
+        shotsMissed.text = "Shots Missed: " + (DataStorage.shotsFired - DataStorage.targetsHit).ToString();
 		damage.text = "Damage " + (Mathf.Round((DataStorage.damage + DataStorage.weaponDamage[DataStorage.curWeapon])*100f)/100f).ToString();
         ShowStats();
-
     }
 
 	//displays and updates all stats

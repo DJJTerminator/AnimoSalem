@@ -31,7 +31,7 @@ public static class SaveLoadManager{
 		else 
 		{
 			Debug.LogError("No saved data found");
-			return new float[383];
+			return new float[387];
 		}
 	}
 }
@@ -45,7 +45,7 @@ public class PlayerData{
 
 	public PlayerData(DataStorage player)
 	{
-			stats = new float[383];
+			stats = new float[387];
 			stats [0] = DataStorage.money;
 			stats [1] = DataStorage.currentLevel;
 			stats [2] = DataStorage.XP;
@@ -489,11 +489,13 @@ public class PlayerData{
         //difficuty
         stats [380] = DataStorage.difficulty;
 		//shotsMissed
-        stats [381] = DataStorage.shotsMissed;
+        stats [381] = DataStorage.criticalHits;
 		//battlesWon
-        stats [382] = DataStorage.battlesWon;
-
-
+        stats[382] = DataStorage.battlesWon;
+        stats[383] = DataStorage.successfulDodges;
+        stats[384] = DataStorage.failedDodges;
+        stats[385] = DataStorage.shortestBattle;
+        stats[386] = DataStorage.longestBattle;
 
         //PlayerDisplay.UpdateDisplay();
 
