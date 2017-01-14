@@ -1218,7 +1218,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &46528041
 RectTransform:
   m_ObjectHideFlags: 0
@@ -8544,13 +8544,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ead29deaaf8bebc4da43d82c01af4a2b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Victory: {fileID: 1377359265}
+  victory: {fileID: 1377359265}
   xpBar: {fileID: 409263186}
   xpText: {fileID: 1923318555}
   LevelUp: {fileID: 996700783}
   levelingUp: {fileID: 1510310702}
   levelUp: {fileID: 1219027093}
   prizes: {fileID: 1222565577}
+  dealt: {fileID: 1433003534}
+  taken: {fileID: 1565516900}
+  grade: {fileID: 1680979879}
+  accuracy: {fileID: 228304488}
+  experience: {fileID: 172153129}
+  totalTime: {fileID: 2001496316}
+  score: {fileID: 46528040}
 --- !u!114 &216292042
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -54602,7 +54609,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: B+
+  m_Text: 
 --- !u!222 &1680979880
 CanvasRenderer:
   m_ObjectHideFlags: 0

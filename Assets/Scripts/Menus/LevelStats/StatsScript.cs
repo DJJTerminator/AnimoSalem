@@ -106,6 +106,8 @@ public class StatsScript : MonoBehaviour {
 
 	void OnEnable()
 	{
+        System.TimeSpan t = System.TimeSpan.FromSeconds(DataStorage.currentTime);
+        string timerFormatted = string.Format("Time: {0:D2}d:{1:D2}h:{2:D2}m:{3:D2}s", t.Days, t.Hours, t.Minutes, t.Seconds);
         shortestBattle.text = "Shortest Battle: " + DataStorage.shortestBattle.ToString();
         longestBattle.text = "Longest Battle: " + DataStorage.longestBattle.ToString();
         dmgTaken.text = "Damage Taken: " + DataStorage.damageTaken.ToString();
@@ -123,8 +125,8 @@ public class StatsScript : MonoBehaviour {
         totalXP.text = "Total XP: " + DataStorage.totalXP.ToString();
 		totalMoney.text = "Earned: " + "$"+ DataStorage.totalMoneyEarned.ToString();
 		moneySpent.text = "Money Spent: " + DataStorage.moneySpent.ToString();
-		totalTime.text = "Total Time: " + DataStorage.currentTime.ToString();
-		hitRatio.text = "Accuracy: " + (Mathf.Round((((float)DataStorage.targetsHit/(float)DataStorage.shotsFired)*1000)/10)).ToString() + "%";
+        totalTime.text = timerFormatted;
+        hitRatio.text = "Accuracy: " + (Mathf.Round((((float)DataStorage.targetsHit/(float)DataStorage.shotsFired)*1000)/10)).ToString() + "%";
 		targetsHit.text = "Shots Hit: " + DataStorage.targetsHit.ToString();
 		shotsFired.text = "Shots Fired: " + DataStorage.shotsFired.ToString();
         successfulDodges.text = "Successful QTE: " + DataStorage.successfulDodges.ToString();

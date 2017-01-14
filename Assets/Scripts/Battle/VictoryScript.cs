@@ -4,7 +4,7 @@ using UnityEngine.UI;
 
 public class VictoryScript : MonoBehaviour
 {
-    public GameObject Victory;
+    public GameObject victory;
     public GameObject xpBar;
     public Text xpText;
     int xpValue;
@@ -13,6 +13,24 @@ public class VictoryScript : MonoBehaviour
     public AudioSource levelUp;
 	[SerializeField]
 	GameObject prizes;
+    //result texts
+    [SerializeField]
+    Text dealt;
+    [SerializeField]
+    Text taken;
+    [SerializeField]
+    Text grade;
+    [SerializeField]
+    Text accuracy;
+    [SerializeField]
+    Text experience;
+    [SerializeField]
+    Text totalTime;
+
+    [SerializeField]
+    GameObject score;
+
+
 
     void Enabled()
     {
@@ -21,11 +39,48 @@ public class VictoryScript : MonoBehaviour
 			DataStorage.player = GameObject.Find ("Player");
     }
 
-    public void VictoryScene(int xp)
+    public void VictoryScene(float ac, int xp)
     {
+        dealt.text = CombatScript.damageGiven.ToString();
+        taken.text = CombatScript.damageRecieved.ToString();
+        experience.text = CombatScript.xpGained.ToString();
+        totalTime.text = Mathf.Floor(CombatScript.battleTime / 60f).ToString("00") + ":" + Mathf.Floor(CombatScript.battleTime % 60f).ToString("00") + "." + (Mathf.Floor((CombatScript.battleTime % 60f) % 10f)).ToString("00");
+        accuracy.text = ac.ToString() + "%";
+        float tempScore = 100f;
+        print(tempScore);
+        tempScore -= ac + (CombatScript.damageRecieved/(CombatScript.damageRecieved + CombatScript.damageGiven));
+        print(tempScore);
+        tempScore -= (((int)CombatScript.battleTime ^ (int)CombatScript.allottedTime)/ CombatScript.allottedTime);
+        print(tempScore);
+        tempScore /= 100;
+        print(tempScore);
+        if (tempScore < 0)
+        {
+            tempScore = 0;
+            grade.text = "S";
+        }
+        else if (tempScore < .03f)
+            grade.text = "A+";
+        else if (tempScore < .06f)
+            grade.text = "A";
+        else if (tempScore < .1f)
+            grade.text = "B+";
+        else if (tempScore < .14f)
+            grade.text = "B";
+        else if (tempScore < .18f)
+            grade.text = "C+";
+        else if (tempScore < .22f)
+            grade.text = "C";
+        else if (tempScore < .26f)
+            grade.text = "D+";
+        else if (tempScore < .3f)
+            grade.text = "D";
+        else 
+            grade.text = "F";
+
         xpValue = xp;
         xpText.text = xp.ToString();
-        Victory.SetActive(true);
+        victory.SetActive(true);
         xpBar.transform.localScale = new Vector3((float)DataStorage.XP + xpValue / (float)DataStorage.maxXP, 1, 1);
         StartCoroutine(LoadXP(.02f));
     }
@@ -83,7 +138,10 @@ public class VictoryScript : MonoBehaviour
 
     IEnumerator ReturnToGame(float waitTime)
     {
-		levelingUp.Stop();
+        score.SetActive(true);
+        victory.GetComponent<Animator>().Play ("Score");
+        yield return new WaitForSeconds(3f);
+        levelingUp.Stop();
 		prizes.SetActive(false);
         yield return new WaitForSeconds(waitTime);
 		DataStorage.gameManager.GetComponent<StatActivation> ().enabled = true;
@@ -102,6 +160,8 @@ public class VictoryScript : MonoBehaviour
 		Camera myCamera = GameObject.Find ("Main Camera").GetComponent<Camera>();
 	    myCamera.GetComponent<CameraFollow>().enabled = true;
         gameObject.SetActive(false);
+        score.SetActive(false);
+        victory.SetActive(false);
         DataStorage.battleSystem.SetActive(false);
         DataStorage.UpdateHUD();
     }
