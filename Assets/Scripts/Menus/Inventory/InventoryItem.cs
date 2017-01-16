@@ -150,7 +150,7 @@ public class InventoryItem : MonoBehaviour {
 			decide.Decide (gameObject);
 		} 
 
-				//if it was not double clciked or if eneter was not hit, then we will display the item's content
+				//if it was not double cliked or if eneter was not hit, then we will display the item's content
 				if (type == ItemType.itemWeapon) 
 				{
 					weaponStats.SetActive(true);
@@ -166,12 +166,12 @@ public class InventoryItem : MonoBehaviour {
                      rg.transform.localScale = new Vector3((float)DataStorage.curRange[weaponNumber] / 5f, 1, 0);
                         //assigning the values to each text
                      _damage.text = DataStorage.weaponDamage[weaponNumber].ToString();
-                     _reload.text = (Mathf.Round(DataStorage.reload[weaponNumber] * 100f) / 100f).ToString(); 
-            _fireRate.text = DataStorage.fireRate[weaponNumber].ToString();
+                     _reload.text = Mathf.Round(((DataStorage.reload[weaponNumber] + (DataStorage.upReload[weaponNumber] * DataStorage.curReload[weaponNumber])) * 100) / DataStorage.reload[weaponNumber]) + "%";
+                     _fireRate.text = Mathf.Round(((DataStorage.fireRate[weaponNumber] + (DataStorage.upFireRate[weaponNumber] * DataStorage.curFireRate[weaponNumber])) * 100) / DataStorage.fireRate[weaponNumber]) + "%";
                      _capacity.text = DataStorage.capacity[weaponNumber].ToString();
-                     _crit.text = DataStorage.criticalChance[weaponNumber].ToString();
-                     _range.text = DataStorage.range[weaponNumber].ToString();
-                     _accuracy.text = DataStorage.accuracy[weaponNumber].ToString();
+                     _crit.text = (DataStorage.criticalChance[weaponNumber] * 100) + "%";
+                     _range.text = ((DataStorage.range[weaponNumber] * 100) / 1) + "%";
+                     _accuracy.text = Mathf.Round(100 + (DataStorage.accuracy[weaponNumber] * 100)) + "%";
             //		myDescription.GetComponent<Text> ().text = "Damage: " + DataStorage.weaponDamage [weaponNumber] + "\n" + "Fire Rate: " + Mathf.Round (DataStorage.fireRate [weaponNumber] * 100.0f) + "%" + "\n" + "Capacity " + DataStorage.capacity [weaponNumber] + "\n" + "Reload: " + DataStorage.reload [weaponNumber] + "\n" + "Accuracy: " + Mathf.Round (DataStorage.accuracy [DataStorage.curWeapon] * 10) + "%" + "\n" + "Range: " + (DataStorage.range [DataStorage.curWeapon] * 10) / 1 + "%" + "\n" + "Crit Chance: " + (DataStorage.criticalChance [weaponNumber] * 100) + "%";
         } 
 				else 

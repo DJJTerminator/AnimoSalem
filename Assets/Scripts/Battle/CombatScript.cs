@@ -19,7 +19,7 @@ public class CombatScript : MonoBehaviour
     int addHealth = 0;
     //enemy hp and enemy targets
     float[] enemyHP = {35,22,18 };
-    float[] enemyMaxHP = { 35, 24, 30 };
+    float[] enemyMaxHP = { 35, 25, 30 };
     public GameObject[] enemyTarget;//this is used for accuracy
     public GameObject[] enemyTarget2;//these are only used for colors
     public GameObject[] enemyTarget3;//these are only used for colors
@@ -685,6 +685,7 @@ public class CombatScript : MonoBehaviour
                 gunShots[5].Play();
                 DataStorage.holster[DataStorage.curWeapon] -= 1;
                 shotsHit++;
+                DataStorage.shotsFired++;
                 //checking to see how much ammo is left over that last shot that was fired
                 if (DataStorage.holster[DataStorage.curWeapon] == 0)
                     if (DataStorage.HGAmmo > 0)
@@ -693,7 +694,6 @@ public class CombatScript : MonoBehaviour
                         NoAmmo();
                 DataStorage.UpdateHolster();
                 DataStorage.crosshair.GetComponent<Animator>().Play("Hit", -1, 0f);
-                DataStorage.shotsFired++;
                 yield return new WaitForSeconds(waitTime);//if gun is still firing, play animation
             }
             else
@@ -1215,29 +1215,24 @@ public class CombatScript : MonoBehaviour
                         temp = DataStorage.crosshair.transform.position.x / enemyTarget[i].transform.position.x;
                     else
                         temp = enemyTarget[i].transform.position.x/DataStorage.crosshair.transform.position.x;
-
-                    dmg = (Mathf.Round((DataStorage.weaponDamage[DataStorage.curWeapon] + DataStorage.damage) * temp) * 100) / 100;
+                    dmg = (Mathf.Round((DataStorage.weaponDamage[DataStorage.curWeapon] + DataStorage.damage) * temp) * 10) / 10;
                     if (crit <= DataStorage.criticalChance[DataStorage.curWeapon])
                     {
-                        dmg *= 2;
+                        dmg += (Mathf.Round(dmg * DataStorage.range[DataStorage.curWeapon]) * 10) / 10;
                         DataStorage.criticalHits++;
                     }
                     //amplifying the damage by the amount of bullets fired (if weapon that is used is the Trident tripple shot)
                     if (DataStorage.weaponName[DataStorage.curWeapon] == "Trident")
                     {
                         dmg *= shotsHit;//***********************This needs to be fixed
-                        DataStorage.targetsHit += shotsHit;
                         //checking to see how many of the trident bullets actually hit the eenemy
-                        //in oherwords, the enemy might have died on the second shot while the gun still fires three rounds
-                        for (int j = 1; j < shotsHit; j++)
-                        {
-                            if (enemyHP[i] > dmg * j)
-                                DataStorage.targetsHit += shotsHit;
-                            else j = shotsHit;
-                        }
-                    }
-                    else //counting the shots that were hit
-                    DataStorage.targetsHit++;
+                        //in otherwords, the enemy might have died on the second shot while the gun still fires three rounds
+                        DataStorage.targetsHit+= shotsHit;
+                        shotsHit = 0;
+                    }//counting the shots that were hit
+                    else
+                        DataStorage.targetsHit++;
+                    Debug.Log(DataStorage.targetsHit);
 
                     if (enemyHP[i] > dmg)
                     {
@@ -1313,6 +1308,7 @@ public class CombatScript : MonoBehaviour
 		textXP.GetComponent<Animator>().Play("XPGain", -1, 0f);
 		totalXP = 0;
 		}
+        shotsHit = 0;
     }//end of damage function
     //disable gameobjects after 2 seconds, so that the text can be seen.
     //otherwise, the game objects get disabled, and the text is never seen

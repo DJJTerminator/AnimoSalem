@@ -11,8 +11,8 @@ public class VictoryScript : MonoBehaviour
     public GameObject LevelUp;
     public AudioSource levelingUp;
     public AudioSource levelUp;
-	[SerializeField]
-	GameObject prizes;
+    [SerializeField]
+    GameObject prizes;
     //result texts
     [SerializeField]
     Text dealt;
@@ -29,14 +29,25 @@ public class VictoryScript : MonoBehaviour
 
     [SerializeField]
     GameObject score;
-
+    [SerializeField]
+    GameObject pressStart;
+    bool isStarting = false;
 
 
     void Enabled()
     {
+        isStarting = false;
         xpBar.transform.localScale = new Vector3((float)DataStorage.XP + xpValue / (float)DataStorage.maxXP, 1, 1);
-		if (DataStorage.player == null)
-			DataStorage.player = GameObject.Find ("Player");
+        if (DataStorage.player == null)
+            DataStorage.player = GameObject.Find("Player");
+    }
+    void Update()
+    {
+        if (pressStart.activeSelf && Input.anyKey && isActiveAndEnabled && !isStarting)
+        {
+            StartCoroutine(StartingGame());
+            isStarting = true;
+        }
     }
 
     public void VictoryScene(float ac, int xp)
@@ -48,9 +59,9 @@ public class VictoryScript : MonoBehaviour
         accuracy.text = ac.ToString() + "%";
         float tempScore = 100f;
         print(tempScore);
-        tempScore -= ac + (CombatScript.damageRecieved/(CombatScript.damageRecieved + CombatScript.damageGiven));
+        tempScore -= ac + (CombatScript.damageRecieved / (CombatScript.damageRecieved + CombatScript.damageGiven));
         print(tempScore);
-        tempScore -= (((int)CombatScript.battleTime ^ (int)CombatScript.allottedTime)/ CombatScript.allottedTime);
+        tempScore -= (((int)CombatScript.battleTime ^ (int)CombatScript.allottedTime) / CombatScript.allottedTime);
         print(tempScore);
         tempScore /= 100;
         print(tempScore);
@@ -75,7 +86,7 @@ public class VictoryScript : MonoBehaviour
             grade.text = "D+";
         else if (tempScore < .3f)
             grade.text = "D";
-        else 
+        else
             grade.text = "F";
 
         xpValue = xp;
@@ -105,7 +116,7 @@ public class VictoryScript : MonoBehaviour
                 xpValue = 0;
             }
             xpText.text = xpValue.ToString();
-            xpBar.transform.localScale = new Vector3((float)DataStorage.XP/(float)DataStorage.maxXP,1,1);
+            xpBar.transform.localScale = new Vector3((float)DataStorage.XP / (float)DataStorage.maxXP, 1, 1);
             if (DataStorage.XP >= DataStorage.maxXP)
             {
                 //player has gained a level
@@ -118,47 +129,56 @@ public class VictoryScript : MonoBehaviour
                 //decreasing the wait for the next time the player levels up
                 LevelUp.SetActive(true);
                 DataStorage.currentLevel++;
-				DataStorage.levelBackground.Play("StatsRemain");
-				DataStorage.levelNumber.text = DataStorage.currentLevel.ToString();
+                DataStorage.levelBackground.Play("StatsRemain");
+                DataStorage.levelNumber.text = DataStorage.currentLevel.ToString();
                 yield return new WaitForSeconds(4f);
             }
             yield return new WaitForSeconds(waitTime);
         }
         xpText.text = null;
         //StartCoroutine (MysteryBox(3f));
-		StartCoroutine (ReturnToGame(3f));
+        StartCoroutine(ReturnToGame(3f));
     }
-	//activating the mysterybox
-	    IEnumerator MysteryBox(float waitTime)
+    //activating the mysterybox
+    IEnumerator MysteryBox(float waitTime)
     {
-		levelingUp.Stop();
+        levelingUp.Stop();
         yield return new WaitForSeconds(waitTime);
-		prizes.SetActive(true);
+        prizes.SetActive(true);
     }
 
     IEnumerator ReturnToGame(float waitTime)
     {
         score.SetActive(true);
-        victory.GetComponent<Animator>().Play ("Score");
+        victory.GetComponent<Animator>().Play("Score");
         yield return new WaitForSeconds(3f);
         levelingUp.Stop();
-		prizes.SetActive(false);
+        prizes.SetActive(false);
         yield return new WaitForSeconds(waitTime);
-		DataStorage.gameManager.GetComponent<StatActivation> ().enabled = true;
-		DataStorage.gameManager.GetComponent<InventoryActivation> ().enabled = true;
-		DataStorage.pauseMenus.GetComponent<PauseMenu2>().enabled = true;
-		try
-		{
-			DataStorage.player.GetComponent<Controls>().enabled = true;
-		}
-		catch
-		{
-			DataStorage.player = GameObject.Find ("Player");
-			DataStorage.player.GetComponent<Controls>().enabled = true;
-		}
-				//getting the camera and turning on the follow script
-		Camera myCamera = GameObject.Find ("Main Camera").GetComponent<Camera>();
-	    myCamera.GetComponent<CameraFollow>().enabled = true;
+        pressStart.SetActive(true);
+    }
+
+    IEnumerator StartingGame()
+    {
+        pressStart.GetComponent<Animator>().Play("StartWasPressed");
+        DataStorage.screenFader.Play("FadeOut", -1, 0);
+        yield return new WaitForSeconds(4.5f);
+        DataStorage.gameManager.GetComponent<StatActivation>().enabled = true;
+        DataStorage.gameManager.GetComponent<InventoryActivation>().enabled = true;
+        DataStorage.pauseMenus.GetComponent<PauseMenu2>().enabled = true;
+        try
+        {
+            DataStorage.player.GetComponent<Controls>().enabled = true;
+        }
+        catch
+        {
+            DataStorage.player = GameObject.Find("Player");
+            DataStorage.player.GetComponent<Controls>().enabled = true;
+        }
+        //getting the camera and turning on the follow script
+        Camera myCamera = GameObject.Find("Main Camera").GetComponent<Camera>();
+        myCamera.GetComponent<CameraFollow>().enabled = true;
+        pressStart.SetActive(false);
         gameObject.SetActive(false);
         score.SetActive(false);
         victory.SetActive(false);

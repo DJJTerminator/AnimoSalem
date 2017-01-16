@@ -32,8 +32,8 @@ public class Teleportation : MonoBehaviour {
 	}
 
 	IEnumerator WaitAndSpawn(float waitTime) {
-		DataStorage.screenFader.SetTrigger("FadeOut");
-		yield return new WaitForSeconds(waitTime);
+        DataStorage.screenFader.Play("FadeOut", -1, 0);
+        yield return new WaitForSeconds(waitTime);
 		DataStorage.player.GetComponent<Controls>().enabled=true;
 		otherTeleporter.GetComponent<Teleportation>().isActive = true;
 		DataStorage.player.transform.position = new Vector3 (otherTeleporter.transform.position.x,otherTeleporter.transform.position.y,otherTeleporter.transform.position.z);

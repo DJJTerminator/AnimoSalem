@@ -172,10 +172,10 @@ public class UpgradeItems : MonoBehaviour {
 			DeactivateUpgrades ();
 
 		//display current upgrade and next upgrade
-		curText.GetComponent<Text> ().text = "Reload: " + Mathf.Round(DataStorage.reload [DataStorage.curWeapon]*100f)/100f;
-		if (DataStorage.curReload [DataStorage.curWeapon] < 5)
-            nextText.GetComponent<Text>().text = "Next Level: " + Mathf.Round((DataStorage.reload[DataStorage.curWeapon] - DataStorage.upReload[DataStorage.curWeapon]) * 100f)/100f;
-		else
+		curText.GetComponent<Text> ().text = "Reload: " + Mathf.Round(((DataStorage.reload[DataStorage.curWeapon] + (DataStorage.upReload[DataStorage.curWeapon] * DataStorage.curReload[DataStorage.curWeapon])) * 100) / DataStorage.reload[DataStorage.curWeapon]) + "%";
+        if (DataStorage.curReload [DataStorage.curWeapon] < 5)
+            nextText.GetComponent<Text>().text = "Next Level: " + Mathf.Round(((DataStorage.reload[DataStorage.curWeapon] + (DataStorage.upReload[DataStorage.curWeapon] * DataStorage.curReload[DataStorage.curWeapon])) * 100) / (DataStorage.reload[DataStorage.curWeapon] - DataStorage.upReload[DataStorage.curWeapon])) + "%";
+        else
 			nextText.GetComponent<Text> ().text = " ";	
 
 		curMoney.GetComponent<Text> ().text = "$" + DataStorage.money.ToString("n0");;
@@ -218,12 +218,11 @@ public class UpgradeItems : MonoBehaviour {
 		}else
 			DeactivateUpgrades ();
 
-		//display current upgrade and next upgrade
-        curText.GetComponent<Text>().text = "Fire Rate: " + Mathf.Round(DataStorage.fireRate[DataStorage.curWeapon] * 100.0f) + "%";
-		if (DataStorage.curFireRate [DataStorage.curWeapon] < 5)
-            nextText.GetComponent<Text>().text = "Next Level: " + Mathf.Round((DataStorage.fireRate[DataStorage.curWeapon] - DataStorage.upFireRate[DataStorage.curWeapon]) * 100.0f) + "%";
-		else
-			nextText.GetComponent<Text> ().text = " ";	
+        curText.GetComponent<Text>().text = "Fire Rate: " + Mathf.Round(((DataStorage.fireRate[DataStorage.curWeapon] + (DataStorage.upFireRate[DataStorage.curWeapon] * DataStorage.curFireRate[DataStorage.curWeapon]))*100)/ DataStorage.fireRate[DataStorage.curWeapon]) + "%";
+        if (DataStorage.curFireRate [DataStorage.curWeapon] < 5)
+            nextText.GetComponent<Text>().text = "Next Level: " + Mathf.Round(((DataStorage.fireRate[DataStorage.curWeapon] + (DataStorage.upFireRate[DataStorage.curWeapon] * DataStorage.curFireRate[DataStorage.curWeapon])) * 100) / (DataStorage.fireRate[DataStorage.curWeapon] - DataStorage.upFireRate[DataStorage.curWeapon])) + "%";
+        else
+			nextText.GetComponent<Text> ().text = null;	
 
 		//display current money and price
 		curMoney.GetComponent<Text> ().text = "$" + DataStorage.money.ToString("n0");;
@@ -266,12 +265,12 @@ public class UpgradeItems : MonoBehaviour {
 			ActivateUpgrade (myIndex);
 		}else
 			DeactivateUpgrades ();
-
-		//display current upgrade and next upgrade
-        curText.GetComponent<Text>().text = "Accuracy: " + Mathf.Round(DataStorage.accuracy[DataStorage.curWeapon] * 10) + "%";
+        //cur leve * 100/ next level +100
+        //display current upgrade and next upgrade
+        curText.GetComponent<Text>().text = "Accuracy: " + Mathf.Round(100 + (DataStorage.accuracy[DataStorage.curWeapon] * 100)) + "%";
 		if (DataStorage.curAccuracy [DataStorage.curWeapon] < 5)
-            nextText.GetComponent<Text>().text = "Next Level: " + Mathf.Round((DataStorage.accuracy[DataStorage.curWeapon] + DataStorage.upAccuracy[DataStorage.curWeapon]) * 10) + "%";
-		else
+            nextText.GetComponent<Text>().text = "Next Level: " + Mathf.Round(100 + ((DataStorage.accuracy[DataStorage.curWeapon] + DataStorage.upAccuracy[DataStorage.curWeapon]) * 100)) + "%";
+        else
 			nextText.GetComponent<Text> ().text = " ";	
 
 		//upgradeSelect.GetComponent<RawImage>().texture = _accuracy;
@@ -293,9 +292,9 @@ public class UpgradeItems : MonoBehaviour {
 			DeactivateUpgrades ();
 
 		//display current upgrade and next upgrade
-        curText.GetComponent<Text>().text = "Recoil: " + (DataStorage.range[DataStorage.curWeapon] * 10)/1 + "%";
+        curText.GetComponent<Text>().text = "Critical Damage: " + ((DataStorage.range[DataStorage.curWeapon] * 100)/1) + "%";
 		if (DataStorage.curRange [DataStorage.curWeapon] < 5)
-            nextText.GetComponent<Text>().text = "Next Level: " + Mathf.Round((DataStorage.range[DataStorage.curWeapon] + DataStorage.upRange[DataStorage.curWeapon]) * 10)/1  + "%";
+            nextText.GetComponent<Text>().text = "Next Level: " + Mathf.Round((DataStorage.range[DataStorage.curWeapon] + DataStorage.upRange[DataStorage.curWeapon]) * 100)/1  + "%";
 		else
 			nextText.GetComponent<Text> ().text = " ";	
 
