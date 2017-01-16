@@ -24,6 +24,15 @@ public class StatActivation : MonoBehaviour
 					} 
 				else 
 					{
+					try 
+					{
+						DataStorage.HUD.SetActive(false);
+					}
+					catch
+					{
+						DataStorage.HUD = GameObject.Find("All Canvases/Canvas/HUD");
+						DataStorage.HUD.SetActive(false);
+					}
 					DataStorage.gameManager.GetComponent<InventoryActivation> ().enabled = false;
 					DataStorage.canDo = false;
 					animBool = true;
@@ -47,6 +56,7 @@ public class StatActivation : MonoBehaviour
 		DataStorage.pauseMenus.GetComponent<PauseMenu2>().enabled = true;
 		DataStorage.canDo = true;
 		DataStorage.gameManager.GetComponent<InventoryActivation> ().enabled = true;
+		DataStorage.HUD.SetActive(true);
 	}
 
 	IEnumerator EnableStats(float waitTime)

@@ -47,9 +47,12 @@ public class CombatScript : MonoBehaviour
     public int myXP; //the amount of xp that is gained after a battle is won.
         //this variable, after the battle is over, will get converted into xp.
 
-
     void OnEnable()
     {
+	//getting the camera and turning off the follow script
+		Camera myCamera = GameObject.Find ("Main Camera").GetComponent<Camera>();
+		if (myCamera != null)
+			myCamera.GetComponent<CameraFollow>().enabled = false;
         //inceasing the alpha color of the target images for each that that is active in battle
         for (int i = 0; i < enemyTarget.Length; i++)
         {
@@ -115,8 +118,6 @@ public class CombatScript : MonoBehaviour
                 {
                     fireRate = Time.time + DataStorage.fireRate[DataStorage.curWeapon];
                     Shooting();
-					//turning the crosshair yellow
-					DataStorage.crosshair.GetComponent<Image>().color = Color.yellow;
 					//waiting until the color reverts back to normal
 					StartCoroutine (RevertTargetColor(fireRate - Time.time));
                 }
@@ -131,8 +132,6 @@ public class CombatScript : MonoBehaviour
                 {
                     fireRate = Time.time + DataStorage.fireRate[DataStorage.curWeapon];
                     Shooting();
-										//turning the crosshair yellow
-					DataStorage.crosshair.GetComponent<Image>().color = Color.yellow;
 					//waiting until the color reverts back to normal
 					StartCoroutine (RevertTargetColor(fireRate - Time.time));
                 }
@@ -399,15 +398,23 @@ public class CombatScript : MonoBehaviour
                 DataStorage.UpdateHolster();
                 DataStorage.crosshair.GetComponent<Animator>().Play("Hit", -1, 0f);
                 Backgrounds.GetComponent<Animator>().Play("ShootingSmall", -1, 0f);
-                if (mgFire == false)
+                if (!mgFire)
                 {
                     DataStorage.combat.GetComponent<Animator>().speed = 0f;
-                    StartCoroutine(StopWatch(.2f));
+                    StartCoroutine(StopWatch(.5f));
                 }
                 else
                 {
-                    StartCoroutine(SlowMo(1f));
-                    DataStorage.combat.GetComponent<Animator>().speed = .1f;
+					if (DataStorage.holster[DataStorage.curWeapon] > 1)
+					{
+						DataStorage.combat.GetComponent<Animator>().speed = .1f;
+						StartCoroutine(SlowMo(1f));
+					}
+					else
+					{
+						DataStorage.combat.GetComponent<Animator>().speed = 0f;
+						StartCoroutine(SlowMo(1f));
+					}
                 }
                 DataStorage.shotsFired++;
                 break;
@@ -482,16 +489,24 @@ public class CombatScript : MonoBehaviour
                 DataStorage.UpdateHolster();
                 DataStorage.crosshair.GetComponent<Animator>().Play("Hit", -1, 0f);
                 Backgrounds.GetComponent<Animator>().Play("ShootingSmall", -1, 0f);
-                if (mgFire == false)
+                if (!mgFire)
                 {
                     DataStorage.combat.GetComponent<Animator>().speed = 0f;
-                    StartCoroutine(StopWatch(.2f));
+                    StartCoroutine(StopWatch(.5f));
                 }
                 else
                 {
-                    StartCoroutine(SlowMo(1f));
-                    DataStorage.combat.GetComponent<Animator>().speed = .08f;
-                }
+					if (DataStorage.holster[DataStorage.curWeapon] > 1)
+					{
+						DataStorage.combat.GetComponent<Animator>().speed = .1f;
+						StartCoroutine(SlowMo(1f));
+					}
+					else
+					{
+						DataStorage.combat.GetComponent<Animator>().speed = 0f;
+						StartCoroutine(SlowMo(1f));
+					}
+				}
                 DataStorage.shotsFired++;
                 break;
             case "Energy Rifle":
@@ -552,16 +567,19 @@ public class CombatScript : MonoBehaviour
             DataStorage.combat.GetComponent<Animator>().speed = 1f;
     }
 
-    IEnumerator SlowMo(float waitTime)//this function is for automatics only
-    {
+    IEnumerator SlowMo(float waitTime)
+    {//this function is for automatics only
         yield return new WaitForSeconds(waitTime);//if gun is still firing, play animation
-        if (Time.time > fireRate || DataStorage.holster[DataStorage.curWeapon] < 1)
+        if (!Input.GetKey(KeyCode.Mouse0) || DataStorage.holster[DataStorage.curWeapon] == 0)
         {
-            DataStorage.combat.GetComponent<Animator>().speed = 1f;
-            mgFire = false;
+		if (DataStorage.holster[DataStorage.curWeapon] == 0)
+		   yield return new WaitForSeconds(waitTime);
+        DataStorage.combat.GetComponent<Animator>().speed = 1f;
+        mgFire = false;
         }
-    }
 
+    }
+	//this function prevents the target from moving
     IEnumerator StopWatch(float waitTime)
     {
         yield return new WaitForSeconds(waitTime);
@@ -569,11 +587,12 @@ public class CombatScript : MonoBehaviour
             DataStorage.combat.GetComponent<Animator>().speed = 1f;
         else
         {
-            {
-
-                mgFire = true;
-                StartCoroutine (SlowMo(DataStorage.fireRate[DataStorage.curWeapon]));
-            }
+          if (!mgFire)
+			{
+			StartCoroutine (SlowMo(DataStorage.fireRate[DataStorage.curWeapon]));
+			DataStorage.combat.GetComponent<Animator>().speed = .1f;
+			mgFire = true;
+			}
         }
     }
 
@@ -692,8 +711,6 @@ public class CombatScript : MonoBehaviour
                 DataStorage.reloadBar.GetComponent<Image>().fillAmount = reloadTime / DataStorage.reload[DataStorage.curWeapon];
                 reloadTime += DataStorage.reload[DataStorage.curWeapon] / 8;
             }
-
-
         }
 
         //checking to see which gun wa equipped before reloading
@@ -860,25 +877,30 @@ public class CombatScript : MonoBehaviour
                 case 1:
                     DataStorage.CBTHealth.GetComponent<Text>().text = "+ " + (addHealth += 20 + (DataStorage.intelligence / 2)).ToString();
                     DataStorage.itemSmallAid -= 1;
+					DataStorage.itemsUsed +=1;
                     addHealth += 20 + (DataStorage.intelligence / 2);
+					DataStorage.greenFlash.Play("HealAnimation", -1, 0f);
                     StartCoroutine(AddToHealth(.02f));
                     break;
                 case 2:
                     DataStorage.CBTHealth.GetComponent<Text>().text = "+ " + (addHealth += 40 + (DataStorage.intelligence / 2)).ToString();
                     DataStorage.itemMedAid -= 1;
+					DataStorage.itemsUsed +=1;
                     addHealth += 40 + (DataStorage.intelligence / 2);
+					DataStorage.greenFlash.Play("HealAnimation", -1, 0f);
                     StartCoroutine(AddToHealth(.02f));
                     break;
                 case 3:
                     DataStorage.CBTHealth.GetComponent<Text>().text = "+ " + (addHealth += 80 + (DataStorage.intelligence / 2)).ToString();
                     DataStorage.itemLargeAid -= 1;
+					DataStorage.itemsUsed +=1;
                     addHealth += 80 + (DataStorage.intelligence / 2);
+					DataStorage.greenFlash.Play("HealAnimation", -1, 0f);
                     StartCoroutine(AddToHealth(.02f));
                     break;
             }
             healing.Stop();
             DataStorage.itemBar.GetComponent<Image>().fillAmount = 0;
-            DataStorage.greenFlash.Play("HealAnimation", -1, 0f);
             healed.Play();
             canUse = false;
             DataStorage.UpdateHUD();//refreshing the HUD
@@ -1085,6 +1107,8 @@ public class CombatScript : MonoBehaviour
 	//waiting to turn the color back to normal
 	IEnumerator RevertTargetColor (float waitTime)
 	{
+	//turning the crosshair yellow
+	DataStorage.crosshair.GetComponent<Image>().color = Color.yellow;
 	yield return new WaitForSeconds (waitTime);
 	//turning the crosshair red
 	DataStorage.crosshair.GetComponent<Image>().color = Color.red;

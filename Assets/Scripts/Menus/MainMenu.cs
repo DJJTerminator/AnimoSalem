@@ -1,10 +1,17 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using UnityEngine.EventSystems;
 
 public class MainMenu : MonoBehaviour
 {
+    public Slider[] volumeSliders;
+    public Toggle[] resolutionToggles;
+    public Toggle   fullscreenToggle;
+    public int[] screenWidths;
+    int activeScreenResIndex;
+
     public Transform canvas;
     public Transform basicMenus;
     public Transform advanceMenus;
@@ -14,9 +21,7 @@ public class MainMenu : MonoBehaviour
     public Transform optionMenus;
 
     public bool BasicMenu = false;
-    public float FMV = 5;
-    public float soundVolume = .65f;
-    public float musicVolume = .65f;
+    
 
     // Use this for initialization
     void Start ()
@@ -25,50 +30,70 @@ public class MainMenu : MonoBehaviour
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
 
-        //checking the sounds
-        soundVolume = PlayerPrefs.GetFloat("Sound Volume", soundVolume);
-        musicVolume = PlayerPrefs.GetFloat("Music Volume", musicVolume);
+        // Check Resolutions
+        activeScreenResIndex = PlayerPrefs.GetInt ("screen res index");
+        bool isFullscreen = (PlayerPrefs.GetInt ("fullscreen") == 1) ? true : false;
 
-        if (PlayerPrefs.HasKey("Sound Volume"))
+        /*volumeSliders [0].value = AudioManager.instance.masterVolumePErcent;
+          volumeSliders [1].value = AudioManager.instance.musicVolumePercent;
+          volumeSliders [2].value = AudioManager.instance.sfxVolumePercent;
+        */
+
+        for (int i = 0; i < resolutionToggles.Length; i++)
         {
-            AudioListener.volume = PlayerPrefs.GetFloat("SoundVolume", soundVolume);
+            resolutionToggles[i].isOn = i == activeScreenResIndex;
         }
-        else
+
+        fullscreenToggle.isOn = isFullscreen;
+    }
+
+    //Changing and saving Resolutions
+    public void SetScreenResolution (int i)
+    {
+        if (resolutionToggles[i].isOn)
         {
-            PlayerPrefs.SetFloat("Sound Volume", soundVolume);
-            PlayerPrefs.SetFloat("Music Volume", musicVolume);
+            activeScreenResIndex = 1;
+            float aspectRatio = 16 / 9;
+            Screen.SetResolution (screenWidths [i], (int)(screenWidths [i] / aspectRatio), false);
+            PlayerPrefs.SetInt("screen res index", activeScreenResIndex);
+            PlayerPrefs.Save();
         }
     }
 
-
-    /*
-        // Update is called once per frame
-        void Update()
+    // Activate Fullscreen
+    public void SetFullscreen(bool isFullscreen)
+    {
+        for (int i =0; i < resolutionToggles.Length; i++)
         {
-            //end of if "(DialogueBox.activeSelf == false)"
-
-            if (BasicMenu == true)
-            {
-                if (Input.GetKeyDown(KeyCode.DownArrow) || Input.GetKeyDown(KeyCode.S))
-                {
-                    MoveSelectorDown();
-                }
-                if (Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.W))
-                {
-                    MoveSelectorUp();
-                }
-
-                if (Input.GetKeyDown(KeyCode.Return))
-                {
-                    Chosen();
-                }
-            }
-
+            resolutionToggles [i].interactable = !isFullscreen;
         }
-        //end of update
-    */
 
+        if (isFullscreen)
+        {
+            Resolution[] allResolutions = Screen.resolutions;
+            Resolution maxResolution = allResolutions [allResolutions.Length - 1];
+            Screen.SetResolution (maxResolution.width, maxResolution.height, true);
+        }
+        else
+        {
+            SetScreenResolution (activeScreenResIndex);
+        }
 
+        //Save Fullscreen settings
+        PlayerPrefs.SetInt("fullscreen", ((isFullscreen) ? 1 : 0));
+        PlayerPrefs.Save();
+    }
+
+    //Sound Check
+    public void SetMusicVolume(float value)
+    {
+
+    }
+
+    public void SetSfxVolume(float value)
+    {
+
+    }
 
     // To Resume back to Basic Menu
     public void Resume(bool Open)

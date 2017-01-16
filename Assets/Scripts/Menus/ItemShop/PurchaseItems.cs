@@ -99,28 +99,29 @@ public class PurchaseItems : MonoBehaviour {
 		float price = Exchange (25);
 
 		if (DataStorage.shopHandgunAmmo > 0)
-		if (DataStorage.money > price)
-		{
-			DataStorage.HGAmmo += 5;
-			//play sound
-			itemBought.Play ();
-			DataStorage.money -= (int)price;
-			DataStorage.moneySpent += (int)price;
+			if (DataStorage.money > price)
+			{
+				DataStorage.HGAmmo += 5;
+				//play sound
+				itemBought.Play ();
+				DataStorage.money -= (int)price;
+				DataStorage.moneySpent += (int)price;
 
-			//display current money and price
-			curMoney.GetComponent<Text> ().text = "$" + DataStorage.money;
-			//subtracting from the shop
-			DataStorage.shopHandgunAmmo -= 1;
-			//play sound
-			itemBought.Play ();
-			//checking to see if the player bought the last one
-			if (DataStorage.shopHandgunAmmo < 1)
-				_shop.HGAmmoSoldOut ();
-		} 
-		else 
-		{
-			NoMoney (1);
-		}
+				//display current money and price
+				curMoney.GetComponent<Text> ().text = "$" + DataStorage.money.ToString("n0");
+				//subtracting from the shop
+				DataStorage.shopHandgunAmmo -= 1;
+				DataStorage.itemsBought += 1;
+				//play sound
+				itemBought.Play ();
+				//checking to see if the player bought the last one
+				if (DataStorage.shopHandgunAmmo < 1)
+					_shop.HGAmmoSoldOut ();
+			} 
+			else 
+			{
+				NoMoney (1);
+			}
 		else 
 		{
 			SoldOut ();
@@ -141,9 +142,10 @@ public class PurchaseItems : MonoBehaviour {
 			DataStorage.moneySpent += (int)price;
 
 			//display current money and price
-			curMoney.GetComponent<Text> ().text = "$" + DataStorage.money;
+			curMoney.GetComponent<Text> ().text = "$" + DataStorage.money.ToString("n0");
 			//subtracting from the shop
 			DataStorage.shopShotgunAmmo -= 1;
+			DataStorage.itemsBought += 1;
 			//play sound
 			itemBought.Play ();
 			//checking to see if the player bought the last one
@@ -174,9 +176,10 @@ public class PurchaseItems : MonoBehaviour {
 			DataStorage.moneySpent += (int)price;
 
 			//display current money and price
-			curMoney.GetComponent<Text> ().text = "$" + DataStorage.money;
+			curMoney.GetComponent<Text> ().text = "$" + DataStorage.money.ToString("n0");
 			//subtracting from the shop
 			DataStorage.shopMachinegunAmmo -= 1;
+			DataStorage.itemsBought += 1;
 			//play sound
 			itemBought.Play ();
 			//checking to see if the player bought the last one
@@ -207,9 +210,10 @@ public class PurchaseItems : MonoBehaviour {
 			DataStorage.moneySpent += (int)price;
 
 			//display current money and price
-			curMoney.GetComponent<Text> ().text = "$" + DataStorage.money;
+			curMoney.GetComponent<Text> ().text = "$" + DataStorage.money.ToString("n0");
 			//subtracting from the shop
 			DataStorage.shopRifleAmmo -= 1;
+			DataStorage.itemsBought += 1;
 			//play sound
 			itemBought.Play ();
 			//checking to see if the player bought the last one
@@ -238,11 +242,11 @@ public class PurchaseItems : MonoBehaviour {
 			itemBought.Play ();
 			DataStorage.money -= (int)price;
 			DataStorage.moneySpent += (int)price;
-
 			//display current money and price
-			curMoney.GetComponent<Text> ().text = "$" + DataStorage.money;
+			curMoney.GetComponent<Text> ().text = "$" + DataStorage.money.ToString("n0");
 			//subtracting from the shop
 			DataStorage.shopMagnumAmmo -= 1;
+			DataStorage.itemsBought += 1;
 			//play sound
 			itemBought.Play ();
 			//checking to see if the player bought the last one
