@@ -13,11 +13,11 @@ public class StatActivation : MonoBehaviour
 	{
 		//accessing player stats
 		if (Input.GetKeyDown ("c"))
-		if (!animBool)//accessing the UI stats and play the correct animaitons and audio depending upon whether it was enabled or disabled
+		if (!animBool)//accessing the UI (stats) and play the correct animaitons and audio depending upon whether it was enabled or disabled
 			if (!DataStorage.canDo)
 					{
 					animBool = true;
-					DataStorage.levelStats.GetComponent<Animator>().SetBool ("isOn", false);
+                    DataStorage.levelStats.GetComponent<Animator>().SetBool ("isOn", false);
 					DataStorage.levelStats.GetComponent<AudioSource> ().pitch = 1.3f;
 					DataStorage.levelStats.GetComponent<AudioSource> ().Play ();
 					StartCoroutine (DisableStats (.5f));
@@ -33,7 +33,7 @@ public class StatActivation : MonoBehaviour
 						DataStorage.HUD = GameObject.Find("All Canvases/Canvas/HUD");
 						DataStorage.HUD.SetActive(false);
 					}
-					DataStorage.gameManager.GetComponent<InventoryActivation> ().enabled = false;
+                    DataStorage.gameManager.GetComponent<InventoryActivation> ().enabled = false;
 					DataStorage.canDo = false;
 					animBool = true;
 					DataStorage.levelStats.SetActive (true);

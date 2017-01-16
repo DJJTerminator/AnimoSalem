@@ -22,6 +22,16 @@ public class Controls : MonoBehaviour {
 	    cycleItems = GameObject.Find ("GameManager/Sounds/ItemsHUD/CycleItems").GetComponent<AudioSource>();
     }
 
+    void OnEnable()
+    {
+        //gf stands for greenflash. we are setting the image transparency to zero upon enable to prevent the animations from locking up
+        Text gfText = GameObject.Find("All Canvases/Canvas/HUD/Equipment/Items/ItemCount/CBTHealthText").GetComponent<Text>();
+        Image gf = GameObject.Find("All Canvases/Canvas/HUD/Equipment/Items/GreenFlash").GetComponent<Image>();
+        Color c = gf.color;
+        c.a = 0;
+        gf.color = c;
+        gfText.text = null;
+    }
     // Update is called once per frame
     void Update()
     {
