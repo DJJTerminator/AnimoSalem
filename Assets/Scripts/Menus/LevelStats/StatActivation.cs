@@ -33,6 +33,7 @@ public class StatActivation : MonoBehaviour
 						DataStorage.HUD = GameObject.Find("All Canvases/Canvas/HUD");
 						DataStorage.HUD.SetActive(false);
 					}
+                    DataStorage.player.GetComponent<Controls>().healing.Stop();
                     DataStorage.gameManager.GetComponent<InventoryActivation> ().enabled = false;
 					DataStorage.canDo = false;
 					animBool = true;

@@ -9,7 +9,7 @@ public class Controls : MonoBehaviour {
     RaycastHit hit;
     public LayerMask targetLayer;
     public Rigidbody myBody;
-    AudioSource healing;
+    public AudioSource healing;
     AudioSource healed;
     AudioSource cycleItems;
     bool canUse = true; //the boolean that allows players to use items

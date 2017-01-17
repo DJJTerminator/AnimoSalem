@@ -28,7 +28,8 @@ public class EnterDybbukShop : MonoBehaviour {
 					DataStorage.HUD = GameObject.Find("All Canvases/Canvas/HUD");
 					DataStorage.HUD.SetActive(false);
 				}
-				DataStorage.exclamation.SetActive (false);
+                 DataStorage.player.GetComponent<Controls>().healing.Stop();
+                DataStorage.exclamation.SetActive (false);
 				DataStorage.theShop.SetActive (true);
 				DataStorage.upgrade.SetActive (false);
 				DataStorage.sell.SetActive (false);

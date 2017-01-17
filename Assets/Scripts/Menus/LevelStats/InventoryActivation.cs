@@ -23,14 +23,13 @@ public class InventoryActivation : MonoBehaviour {
 		} 
 		else
 		{
-			DataStorage.storageMenu.SetActive (true);
+            DataStorage.player.GetComponent<Controls>().healing.Stop();
+            DataStorage.storageMenu.SetActive (true);
 			DataStorage.player.GetComponent<Controls> ().enabled = false;
 			DataStorage.pauseMenus.GetComponent<PauseMenu2>().enabled = false;
 			DataStorage.gameManager.GetComponent<StatActivation> ().enabled = false;
 			DataStorage.canDo = false;
 			totalWeight.text = DataStorage.curWeight + "/"  +DataStorage.maxWeight.ToString();
 		}
-
-	
 	}
 }

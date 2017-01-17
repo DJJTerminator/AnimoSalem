@@ -1419,6 +1419,8 @@ public class CombatScript : MonoBehaviour
         battleTime = Time.time - battleTime;
         damageGiven = DataStorage.damageDealt - damageGiven;
         damageRecieved = DataStorage.damageTaken - damageRecieved;
+        DataStorage.itemBar.GetComponent<Image>().fillAmount -= Time.deltaTime * 1;
+        healing.Stop();
         gameObject.GetComponent<CombatScript>().enabled = false;
         GetComponent<Animator>().Play("Disabled");
         GetComponent<Animator>().speed = 1f;

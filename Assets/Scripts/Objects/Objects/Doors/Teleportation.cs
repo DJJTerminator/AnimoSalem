@@ -15,7 +15,8 @@ public class Teleportation : MonoBehaviour {
 	{
 		if (!isActive && other.tag == ("Player"))
         {
-			DataStorage.pauseMenus.GetComponent<PauseMenu2>().canUnPause = false;
+            DataStorage.player.GetComponent<Controls>().healing.Stop();
+            DataStorage.pauseMenus.GetComponent<PauseMenu2>().canUnPause = false;
 			isActive = true;
 			DataStorage.player.GetComponent<Controls>().enabled=false;
 			if (transition == true)

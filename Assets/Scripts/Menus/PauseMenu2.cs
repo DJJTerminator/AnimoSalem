@@ -70,8 +70,9 @@ public class PauseMenu2 : MonoBehaviour
 					DataStorage.HUD = GameObject.Find("All Canvases/Canvas/HUD");
 					DataStorage.HUD.SetActive(false);
 				}
-				//Unlocks the (Mouse)Cursor and makes it visible
-				Cursor.lockState = CursorLockMode.None;
+                DataStorage.player.GetComponent<Controls>().healing.Stop();
+                //Unlocks the (Mouse)Cursor and makes it visible
+                Cursor.lockState = CursorLockMode.None;
 				Cursor.visible = true;
                 DataStorage.player.GetComponent<Controls>().enabled = false;
 

@@ -43,8 +43,9 @@ public class Speech : MonoBehaviour {
 		if (isActive)
 		if  (Input.GetKeyDown(KeyCode.Return))
 		{
-			//activating the textbox and text message
-			DataStorage.textManager.GetComponent<TextManager> ().enabled = true;
+            DataStorage.player.GetComponent<Controls>().healing.Stop();
+            //activating the textbox and text message
+            DataStorage.textManager.GetComponent<TextManager> ().enabled = true;
 			DataStorage.gameManager.GetComponent<StatActivation> ().enabled = false;
 			DataStorage.gameManager.GetComponent<InventoryActivation> ().enabled = false;
 			DataStorage.canDo = false;
