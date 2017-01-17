@@ -52,6 +52,24 @@ public class VictoryScript : MonoBehaviour
         }
     }
 
+    IEnumerator Awards(string[] name, int type, int amount,int xp, int money)
+    {
+        print(name[type] + " " + amount);
+        yield return new WaitForSeconds(5f);
+        bonusAwards.SetActive(true);
+        Text awardedText = GameObject.Find("All Canvases/BattleSystem/Victory/BonusAwards/Award1").GetComponent<Text>();
+        awardedText.text = "Bonus: " + "+"+ xp + "xp";
+        awardedText = GameObject.Find("All Canvases/BattleSystem/Victory/BonusAwards/Award2").GetComponent<Text>();
+        awardedText.text = "Awarded: " + "+ $" + money;
+        awardedText = GameObject.Find("All Canvases/BattleSystem/Victory/BonusAwards/Award3").GetComponent<Text>();
+        if (amount > 0)
+            awardedText.text = name[type] +": " + "+"+amount;
+        else
+            awardedText.text =null;
+        awardedText = GameObject.Find("All Canvases/BattleSystem/Victory/BonusAwards/Award4").GetComponent<Text>();
+        awardedText.text = null;
+    }
+
     public void VictoryScene(float ac, int xp)
     {
         dealt.text = CombatScript.damageGiven.ToString();
@@ -76,6 +94,9 @@ public class VictoryScript : MonoBehaviour
         int awardedMoney;
         int awardedXP;
         int awardedItem;
+        int awardedAmmo;
+        int ammoType;//this is the type of ammo that is awarded
+        string[] ammoName = { null, "Handgun Ammo", "Shotgun Shells", "Rifle Rounds", "Machinegun Bullets", "Magnum Rounds", "Explosive Rounds" };
         //the additional awards based on player's luck
         int myLuck = (DataStorage.luck / 2);
 
@@ -83,63 +104,236 @@ public class VictoryScript : MonoBehaviour
         {
             tempScore = 0;
             grade.text = "S";
-            awardedXP = Random.Range(155 + myLuck, 240 + myLuck);
-            awardedMoney = Random.Range(155 + myLuck, 240 + myLuck);
+            awardedXP = Random.Range(135 + myLuck, 150 + myLuck);
+            awardedMoney = Random.Range(135 + myLuck, 150 + myLuck);
             awardedItem = Random.Range(0 + myLuck, 10 + myLuck);
+            awardedAmmo = Random.Range(0, 6);
+            ammoType = Random.Range(0, 6);
+            ammoType = Random.Range(0, 6);
+            switch (ammoType)
+            {
+                default:
+                    ammoType = 0;
+                    break;
+                case 1://handgun bullets
+                    awardedAmmo = Random.Range(0 + myLuck, 5 + myLuck);
+                    break;
+                case 2://shotgun bullets
+                    awardedAmmo = Random.Range(0 + myLuck, 2 + myLuck);
+                    break;
+                case 3://rifle bullets
+                    awardedAmmo = Random.Range(0 + myLuck, 2 + myLuck);
+                    break;
+                case 4://machine bullets
+                    awardedAmmo = Random.Range(0 + myLuck, 10 + myLuck);
+                    break;
+                case 5://magnum bullets
+                    awardedAmmo = Random.Range(0 + myLuck, 0 + myLuck);
+                    break;
+                case 6://explosive rounds
+                    awardedAmmo = Random.Range(0, 0);
+                    break;
+            }
         }
         else if (tempScore >= .97f)
         {
             grade.text = "A+";
-            awardedXP = Random.Range(155 + myLuck, 195 + myLuck);
-            awardedMoney = Random.Range(155 + myLuck, 195 + myLuck);
+            awardedXP = Random.Range(120 + myLuck, 135 + myLuck);
+            awardedMoney = Random.Range(120 + myLuck, 135 + myLuck);
+            ammoType = Random.Range(0, 6);
+            switch (ammoType)
+            {
+                default:
+                    ammoType = 0;
+                    break;
+                case 1://handgun bullets
+                    awardedAmmo = Random.Range(0, 12 + myLuck);
+                    StartCoroutine(Awards(ammoName,ammoType,awardedAmmo,awardedXP,awardedMoney));
+                    break;
+                case 2://shotgun bullets
+                    awardedAmmo = Random.Range(0, 4 + myLuck);
+                    StartCoroutine(Awards(ammoName, ammoType, awardedAmmo, awardedXP, awardedMoney));
+                    break;
+                case 3://rifle bullets
+                    awardedAmmo = Random.Range(0, 4 + myLuck);
+                    StartCoroutine(Awards(ammoName, ammoType, awardedAmmo, awardedXP, awardedMoney));
+                    break;
+                case 4://machine bullets
+                    awardedAmmo = Random.Range(0, 15 + myLuck);
+                    StartCoroutine(Awards(ammoName, ammoType, awardedAmmo, awardedXP, awardedMoney));
+                    break;
+                case 5://magnum bullets
+                    awardedAmmo = Random.Range(0, myLuck);
+                    StartCoroutine(Awards(ammoName, ammoType, awardedAmmo, awardedXP, awardedMoney));
+                    break;
+            }
         }
         else if (tempScore >= .93f)
         {
             grade.text = "A";
-            awardedXP = Random.Range(120 + myLuck, 155 + myLuck);
-            awardedMoney = Random.Range(120 + myLuck, 155 + myLuck);
+            awardedXP = Random.Range(90 + myLuck, 105 + myLuck);
+            awardedMoney = Random.Range(90 + myLuck, 105 + myLuck);
+            ammoType = Random.Range(0, 6);
+            switch (ammoType)
+            {
+                default:
+                    ammoType = 0;
+                    break;
+                case 1://handgun bullets
+                    awardedAmmo = Random.Range(0, 12 + myLuck);
+                    StartCoroutine(Awards(ammoName, ammoType, awardedAmmo, awardedXP, awardedMoney));
+                    break;
+                case 2://shotgun bullets
+                    awardedAmmo = Random.Range(0, 4 + myLuck);
+                    StartCoroutine(Awards(ammoName, ammoType, awardedAmmo, awardedXP, awardedMoney));
+                    break;
+                case 3://rifle bullets
+                    awardedAmmo = Random.Range(0, 4 + myLuck);
+                    StartCoroutine(Awards(ammoName, ammoType, awardedAmmo, awardedXP, awardedMoney));
+                    break;
+                case 4://machine bullets
+                    awardedAmmo = Random.Range(0, 15 + myLuck);
+                    StartCoroutine(Awards(ammoName, ammoType, awardedAmmo, awardedXP, awardedMoney));
+                    break;
+                case 5://magnum bullets
+                    awardedAmmo = Random.Range(0, myLuck);
+                    print(ammoName[ammoType] + awardedAmmo);
+                    StartCoroutine(Awards(ammoName, ammoType, awardedAmmo, awardedXP, awardedMoney));
+                    break;
+            }
         }
         else if (tempScore >= .90f)
         {
             grade.text = "B+";
-            awardedXP = Random.Range(90 + myLuck, 120 + myLuck);
-            awardedMoney = Random.Range(90 + myLuck, 120 + myLuck);
+            awardedXP = Random.Range(75 + myLuck, 90 + myLuck);
+            awardedMoney = Random.Range(75 + myLuck, 90 + myLuck);
+            ammoType = Random.Range(0, 6);
+            switch (ammoType)
+            {
+                default:
+                    ammoType = 0;
+                    break;
+                case 1://handgun bullets
+                    awardedAmmo = Random.Range(0, 8 + myLuck);
+                    StartCoroutine(Awards(ammoName, ammoType, awardedAmmo, awardedXP, awardedMoney));
+                    break;
+                case 2://shotgun bullets
+                    awardedAmmo = Random.Range(0, 3 + myLuck);
+                    StartCoroutine(Awards(ammoName, ammoType, awardedAmmo, awardedXP, awardedMoney));
+                    break;
+                case 3://rifle bullets
+                    awardedAmmo = Random.Range(0, 3 + myLuck);
+                    StartCoroutine(Awards(ammoName, ammoType, awardedAmmo, awardedXP, awardedMoney));
+                    break;
+                case 4://machine bullets
+                    awardedAmmo = Random.Range(0, 15 + myLuck);
+                    StartCoroutine(Awards(ammoName, ammoType, awardedAmmo, awardedXP, awardedMoney));
+                    break;
+            }
         }
         else if (tempScore >= .86f)
         {
             grade.text = "B";
-            awardedXP = Random.Range(70 + myLuck, 90 + myLuck);
-            awardedMoney = Random.Range(70 + myLuck, 90 + myLuck);
+            awardedXP = Random.Range(60 + myLuck, 75 + myLuck);
+            awardedMoney = Random.Range(60 + myLuck, 75 + myLuck);
+            ammoType = Random.Range(0, 6);
+            switch (ammoType)
+            {
+                default:
+                    ammoType = 0;
+                    break;
+                case 1://handgun bullets
+                    awardedAmmo = Random.Range(0, 8 + myLuck);
+                    StartCoroutine(Awards(ammoName, ammoType, awardedAmmo, awardedXP, awardedMoney));
+                    break;
+                case 2://shotgun bullets
+                    awardedAmmo = Random.Range(0, 3 + myLuck);
+                    StartCoroutine(Awards(ammoName, ammoType, awardedAmmo, awardedXP, awardedMoney));
+                    break;
+                case 3://rifle bullets
+                    awardedAmmo = Random.Range(0, 3 + myLuck);
+                    StartCoroutine(Awards(ammoName, ammoType, awardedAmmo, awardedXP, awardedMoney));
+                    break;
+                case 4://machine bullets
+                    awardedAmmo = Random.Range(0, 15 + myLuck);
+                    StartCoroutine(Awards(ammoName, ammoType, awardedAmmo, awardedXP, awardedMoney));
+                    break;
+            }
         }
         else if (tempScore >= .82f)
         {
             grade.text = "C+";
-            awardedXP = Random.Range(50 + myLuck, 70 + myLuck);
-            awardedMoney = Random.Range(50 + myLuck, 70 + myLuck);
+            awardedXP = Random.Range(45 + myLuck, 60 + myLuck);
+            awardedMoney = Random.Range(45 + myLuck, 60 + myLuck);
+            ammoType = Random.Range(0, 6);
+            switch (ammoType)
+            {
+                default:
+                    ammoType = 0;
+                    break;
+                case 1://handgun bullets
+                    awardedAmmo = Random.Range(0, 5 + myLuck);
+                    StartCoroutine(Awards(ammoName, ammoType, awardedAmmo, awardedXP, awardedMoney));
+                    break;
+                case 2://shotgun bullets
+                    awardedAmmo = Random.Range(0, 2 + myLuck);
+                    StartCoroutine(Awards(ammoName, ammoType, awardedAmmo, awardedXP, awardedMoney));
+                    break;
+                case 3://rifle bullets
+                    awardedAmmo = Random.Range(0, 2 + myLuck);
+                    StartCoroutine(Awards(ammoName, ammoType, awardedAmmo, awardedXP, awardedMoney));
+                    break;
+                case 4://machine bullets
+                    awardedAmmo = Random.Range(0, 10 + myLuck);
+                    StartCoroutine(Awards(ammoName, ammoType, awardedAmmo, awardedXP, awardedMoney));
+                    break;
+            }
         }
         else if (tempScore >= .78f)
         {
             grade.text = "C";
-            awardedXP = Random.Range(35 + myLuck, 50 + myLuck);
-            awardedMoney = Random.Range(35 + myLuck, 50 + myLuck);
-        }
+            awardedXP = Random.Range(35 + myLuck, 45 + myLuck);
+            awardedMoney = Random.Range(35 + myLuck, 45 + myLuck);
+            ammoType = Random.Range(0, 6);
+            switch (ammoType)
+            {
+                default:
+                    ammoType = 0;
+                    break;
+                case 1://handgun bullets
+                    awardedAmmo = Random.Range(0, 5+ myLuck);
+                    StartCoroutine(Awards(ammoName, ammoType, awardedAmmo, awardedXP, awardedMoney));
+                    break;
+                case 2://shotgun bullets
+                    awardedAmmo = Random.Range(0, 2 + myLuck);
+                    StartCoroutine(Awards(ammoName, ammoType, awardedAmmo, awardedXP, awardedMoney));
+                    break;
+                case 3://rifle bullets
+                    awardedAmmo = Random.Range(0, 2 + myLuck);
+                    StartCoroutine(Awards(ammoName, ammoType, awardedAmmo, awardedXP, awardedMoney));
+                    break;
+                case 4://machine bullets
+                    awardedAmmo = Random.Range(0, 10 + myLuck);
+                    StartCoroutine(Awards(ammoName, ammoType, awardedAmmo, awardedXP, awardedMoney));
+                    break;
+            }
+            }
         else if (tempScore >= .75f)
         {
             grade.text = "D+";
-            awardedXP = Random.Range(20 + myLuck, 35 + myLuck);
-            awardedMoney = Random.Range(20 + myLuck, 35 + myLuck);
+            awardedXP = Random.Range(15 + myLuck, 25 + myLuck);
+            awardedMoney = Random.Range(15 + myLuck, 25 + myLuck);
         }
         else if (tempScore >= .72f)
         {
             grade.text = "D";
-            awardedXP = Random.Range(10 + myLuck, 20 + myLuck);
-            awardedMoney = Random.Range(10 + myLuck, 20 + myLuck);
+            awardedXP = Random.Range(5 + myLuck, 15 + myLuck);
+            awardedMoney = Random.Range(5 + myLuck, 15 + myLuck);
         }
         else
         {
             grade.text = "F";
         }
-
 
 
         xpValue = xp;
