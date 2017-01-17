@@ -18,8 +18,8 @@ public class CombatScript : MonoBehaviour
     bool canUse = true; //the boolean that allows players to use items
     int addHealth = 0;
     //enemy hp and enemy targets
-    float[] enemyHP = {35,22,18 };
-    float[] enemyMaxHP = { 35, 25, 30 };
+    float[] enemyHP = { 35,22,18 };
+    float[] enemyMaxHP = { 105, 75, 100 };
     public GameObject[] enemyTarget;//this is used for accuracy
     public GameObject[] enemyTarget2;//these are only used for colors
     public GameObject[] enemyTarget3;//these are only used for colors
@@ -66,7 +66,7 @@ public class CombatScript : MonoBehaviour
         acFired = DataStorage.shotsFired;
         acHit = DataStorage.targetsHit;
         battleTime = Time.time;
-        allottedTime = 8 * (enemyTarget.Length);
+        allottedTime = 15;
 	//getting the camera and turning off the follow script
         Camera myCamera = GameObject.Find("Main Camera").GetComponent<Camera>();
         myCamera.GetComponent<CameraFollow>().enabled = false;
@@ -1215,7 +1215,10 @@ public class CombatScript : MonoBehaviour
                         temp = DataStorage.crosshair.transform.position.x / enemyTarget[i].transform.position.x;
                     else
                         temp = enemyTarget[i].transform.position.x/DataStorage.crosshair.transform.position.x;
-                    dmg = (Mathf.Round((DataStorage.weaponDamage[DataStorage.curWeapon] + DataStorage.damage) * temp) * 10) / 10;
+                    dmg = (Mathf.Round(DataStorage.weaponDamage[DataStorage.curWeapon] + DataStorage.damage) * 10) / 10;
+                    temp = Mathf.Round(100 - (temp * 100));
+                    temp += Mathf.Round(dmg / 10);
+
                     if (crit <= DataStorage.criticalChance[DataStorage.curWeapon])
                     {
                         dmg += (Mathf.Round(dmg * DataStorage.range[DataStorage.curWeapon]) * 10) / 10;
@@ -1224,15 +1227,18 @@ public class CombatScript : MonoBehaviour
                     //amplifying the damage by the amount of bullets fired (if weapon that is used is the Trident tripple shot)
                     if (DataStorage.weaponName[DataStorage.curWeapon] == "Trident")
                     {
+                        temp *= shotsHit;
                         dmg *= shotsHit;//***********************This needs to be fixed
                         //checking to see how many of the trident bullets actually hit the eenemy
                         //in otherwords, the enemy might have died on the second shot while the gun still fires three rounds
-                        DataStorage.targetsHit+= shotsHit;
+                        DataStorage.targetsHit += shotsHit;
                         shotsHit = 0;
                     }//counting the shots that were hit
                     else
+                    {
                         DataStorage.targetsHit++;
-                    Debug.Log(DataStorage.targetsHit);
+                    }
+                    dmg -= temp;
 
                     if (enemyHP[i] > dmg)
                     {
@@ -1340,7 +1346,7 @@ public class CombatScript : MonoBehaviour
         else
         {
             temp.GetComponent<Animator>().Play("CBTDamageTotal", -1, 0f);
-            StartCoroutine(AddDamage(temp, totalDamage, .05f));
+            StartCoroutine(AddDamage(temp, totalDamage, .02f));
             totalDamage = 0;
             return temp;
         }
@@ -1351,11 +1357,31 @@ public class CombatScript : MonoBehaviour
     //animating the machinegun text
     IEnumerator AddDamage(GameObject temp, float total, float waitTime)
     {
-        for (int i = 0; i < total; i++)
+        for (int i = 0; i <= total; i++)
         {
+            //if (total - i > 1000)
+            //    i += 1000;
+            //else if (total - i > 500)
+            //    i += 500;
+            //else if (total - i > 100)
+            //    i += 100;
+            //else if (total - i > 50)
+            //    i += 50;
+            //else if (total - i > 10)
+            //    i += 10;
+            //else if (total - i > 5)
+            //    i += 5;
+            //else if (total - i > 4)
+            //    i += 4;
+            if (total - i > 3)
+                i += 3;
+            else if (total - i > 2)
+                i += 2;
+
             yield return new WaitForSeconds(waitTime);
             temp.GetComponent<Text>().text = "-" + i;
         }
+
         temp.GetComponent<Animator>().SetTrigger("end");
         Destroy(temp.gameObject, 10f);
     }

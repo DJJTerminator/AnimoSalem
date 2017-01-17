@@ -26,6 +26,8 @@ public class VictoryScript : MonoBehaviour
     Text experience;
     [SerializeField]
     Text totalTime;
+    [SerializeField]
+    GameObject bonusAwards;
 
     [SerializeField]
     GameObject score;
@@ -58,36 +60,87 @@ public class VictoryScript : MonoBehaviour
         totalTime.text = Mathf.Floor(CombatScript.battleTime / 60f).ToString("00") + ":" + Mathf.Floor(CombatScript.battleTime % 60f).ToString("00") + "." + (Mathf.Floor((CombatScript.battleTime % 60f) % 10f)).ToString("00");
         accuracy.text = ac.ToString() + "%";
         float tempScore = 100f;
-        print(tempScore);
-        tempScore -= ac + (CombatScript.damageRecieved / (CombatScript.damageRecieved + CombatScript.damageGiven));
-        print(tempScore);
-        tempScore -= (((int)CombatScript.battleTime ^ (int)CombatScript.allottedTime) / CombatScript.allottedTime);
+        ac /= 100;
+        if (ac > 1)
+            ac = 1;
+        tempScore -= (CombatScript.damageRecieved / (CombatScript.damageRecieved + CombatScript.damageGiven));
+        tempScore += ac;
+        if (tempScore > 100)
+            tempScore = 100;
+        if (1 * (CombatScript.battleTime / CombatScript.allottedTime) > 1)
+            tempScore -= (2 * (CombatScript.battleTime / CombatScript.allottedTime));
         print(tempScore);
         tempScore /= 100;
         print(tempScore);
-        if (tempScore < 0)
+        //assorting the bonus awards (which are based on the grades)
+        int awardedMoney;
+        int awardedXP;
+        int awardedItem;
+        //the additional awards based on player's luck
+        int myLuck = (DataStorage.luck / 2);
+
+        if (tempScore >= 1)
         {
             tempScore = 0;
             grade.text = "S";
+            awardedXP = Random.Range(155 + myLuck, 240 + myLuck);
+            awardedMoney = Random.Range(155 + myLuck, 240 + myLuck);
+            awardedItem = Random.Range(0 + myLuck, 10 + myLuck);
         }
-        else if (tempScore < .03f)
+        else if (tempScore >= .97f)
+        {
             grade.text = "A+";
-        else if (tempScore < .06f)
+            awardedXP = Random.Range(155 + myLuck, 195 + myLuck);
+            awardedMoney = Random.Range(155 + myLuck, 195 + myLuck);
+        }
+        else if (tempScore >= .93f)
+        {
             grade.text = "A";
-        else if (tempScore < .1f)
+            awardedXP = Random.Range(120 + myLuck, 155 + myLuck);
+            awardedMoney = Random.Range(120 + myLuck, 155 + myLuck);
+        }
+        else if (tempScore >= .90f)
+        {
             grade.text = "B+";
-        else if (tempScore < .14f)
+            awardedXP = Random.Range(90 + myLuck, 120 + myLuck);
+            awardedMoney = Random.Range(90 + myLuck, 120 + myLuck);
+        }
+        else if (tempScore >= .86f)
+        {
             grade.text = "B";
-        else if (tempScore < .18f)
+            awardedXP = Random.Range(70 + myLuck, 90 + myLuck);
+            awardedMoney = Random.Range(70 + myLuck, 90 + myLuck);
+        }
+        else if (tempScore >= .82f)
+        {
             grade.text = "C+";
-        else if (tempScore < .22f)
+            awardedXP = Random.Range(50 + myLuck, 70 + myLuck);
+            awardedMoney = Random.Range(50 + myLuck, 70 + myLuck);
+        }
+        else if (tempScore >= .78f)
+        {
             grade.text = "C";
-        else if (tempScore < .26f)
+            awardedXP = Random.Range(35 + myLuck, 50 + myLuck);
+            awardedMoney = Random.Range(35 + myLuck, 50 + myLuck);
+        }
+        else if (tempScore >= .75f)
+        {
             grade.text = "D+";
-        else if (tempScore < .3f)
+            awardedXP = Random.Range(20 + myLuck, 35 + myLuck);
+            awardedMoney = Random.Range(20 + myLuck, 35 + myLuck);
+        }
+        else if (tempScore >= .72f)
+        {
             grade.text = "D";
+            awardedXP = Random.Range(10 + myLuck, 20 + myLuck);
+            awardedMoney = Random.Range(10 + myLuck, 20 + myLuck);
+        }
         else
+        {
             grade.text = "F";
+        }
+
+
 
         xpValue = xp;
         xpText.text = xp.ToString();
