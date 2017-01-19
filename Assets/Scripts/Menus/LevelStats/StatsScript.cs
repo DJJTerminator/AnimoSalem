@@ -187,11 +187,6 @@ public class StatsScript : MonoBehaviour {
 			//adding stats
 			DataStorage.playerStats -= 1;
 			DataStorage.constitution +=1;
-			//turning off the levelbackground color animations
-			if (DataStorage.playerStats == 0)
-			{
-				DataStorage.levelBackground.Play("RevertColor");
-			}
 			DataStorage.maxHealth += 2;
 
 			//we are later assigning that same percentage to the newly upgraded max health
@@ -213,12 +208,6 @@ public class StatsScript : MonoBehaviour {
 		{
 			DataStorage.playerStats -= 1;
 			DataStorage.strength +=1;
-			//turning off the levelbackground color animations
-			if (DataStorage.playerStats == 0)
-			{
-				DataStorage.levelBackground.Play("RevertColor");
-			}
-
 			//adding the skill
 			DataStorage.maxWeight += .2f;
 
@@ -236,11 +225,6 @@ public class StatsScript : MonoBehaviour {
 		{
 			DataStorage.playerStats -= 1;
 			DataStorage.luck +=1;
-			//turning off the levelbackground color animations
-			if (DataStorage.playerStats == 0)
-			{
-				DataStorage.levelBackground.Play("RevertColor");
-			}
 			yesSound.Play ();
 			ShowStats();
 		}
@@ -254,11 +238,6 @@ public class StatsScript : MonoBehaviour {
 		{
 			DataStorage.playerStats -= 1;
 			DataStorage.dexterity += 1;
-			//turning off the levelbackground color animations
-			if (DataStorage.playerStats == 0)
-			{
-				DataStorage.levelBackground.Play("RevertColor");
-			}
 			DataStorage.damage += .2f;
 			yesSound.Play ();
 			ShowStats();
@@ -273,11 +252,6 @@ public class StatsScript : MonoBehaviour {
 		{
 			DataStorage.playerStats -= 1;
 			DataStorage.charisma +=1;
-			//turning off the levelbackground color animations
-			if (DataStorage.playerStats == 0)
-			{
-				DataStorage.levelBackground.Play("RevertColor");
-			}
 			yesSound.Play ();
 			ShowStats();
 		}
@@ -291,12 +265,6 @@ public class StatsScript : MonoBehaviour {
 		{
 			DataStorage.playerStats -= 1;
 			DataStorage.intelligence +=1;
-			//turning off the levelbackground color animations
-			if (DataStorage.playerStats == 0)
-			{
-				DataStorage.levelBackground.Play("RevertColor");
-			}
-
 
 			yesSound.Play ();
 			ShowStats();
@@ -310,11 +278,6 @@ public class StatsScript : MonoBehaviour {
 		{
 			DataStorage.playerStats -= 1;
 			DataStorage.agility +=1;
-			//turning off the levelbackground color animations
-			if (DataStorage.playerStats == 0)
-			{
-				DataStorage.levelBackground.Play("RevertColor");
-			}
 
 			//adding the skill
 			DataStorage.speed += .02f;
@@ -335,11 +298,6 @@ public class StatsScript : MonoBehaviour {
 		{
 			DataStorage.playerStats -= 1;
 			DataStorage.perception +=1;
-			//turning off the levelbackground color animations
-			if (DataStorage.playerStats == 0)
-			{
-				DataStorage.levelBackground.Play("RevertColor");
-			}
 
 			//adding the skill
 			DataStorage.lightAngle += .2f;
@@ -360,11 +318,6 @@ public class StatsScript : MonoBehaviour {
 		{
 			DataStorage.playerStats -= 1;
 			DataStorage.fortitude +=1;
-			//turning off the levelbackground color animations
-			if (DataStorage.playerStats == 0)
-			{
-				DataStorage.levelBackground.Play("RevertColor");
-			}
 
 			yesSound.Play ();
 			ShowStats();

@@ -54,7 +54,7 @@ public class VictoryScript : MonoBehaviour
     IEnumerator Awards(string[] name, int type, int amount, int item, int xp, int money)
     {
         print(name[type] + " " + amount);
-        yield return new WaitForSeconds(10f);
+        yield return new WaitForSeconds(4f);
         bonusAwards.SetActive(true);
         Text awardedText = GameObject.Find("All Canvases/BattleSystem/Victory/BonusAwards/Award1").GetComponent<Text>();
         awardedText.text = "Bonus: " + "+"+ xp + "xp";
@@ -90,14 +90,24 @@ public class VictoryScript : MonoBehaviour
         ac /= 100;
         if (ac > 1)
             ac = 1;
+        ac = 1 - ac;
         tempScore -= (CombatScript.damageRecieved / (CombatScript.damageRecieved + CombatScript.damageGiven));
-        tempScore += ac;
-        if (tempScore > 100)
-            tempScore = 100;
+        tempScore -= CombatScript.dodgeFail * 3;
+        CombatScript.dodgeFail = 0;
+
         if (1 * (CombatScript.battleTime / CombatScript.allottedTime) > 1)
+        {
             tempScore -= (2 * (CombatScript.battleTime / CombatScript.allottedTime));
-        print(tempScore);
-        tempScore /= 100;
+            tempScore /= 100;
+            tempScore -= ac;
+        }
+        else
+        {
+            tempScore += (2 * (CombatScript.battleTime / CombatScript.allottedTime));
+            tempScore /= 100;
+            tempScore -= ac;
+        }
+
         print(tempScore);
         //assorting the bonus awards (which are based on the grades)
         int awardedMoney;
@@ -400,7 +410,8 @@ public class VictoryScript : MonoBehaviour
                     //add weight here
                     StartCoroutine(Awards(ammoName, ammoType, awardedAmmo, awardedItem, awardedXP, awardedMoney));
                     break;
-            }
+               }
+            xp += awardedXP;
             }
         else if (tempScore >= .75f)
         {
@@ -419,7 +430,6 @@ public class VictoryScript : MonoBehaviour
             grade.text = "F";
         }
 
-
         xpValue = xp;
         xpText.text = xp.ToString();
         victory.SetActive(true);
@@ -429,6 +439,12 @@ public class VictoryScript : MonoBehaviour
 
     IEnumerator LoadXP(float waitTime)
     {
+        score.SetActive(true);
+        victory.GetComponent<Animator>().Play("Score");
+        xpBar.transform.localScale = new Vector3((float)DataStorage.XP / (float)DataStorage.maxXP, 1, 1);
+        LevelUp.SetActive(false);
+        yield return new WaitForSeconds(6f);
+
         while (xpValue > 0)
         {
             if (LevelUp.activeSelf)
@@ -480,9 +496,9 @@ public class VictoryScript : MonoBehaviour
 
     IEnumerator ReturnToGame(float waitTime)
     {
-        score.SetActive(true);
+        //score.SetActive(true);
         levelingUp.Stop();
-        victory.GetComponent<Animator>().Play("Score");
+        //victory.GetComponent<Animator>().Play("Score");
         yield return new WaitForSeconds(4f);
         prizes.SetActive(false);
         yield return new WaitForSeconds(waitTime);
@@ -509,6 +525,8 @@ public class VictoryScript : MonoBehaviour
         //getting the camera and turning on the follow script
         Camera myCamera = GameObject.Find("Main Camera").GetComponent<Camera>();
         myCamera.GetComponent<CameraFollow>().enabled = true;
+        bonusAwards.SetActive(false);
+        LevelUp.SetActive(false);
         pressStart.SetActive(false);
         gameObject.SetActive(false);
         score.SetActive(false);

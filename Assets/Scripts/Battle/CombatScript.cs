@@ -49,6 +49,7 @@ public class CombatScript : MonoBehaviour
     static public float allottedTime; //the time allotted to ebat the battle for the hgihest grade
     static public int acHit; //total shots hit for this round
     static public int acFired; //total shots fired for this round
+    static public int dodgeFail; //total failed dodges for this battle
     static public float damageGiven;
     static public float damageRecieved;
     static public int xpGained;

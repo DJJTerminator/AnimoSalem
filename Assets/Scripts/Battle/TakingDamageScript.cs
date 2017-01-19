@@ -90,6 +90,8 @@ public class TakingDamageScript : MonoBehaviour {
     IEnumerator TimeFailure(float waitTime)
     {
         yield return new WaitForSeconds(1.5f);
+        DataStorage.failedDodges++;
+        CombatScript.dodgeFail++;
         TakeDamage();
         actionText.GetComponent<Text>().text = "Failed!";
         actionText.GetComponent<Animator>().Play("Failed", -1, 0f);
@@ -103,6 +105,7 @@ public class TakingDamageScript : MonoBehaviour {
     IEnumerator Failed(float waitTime)
     {
         DataStorage.failedDodges++;
+        CombatScript.dodgeFail++;
         TakeDamage();
         StopCoroutine(timeFailure);
         actionText.GetComponent<Text>().text = "Failed!";
