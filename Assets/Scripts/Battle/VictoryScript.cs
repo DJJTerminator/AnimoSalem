@@ -121,54 +121,68 @@ public class VictoryScript : MonoBehaviour
 
         if (tempScore >= 1)
         {
+
             tempScore = 0;
             grade.text = "S";
             awardedXP = Random.Range(135 + myLuck, 150 + myLuck);
-            awardedMoney = Random.Range(135 + myLuck, 150 + myLuck);
-            awardedItem = Random.Range(0 + myLuck, 10 + myLuck);
-            awardedAmmo = Random.Range(0, 6);
-            ammoType = Random.Range(0, 6);
-            ammoType = Random.Range(0, 6);
+            awardedMoney = Random.Range(0, 50 + myLuck);
+            //randomizing the chances of finding ammo, and than randomizing the chances of finding certain ammo
+            int magicFind = Random.Range(0, 1000 + myLuck);
+            if (magicFind >= 920 - myLuck)
+            {
+                magicFind = Random.Range(0, 600);
+                //randomizing ammo type
+                if (magicFind >= 450)
+                    ammoType = 1;
+                else if (magicFind >= 325)
+                    ammoType = 2;
+                else if (magicFind >= 250)
+                    ammoType = 3;
+                else if (magicFind >= 100)
+                    ammoType = 4;
+                else if (magicFind >= 40)
+                    ammoType = 5;
+                else
+                    ammoType = 6;
+            }
+            else
+                ammoType = 0;
             awardedItem = Random.Range(myLuck, 100);
             switch (ammoType)
             {
                 default:
                     ammoType = 0;
+                    awardedAmmo = 0;
                     break;
                 case 1://handgun bullets
-                    awardedAmmo = Random.Range(0 + myLuck, 15 + myLuck);
+                    awardedAmmo = Random.Range(1 + myLuck, 5 + myLuck);
                     DataStorage.HGAmmo += awardedAmmo;
-                    // add weight here
-                    StartCoroutine(Awards(ammoName, ammoType, awardedAmmo, awardedItem, awardedXP, awardedMoney));
+                    //add weight here
                     break;
                 case 2://shotgun bullets
-                    awardedAmmo = Random.Range(0 + myLuck, 6 + myLuck);
+                    awardedAmmo = Random.Range(1 + myLuck, 2 + myLuck);
                     DataStorage.SGAmmo += awardedAmmo;
                     //add weight here
-                    StartCoroutine(Awards(ammoName, ammoType, awardedAmmo, awardedItem, awardedXP, awardedMoney));
                     break;
                 case 3://rifle bullets
-                    awardedAmmo = Random.Range(0 + myLuck, 6 + myLuck);
+                    awardedAmmo = Random.Range(1 + myLuck, 2 + myLuck);
                     DataStorage.rifleAmmo += awardedAmmo;
                     //add weight here
-                    StartCoroutine(Awards(ammoName, ammoType, awardedAmmo, awardedItem, awardedXP, awardedMoney));
                     break;
                 case 4://machine bullets
-                    awardedAmmo = Random.Range(0 + myLuck, 25 + myLuck);
-                    DataStorage.MGAmmo+= awardedAmmo;
+                    awardedAmmo = Random.Range(1 + myLuck, 15 + myLuck);
+                    DataStorage.MGAmmo += awardedAmmo;
                     //add weight here
-                    StartCoroutine(Awards(ammoName, ammoType, awardedAmmo, awardedItem, awardedXP, awardedMoney));
                     break;
                 case 5://magnum bullets
-                    awardedAmmo = Random.Range(0 + myLuck, 2 + myLuck);
+                    awardedAmmo = Random.Range(1 + myLuck, 2 + myLuck);
                     DataStorage.magnumAmmo += awardedAmmo;
                     //add weight here
                     break;
                 case 6://explosive rounds
-                    awardedAmmo = Random.Range(0, myLuck);
+                    awardedAmmo = Random.Range(1 + myLuck, myLuck);
                     DataStorage.explosiveAmmo += awardedAmmo;
                     //add weight here
-                    StartCoroutine(Awards(ammoName, ammoType, awardedAmmo, awardedItem, awardedXP, awardedMoney));
                     break;
             }
         }
@@ -176,43 +190,64 @@ public class VictoryScript : MonoBehaviour
         {
             grade.text = "A+";
             awardedXP = Random.Range(120 + myLuck, 135 + myLuck);
-            awardedMoney = Random.Range(120 + myLuck, 135 + myLuck);
-            ammoType = Random.Range(0, 6);
+            awardedMoney = Random.Range(0, 50 + myLuck);
+            //randomizing the chances of finding ammo, and than randomizing the chances of finding certain ammo
+            int magicFind = Random.Range(0, 1000 + myLuck);
+            if (magicFind >= 920 - myLuck)
+            {
+                magicFind = Random.Range(0, 600);
+                //randomizing ammo type
+                if (magicFind >= 450)
+                    ammoType = 1;
+                else if (magicFind >= 325)
+                    ammoType = 2;
+                else if (magicFind >= 250)
+                    ammoType = 3;
+                else if (magicFind >= 100)
+                    ammoType = 4;
+                else if (magicFind >= 40)
+                    ammoType = 5;
+                else
+                    ammoType = 6;
+            }
+            else
+                ammoType = 0;
             awardedItem = Random.Range(myLuck, 100);
             switch (ammoType)
             {
                 default:
                     ammoType = 0;
+                    awardedAmmo = 0;
                     break;
                 case 1://handgun bullets
-                    awardedAmmo = Random.Range(0, 12 + myLuck);
+                    awardedAmmo = Random.Range(1 + myLuck, 5 + myLuck);
                     DataStorage.HGAmmo += awardedAmmo;
                     //add weight here
-                    StartCoroutine(Awards(ammoName, ammoType, awardedAmmo, awardedItem, awardedXP, awardedMoney));
                     break;
                 case 2://shotgun bullets
-                    awardedAmmo = Random.Range(0, 4 + myLuck);
+                    awardedAmmo = Random.Range(1 + myLuck, 2 + myLuck);
                     DataStorage.SGAmmo += awardedAmmo;
                     //add weight here
-                    StartCoroutine(Awards(ammoName, ammoType, awardedAmmo, awardedItem, awardedXP, awardedMoney));
                     break;
                 case 3://rifle bullets
-                    awardedAmmo = Random.Range(0, 4 + myLuck);
+                    awardedAmmo = Random.Range(1 + myLuck, 2 + myLuck);
                     DataStorage.rifleAmmo += awardedAmmo;
                     //add weight here
-                    StartCoroutine(Awards(ammoName, ammoType, awardedAmmo, awardedItem, awardedXP, awardedMoney));
                     break;
                 case 4://machine bullets
-                    awardedAmmo = Random.Range(0, 15 + myLuck);
+                    awardedAmmo = Random.Range(1 + myLuck, 15 + myLuck);
                     DataStorage.MGAmmo += awardedAmmo;
                     //add weight here
-                    StartCoroutine(Awards(ammoName, ammoType, awardedAmmo, awardedItem, awardedXP, awardedMoney));
                     break;
                 case 5://magnum bullets
-                    awardedAmmo = Random.Range(0, myLuck);
+                    awardedAmmo = Random.Range(1 + myLuck, 2 + myLuck);
                     DataStorage.magnumAmmo += awardedAmmo;
                     //add weight here
-                    StartCoroutine(Awards(ammoName, ammoType, awardedAmmo, awardedItem, awardedXP, awardedMoney));
+                    break;
+                case 6://explosive rounds
+                    awardedAmmo = Random.Range(1 + myLuck, myLuck);
+                    DataStorage.explosiveAmmo += awardedAmmo;
+                    //add weight here
                     break;
             }
         }
@@ -220,43 +255,64 @@ public class VictoryScript : MonoBehaviour
         {
             grade.text = "A";
             awardedXP = Random.Range(90 + myLuck, 105 + myLuck);
-            awardedMoney = Random.Range(90 + myLuck, 105 + myLuck);
-            ammoType = Random.Range(0, 6);
+            awardedMoney = Random.Range(0, 50 + myLuck);
+            //randomizing the chances of finding ammo, and than randomizing the chances of finding certain ammo
+            int magicFind = Random.Range(0, 1000 + myLuck);
+            if (magicFind >= 920 - myLuck)
+            {
+                magicFind = Random.Range(0, 600);
+                //randomizing ammo type
+                if (magicFind >= 450)
+                    ammoType = 1;
+                else if (magicFind >= 325)
+                    ammoType = 2;
+                else if (magicFind >= 250)
+                    ammoType = 3;
+                else if (magicFind >= 100)
+                    ammoType = 4;
+                else if (magicFind >= 40)
+                    ammoType = 5;
+                else
+                    ammoType = 6;
+            }
+            else
+                ammoType = 0;
             awardedItem = Random.Range(myLuck, 100);
             switch (ammoType)
             {
                 default:
                     ammoType = 0;
+                    awardedAmmo = 0;
                     break;
                 case 1://handgun bullets
-                    awardedAmmo = Random.Range(0, 12 + myLuck);
+                    awardedAmmo = Random.Range(1 + myLuck, 5 + myLuck);
                     DataStorage.HGAmmo += awardedAmmo;
                     //add weight here
-                    StartCoroutine(Awards(ammoName, ammoType, awardedAmmo, awardedItem, awardedXP, awardedMoney));
                     break;
                 case 2://shotgun bullets
-                    awardedAmmo = Random.Range(0, 4 + myLuck);
+                    awardedAmmo = Random.Range(1 + myLuck, 2 + myLuck);
                     DataStorage.SGAmmo += awardedAmmo;
                     //add weight here
-                    StartCoroutine(Awards(ammoName, ammoType, awardedAmmo, awardedItem, awardedXP, awardedMoney));
                     break;
                 case 3://rifle bullets
-                    awardedAmmo = Random.Range(0, 4 + myLuck);
+                    awardedAmmo = Random.Range(1 + myLuck, 2 + myLuck);
                     DataStorage.rifleAmmo += awardedAmmo;
                     //add weight here
-                    StartCoroutine(Awards(ammoName, ammoType, awardedAmmo, awardedItem, awardedXP, awardedMoney));
                     break;
                 case 4://machine bullets
-                    awardedAmmo = Random.Range(0, 15 + myLuck);
+                    awardedAmmo = Random.Range(1 + myLuck, 15 + myLuck);
                     DataStorage.MGAmmo += awardedAmmo;
                     //add weight here
-                    StartCoroutine(Awards(ammoName, ammoType, awardedAmmo, awardedItem, awardedXP, awardedMoney));
                     break;
                 case 5://magnum bullets
-                    awardedAmmo = Random.Range(0, myLuck);
+                    awardedAmmo = Random.Range(1 + myLuck, 2 + myLuck);
                     DataStorage.magnumAmmo += awardedAmmo;
                     //add weight here
-                    StartCoroutine(Awards(ammoName, ammoType, awardedAmmo, awardedItem, awardedXP, awardedMoney));
+                    break;
+                case 6://explosive rounds
+                    awardedAmmo = Random.Range(1 + myLuck, myLuck);
+                    DataStorage.explosiveAmmo += awardedAmmo;
+                    //add weight here
                     break;
             }
         }
@@ -264,37 +320,64 @@ public class VictoryScript : MonoBehaviour
         {
             grade.text = "B+";
             awardedXP = Random.Range(75 + myLuck, 90 + myLuck);
-            awardedMoney = Random.Range(75 + myLuck, 90 + myLuck);
-            ammoType = Random.Range(0, 6);
+            awardedMoney = Random.Range(0, 50 + myLuck);
+            //randomizing the chances of finding ammo, and than randomizing the chances of finding certain ammo
+            int magicFind = Random.Range(0, 1000 + myLuck);
+            if (magicFind >= 920 - myLuck)
+            {
+                magicFind = Random.Range(0, 600);
+                //randomizing ammo type
+                if (magicFind >= 450)
+                    ammoType = 1;
+                else if (magicFind >= 325)
+                    ammoType = 2;
+                else if (magicFind >= 250)
+                    ammoType = 3;
+                else if (magicFind >= 100)
+                    ammoType = 4;
+                else if (magicFind >= 40)
+                    ammoType = 5;
+                else
+                    ammoType = 6;
+            }
+            else
+                ammoType = 0;
             awardedItem = Random.Range(myLuck, 100);
             switch (ammoType)
             {
                 default:
                     ammoType = 0;
+                    awardedAmmo = 0;
                     break;
                 case 1://handgun bullets
-                    awardedAmmo = Random.Range(0, 8 + myLuck);
+                    awardedAmmo = Random.Range(1 + myLuck, 5 + myLuck);
                     DataStorage.HGAmmo += awardedAmmo;
                     //add weight here
-                    StartCoroutine(Awards(ammoName, ammoType, awardedAmmo, awardedItem, awardedXP, awardedMoney));
                     break;
                 case 2://shotgun bullets
-                    awardedAmmo = Random.Range(0, 3 + myLuck);
+                    awardedAmmo = Random.Range(1 + myLuck, 2 + myLuck);
                     DataStorage.SGAmmo += awardedAmmo;
                     //add weight here
-                    StartCoroutine(Awards(ammoName, ammoType, awardedAmmo, awardedItem, awardedXP, awardedMoney));
                     break;
                 case 3://rifle bullets
-                    awardedAmmo = Random.Range(0, 3 + myLuck);
+                    awardedAmmo = Random.Range(1 + myLuck, 2 + myLuck);
                     DataStorage.rifleAmmo += awardedAmmo;
                     //add weight here
-                    StartCoroutine(Awards(ammoName, ammoType, awardedAmmo, awardedItem, awardedXP, awardedMoney));
                     break;
                 case 4://machine bullets
-                    awardedAmmo = Random.Range(0, 15 + myLuck);
+                    awardedAmmo = Random.Range(1 + myLuck, 15 + myLuck);
                     DataStorage.MGAmmo += awardedAmmo;
                     //add weight here
-                    StartCoroutine(Awards(ammoName, ammoType, awardedAmmo, awardedItem, awardedXP, awardedMoney));
+                    break;
+                case 5://magnum bullets
+                    awardedAmmo = Random.Range(1 + myLuck, 2 + myLuck);
+                    DataStorage.magnumAmmo += awardedAmmo;
+                    //add weight here
+                    break;
+                case 6://explosive rounds
+                    awardedAmmo = Random.Range(1 + myLuck, myLuck);
+                    DataStorage.explosiveAmmo += awardedAmmo;
+                    //add weight here
                     break;
             }
         }
@@ -302,37 +385,64 @@ public class VictoryScript : MonoBehaviour
         {
             grade.text = "B";
             awardedXP = Random.Range(60 + myLuck, 75 + myLuck);
-            awardedMoney = Random.Range(60 + myLuck, 75 + myLuck);
-            ammoType = Random.Range(0, 6);
+            awardedMoney = Random.Range(0, 50 + myLuck);
+            //randomizing the chances of finding ammo, and than randomizing the chances of finding certain ammo
+            int magicFind = Random.Range(0, 1000 + myLuck);
+            if (magicFind >= 920 - myLuck)
+            {
+                magicFind = Random.Range(0, 600);
+                //randomizing ammo type
+                if (magicFind >= 450)
+                    ammoType = 1;
+                else if (magicFind >= 325)
+                    ammoType = 2;
+                else if (magicFind >= 250)
+                    ammoType = 3;
+                else if (magicFind >= 100)
+                    ammoType = 4;
+                else if (magicFind >= 40)
+                    ammoType = 5;
+                else
+                    ammoType = 6;
+            }
+            else
+                ammoType = 0;
             awardedItem = Random.Range(myLuck, 100);
             switch (ammoType)
             {
                 default:
                     ammoType = 0;
+                    awardedAmmo = 0;
                     break;
                 case 1://handgun bullets
-                    awardedAmmo = Random.Range(0, 8 + myLuck);
+                    awardedAmmo = Random.Range(1 + myLuck, 5 + myLuck);
                     DataStorage.HGAmmo += awardedAmmo;
                     //add weight here
-                    StartCoroutine(Awards(ammoName, ammoType, awardedAmmo, awardedItem, awardedXP, awardedMoney));
                     break;
                 case 2://shotgun bullets
-                    awardedAmmo = Random.Range(0, 3 + myLuck);
+                    awardedAmmo = Random.Range(1 + myLuck, 2 + myLuck);
                     DataStorage.SGAmmo += awardedAmmo;
                     //add weight here
-                    StartCoroutine(Awards(ammoName, ammoType, awardedAmmo, awardedItem, awardedXP, awardedMoney));
                     break;
                 case 3://rifle bullets
-                    awardedAmmo = Random.Range(0, 3 + myLuck);
+                    awardedAmmo = Random.Range(1 + myLuck, 2 + myLuck);
                     DataStorage.rifleAmmo += awardedAmmo;
                     //add weight here
-                    StartCoroutine(Awards(ammoName, ammoType, awardedAmmo, awardedItem, awardedXP, awardedMoney));
                     break;
                 case 4://machine bullets
-                    awardedAmmo = Random.Range(0, 15 + myLuck);
+                    awardedAmmo = Random.Range(1 + myLuck, 15 + myLuck);
                     DataStorage.MGAmmo += awardedAmmo;
                     //add weight here
-                    StartCoroutine(Awards(ammoName, ammoType, awardedAmmo, awardedItem, awardedXP, awardedMoney));
+                    break;
+                case 5://magnum bullets
+                    awardedAmmo = Random.Range(1 + myLuck, 2 + myLuck);
+                    DataStorage.magnumAmmo += awardedAmmo;
+                    //add weight here
+                    break;
+                case 6://explosive rounds
+                    awardedAmmo = Random.Range(1 + myLuck, myLuck);
+                    DataStorage.explosiveAmmo += awardedAmmo;
+                    //add weight here
                     break;
             }
         }
@@ -340,37 +450,64 @@ public class VictoryScript : MonoBehaviour
         {
             grade.text = "C+";
             awardedXP = Random.Range(45 + myLuck, 60 + myLuck);
-            awardedMoney = Random.Range(45 + myLuck, 60 + myLuck);
-            ammoType = Random.Range(0, 6);
+            awardedMoney = Random.Range(0, 50 + myLuck);
+            //randomizing the chances of finding ammo, and than randomizing the chances of finding certain ammo
+            int magicFind = Random.Range(0, 1000 + myLuck);
+            if (magicFind >= 920 - myLuck)
+            {
+                magicFind = Random.Range(0, 600);
+                //randomizing ammo type
+                if (magicFind >= 450)
+                    ammoType = 1;
+                else if (magicFind >= 325)
+                    ammoType = 2;
+                else if (magicFind >= 250)
+                    ammoType = 3;
+                else if (magicFind >= 100)
+                    ammoType = 4;
+                else if (magicFind >= 40)
+                    ammoType = 5;
+                else
+                    ammoType = 6;
+            }
+            else
+                ammoType = 0;
             awardedItem = Random.Range(myLuck, 100);
             switch (ammoType)
             {
                 default:
                     ammoType = 0;
+                    awardedAmmo = 0;
                     break;
                 case 1://handgun bullets
-                    awardedAmmo = Random.Range(0, 5 + myLuck);
+                    awardedAmmo = Random.Range(1 + myLuck, 5 + myLuck);
                     DataStorage.HGAmmo += awardedAmmo;
                     //add weight here
-                    StartCoroutine(Awards(ammoName, ammoType, awardedAmmo, awardedItem, awardedXP, awardedMoney));
                     break;
                 case 2://shotgun bullets
-                    awardedAmmo = Random.Range(0, 2 + myLuck);
+                    awardedAmmo = Random.Range(1 + myLuck, 2 + myLuck);
                     DataStorage.SGAmmo += awardedAmmo;
                     //add weight here
-                    StartCoroutine(Awards(ammoName, ammoType, awardedAmmo, awardedItem, awardedXP, awardedMoney));
                     break;
                 case 3://rifle bullets
-                    awardedAmmo = Random.Range(0, 2 + myLuck);
+                    awardedAmmo = Random.Range(1 + myLuck, 2 + myLuck);
                     DataStorage.rifleAmmo += awardedAmmo;
                     //add weight here
-                    StartCoroutine(Awards(ammoName, ammoType, awardedAmmo, awardedItem, awardedXP, awardedMoney));
                     break;
                 case 4://machine bullets
-                    awardedAmmo = Random.Range(0, 10 + myLuck);
+                    awardedAmmo = Random.Range(1 + myLuck, 15 + myLuck);
                     DataStorage.MGAmmo += awardedAmmo;
                     //add weight here
-                    StartCoroutine(Awards(ammoName, ammoType, awardedAmmo, awardedItem, awardedXP, awardedMoney));
+                    break;
+                case 5://magnum bullets
+                    awardedAmmo = Random.Range(1 + myLuck, 2 + myLuck);
+                    DataStorage.magnumAmmo += awardedAmmo;
+                    //add weight here
+                    break;
+                case 6://explosive rounds
+                    awardedAmmo = Random.Range(1 + myLuck, myLuck);
+                    DataStorage.explosiveAmmo += awardedAmmo;
+                    //add weight here
                     break;
             }
         }
@@ -378,62 +515,270 @@ public class VictoryScript : MonoBehaviour
         {
             grade.text = "C";
             awardedXP = Random.Range(35 + myLuck, 45 + myLuck);
-            awardedMoney = Random.Range(35 + myLuck, 45 + myLuck);
-            ammoType = Random.Range(0, 6);
+            awardedMoney = Random.Range(0, 50 + myLuck);
+            //randomizing the chances of finding ammo, and than randomizing the chances of finding certain ammo
+            int magicFind = Random.Range(0, 1000 + myLuck);
+            if (magicFind >= 920 - myLuck)
+            {
+                magicFind = Random.Range(0, 600);
+                //randomizing ammo type
+                if (magicFind >= 450)
+                    ammoType = 1;
+                else if (magicFind >= 325)
+                    ammoType = 2;
+                else if (magicFind >= 250)
+                    ammoType = 3;
+                else if (magicFind >= 100)
+                    ammoType = 4;
+                else if (magicFind >= 40)
+                    ammoType = 5;
+                else
+                    ammoType = 6;
+            }
+            else
+                ammoType = 0;
             awardedItem = Random.Range(myLuck, 100);
             switch (ammoType)
             {
                 default:
                     ammoType = 0;
+                    awardedAmmo = 0;
                     break;
                 case 1://handgun bullets
-                    awardedAmmo = Random.Range(0, 5+ myLuck);
+                    awardedAmmo = Random.Range(1 + myLuck, 5 + myLuck);
                     DataStorage.HGAmmo += awardedAmmo;
                     //add weight here
-                    StartCoroutine(Awards(ammoName, ammoType, awardedAmmo, awardedItem, awardedXP, awardedMoney));
                     break;
                 case 2://shotgun bullets
-                    awardedAmmo = Random.Range(0, 2 + myLuck);
+                    awardedAmmo = Random.Range(1 + myLuck, 2 + myLuck);
                     DataStorage.SGAmmo += awardedAmmo;
                     //add weight here
-                    StartCoroutine(Awards(ammoName, ammoType, awardedAmmo, awardedItem, awardedXP, awardedMoney));
                     break;
                 case 3://rifle bullets
-                    awardedAmmo = Random.Range(0, 2 + myLuck);
+                    awardedAmmo = Random.Range(1 + myLuck, 2 + myLuck);
                     DataStorage.rifleAmmo += awardedAmmo;
                     //add weight here
-                    StartCoroutine(Awards(ammoName, ammoType, awardedAmmo, awardedItem, awardedXP, awardedMoney));
                     break;
                 case 4://machine bullets
-                    awardedAmmo = Random.Range(0, 10 + myLuck);
+                    awardedAmmo = Random.Range(1 + myLuck, 15 + myLuck);
                     DataStorage.MGAmmo += awardedAmmo;
                     //add weight here
-                    StartCoroutine(Awards(ammoName, ammoType, awardedAmmo, awardedItem, awardedXP, awardedMoney));
                     break;
-               }
+                case 5://magnum bullets
+                    awardedAmmo = Random.Range(1 + myLuck, 2 + myLuck);
+                    DataStorage.magnumAmmo += awardedAmmo;
+                    //add weight here
+                    break;
+                case 6://explosive rounds
+                    awardedAmmo = Random.Range(1 + myLuck, myLuck);
+                    DataStorage.explosiveAmmo += awardedAmmo;
+                    //add weight here
+                    break;
+            }
             xp += awardedXP;
             }
         else if (tempScore >= .75f)
         {
             grade.text = "D+";
             awardedXP = Random.Range(15 + myLuck, 25 + myLuck);
-            awardedMoney = Random.Range(15 + myLuck, 25 + myLuck);
+            awardedMoney = Random.Range(0, 50 + myLuck);
+            //randomizing the chances of finding ammo, and than randomizing the chances of finding certain ammo
+            int magicFind = Random.Range(0, 1000 + myLuck);
+            if (magicFind >= 920 - myLuck)
+            {
+                magicFind = Random.Range(0, 600);
+                //randomizing ammo type
+                if (magicFind >= 450)
+                    ammoType = 1;
+                else if (magicFind >= 325)
+                    ammoType = 2;
+                else if (magicFind >= 250)
+                    ammoType = 3;
+                else if (magicFind >= 100)
+                    ammoType = 4;
+                else if (magicFind >= 40)
+                    ammoType = 5;
+                else
+                    ammoType = 6;
+            }
+            else
+                ammoType = 0;
+            awardedItem = Random.Range(myLuck, 100);
+            switch (ammoType)
+            {
+                default:
+                    ammoType = 0;
+                    awardedAmmo = 0;
+                    break;
+                case 1://handgun bullets
+                    awardedAmmo = Random.Range(1 + myLuck, 5 + myLuck);
+                    DataStorage.HGAmmo += awardedAmmo;
+                    //add weight here
+                    break;
+                case 2://shotgun bullets
+                    awardedAmmo = Random.Range(1 + myLuck, 2 + myLuck);
+                    DataStorage.SGAmmo += awardedAmmo;
+                    //add weight here
+                    break;
+                case 3://rifle bullets
+                    awardedAmmo = Random.Range(1 + myLuck, 2 + myLuck);
+                    DataStorage.rifleAmmo += awardedAmmo;
+                    //add weight here
+                    break;
+                case 4://machine bullets
+                    awardedAmmo = Random.Range(1 + myLuck, 15 + myLuck);
+                    DataStorage.MGAmmo += awardedAmmo;
+                    //add weight here
+                    break;
+                case 5://magnum bullets
+                    awardedAmmo = Random.Range(1 + myLuck, 2 + myLuck);
+                    DataStorage.magnumAmmo += awardedAmmo;
+                    //add weight here
+                    break;
+                case 6://explosive rounds
+                    awardedAmmo = Random.Range(1 + myLuck, myLuck);
+                    DataStorage.explosiveAmmo += awardedAmmo;
+                    //add weight here
+                    break;
+            }
         }
         else if (tempScore >= .72f)
         {
             grade.text = "D";
             awardedXP = Random.Range(5 + myLuck, 15 + myLuck);
-            awardedMoney = Random.Range(5 + myLuck, 15 + myLuck);
+            awardedMoney = Random.Range(0, 50 + myLuck);
+            //randomizing the chances of finding ammo, and than randomizing the chances of finding certain ammo
+            int magicFind = Random.Range(0, 1000 + myLuck);
+            if (magicFind >= 920 - myLuck)
+            {
+                magicFind = Random.Range(0, 600);
+                //randomizing ammo type
+                if (magicFind >= 450)
+                    ammoType = 1;
+                else if (magicFind >= 325)
+                    ammoType = 2;
+                else if (magicFind >= 250)
+                    ammoType = 3;
+                else if (magicFind >= 100)
+                    ammoType = 4;
+                else if (magicFind >= 40)
+                    ammoType = 5;
+                else
+                    ammoType = 6;
+            }
+            else
+                ammoType = 0;
+            awardedItem = Random.Range(myLuck, 100);
+            switch (ammoType)
+            {
+                default:
+                    ammoType = 0;
+                    awardedAmmo = 0;
+                    break;
+                case 1://handgun bullets
+                    awardedAmmo = Random.Range(1 + myLuck, 5 + myLuck);
+                    DataStorage.HGAmmo += awardedAmmo;
+                    //add weight here
+                    break;
+                case 2://shotgun bullets
+                    awardedAmmo = Random.Range(1 + myLuck, 2 + myLuck);
+                    DataStorage.SGAmmo += awardedAmmo;
+                    //add weight here
+                    break;
+                case 3://rifle bullets
+                    awardedAmmo = Random.Range(1 + myLuck, 2 + myLuck);
+                    DataStorage.rifleAmmo += awardedAmmo;
+                    //add weight here
+                    break;
+                case 4://machine bullets
+                    awardedAmmo = Random.Range(1 + myLuck, 15 + myLuck);
+                    DataStorage.MGAmmo += awardedAmmo;
+                    //add weight here
+                    break;
+                case 5://magnum bullets
+                    awardedAmmo = Random.Range(1 + myLuck, 2 + myLuck);
+                    DataStorage.magnumAmmo += awardedAmmo;
+                    //add weight here
+                    break;
+                case 6://explosive rounds
+                    awardedAmmo = Random.Range(1 + myLuck, myLuck);
+                    DataStorage.explosiveAmmo += awardedAmmo;
+                    //add weight here
+                    break;
+            }
         }
         else
         {
             grade.text = "F";
+            awardedXP = 0; 
+            awardedMoney = Random.Range(0, 50 + myLuck);
+            //randomizing the chances of finding ammo, and than randomizing the chances of finding certain ammo
+            int magicFind = Random.Range(0, 1000 + myLuck);
+            if (magicFind >= 700 - myLuck)
+            {
+                magicFind = Random.Range(0, 600);
+                //randomizing ammo type
+                if (magicFind >= 450)
+                    ammoType = 1;
+                else if (magicFind >= 325)
+                    ammoType = 2;
+                else if (magicFind >= 250)
+                    ammoType = 3;
+                else if (magicFind >= 100)
+                    ammoType = 4;
+                else if (magicFind >= 20)
+                    ammoType = 5;
+                else
+                    ammoType = 6;
+            }
+            else
+                ammoType = 0;
+
+            awardedItem = Random.Range(myLuck, 100);
+            switch (ammoType)
+            {
+                default:
+                    ammoType = 0;
+                    awardedAmmo = 0;
+                    break;
+                case 1://handgun bullets
+                    awardedAmmo = Random.Range(1 + myLuck, 5 + myLuck);
+                    DataStorage.HGAmmo += awardedAmmo;
+                    //add weight here
+                    break;
+                case 2://shotgun bullets
+                    awardedAmmo = Random.Range(1 + myLuck, 2 + myLuck);
+                    DataStorage.SGAmmo += awardedAmmo;
+                    //add weight here
+                    break;
+                case 3://rifle bullets
+                    awardedAmmo = Random.Range(1 + myLuck, 2 + myLuck);
+                    DataStorage.rifleAmmo += awardedAmmo;
+                    //add weight here
+                    break;
+                case 4://machine bullets
+                    awardedAmmo = Random.Range(1 + myLuck, 15 + myLuck);
+                    DataStorage.MGAmmo += awardedAmmo;
+                    //add weight here
+                    break;
+                case 5://magnum bullets
+                    awardedAmmo = Random.Range(1 + myLuck, 2 + myLuck);
+                    DataStorage.magnumAmmo += awardedAmmo;
+                    //add weight here
+                    break;
+                case 6://explosive rounds
+                    awardedAmmo = Random.Range(1 + myLuck, myLuck);
+                    DataStorage.explosiveAmmo += awardedAmmo;
+                    //add weight here
+                    break;
+            }
         }
 
-        xpValue = xp;
+        xpValue += xp;
         xpText.text = xp.ToString();
         victory.SetActive(true);
         xpBar.transform.localScale = new Vector3((float)DataStorage.XP + xpValue / (float)DataStorage.maxXP, 1, 1);
+        StartCoroutine(Awards(ammoName, ammoType, awardedAmmo, awardedItem, awardedXP, awardedMoney)); 
         StartCoroutine(LoadXP(.02f));
     }
 
