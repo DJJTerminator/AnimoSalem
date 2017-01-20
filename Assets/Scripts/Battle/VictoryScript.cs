@@ -34,6 +34,7 @@ public class VictoryScript : MonoBehaviour
     [SerializeField]
     GameObject pressStart;
     bool isStarting = false;
+    public AudioSource startSound;
 
 
     void Enabled()
@@ -49,6 +50,7 @@ public class VictoryScript : MonoBehaviour
         {
             StartCoroutine(StartingGame());
             isStarting = true;
+            startSound.Play();
         }
     }
     IEnumerator Awards(string[] name, int type, int amount, int item, int xp, int money)
@@ -844,8 +846,8 @@ public class VictoryScript : MonoBehaviour
         //score.SetActive(true);
         levelingUp.Stop();
         //victory.GetComponent<Animator>().Play("Score");
-        yield return new WaitForSeconds(4f);
-        prizes.SetActive(false);
+      //  yield return new WaitForSeconds(4f);
+      //  prizes.SetActive(false);
         yield return new WaitForSeconds(waitTime);
         pressStart.SetActive(true);
     }
