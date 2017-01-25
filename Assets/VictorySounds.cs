@@ -14,6 +14,7 @@ public class VictorySounds : MonoBehaviour {
     }
     void SwishSound()
     {
+        if (quickSwish  != null)
         quickSwish.Play();
     }
     void Bonus()
