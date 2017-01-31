@@ -62,7 +62,7 @@ public class InventoryItem : MonoBehaviour {
     public AmmoType ammo;
 
 	// Use this for initialization
-	void Start () {
+	void Awake () {
         myDescription = GameObject.Find("ItemDescription");
         myName = GameObject.Find("ItemName");
 		decide = GameObject.Find ("All Canvases/Canvas/StorageMenu/Inventory/InventoryList/ScrollRect").GetComponent<InventoryDecisionScript>();
@@ -153,7 +153,7 @@ public class InventoryItem : MonoBehaviour {
 				//if it was not double cliked or if eneter was not hit, then we will display the item's content
 				if (type == ItemType.itemWeapon) 
 				{
-					weaponStats.SetActive(true);
+                    weaponStats.SetActive(true);
 					myDescription.GetComponent<Text> ().lineSpacing = .8f;
 					myName.GetComponent<Text> ().text = DataStorage.weaponName [weaponNumber];
                      //assinging the percentage bar accordingly to the weapon that is selected
@@ -178,7 +178,7 @@ public class InventoryItem : MonoBehaviour {
 				{
 					weaponStats.SetActive(false);
 					myDescription.GetComponent<Text> ().lineSpacing = .8f;
-			myName.GetComponent<Text> ().text = itemName;
+			        myName.GetComponent<Text> ().text = itemName;
 					myDescription.GetComponent<Text> ().text = "\n" + "\n" + "\n" + "\n" + "\n" + "\n" + "\n" + "\n" + "\n" + myDesc;
 				}//end of third else
 	}//end of function

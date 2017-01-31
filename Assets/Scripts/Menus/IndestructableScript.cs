@@ -15,10 +15,11 @@ public class IndestructableScript : MonoBehaviour {
         }
         else
         {
+            DataStorage.battleSystem = GameObject.Find("All Canvases/BattleSystem");
             DataStorage.canvas = canvas;
             DataStorage.battleSystem = battle;
             canvas.SetActive(true);
-           // battle.SetActive(true);
+            battle.SetActive(false);
         }
     }
 	

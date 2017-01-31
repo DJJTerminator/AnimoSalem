@@ -17,7 +17,8 @@ public class InventoryDecisionScript : MonoBehaviour {
 	int temp;
     GameObject buttons;
     public GameObject droppedText;
-
+    [SerializeField]
+    GameObject myEvent;
 
 
 	void Start()
@@ -117,9 +118,27 @@ public class InventoryDecisionScript : MonoBehaviour {
 			clone.GetComponent<ItemPickups> ().ammoCount = ammoAmount;
             droppedText.GetComponent<Text>().text = "Dropped " + ammoAmount + " " + "handgun bullets";
                 if (DataStorage.HGAmmo <= 0)
-				Destroy (myItem);
-		//	print (DataStorage.HGAmmo);
-			break;
+                {
+                    int value = int.Parse(myItem.name);
+                    Destroy(myItem);
+                    //checking to see if an item is already selected in the event system, if not, we assign to it now
+                    if (myEvent.GetComponent<UnityEngine.EventSystems.EventSystem>().currentSelectedGameObject == null)
+                    {
+                            value -= 1;
+                            string myName = value.ToString();
+                            GameObject nextItem = GameObject.Find("All Canvases/Canvas/StorageMenu/Inventory/InventoryList/ScrollRect/Content/"+myName);
+                            myEvent.GetComponent<UnityEngine.EventSystems.EventSystem>().SetSelectedGameObject(nextItem);
+                        //checking to see if an item is still not selected
+                        if (myEvent.GetComponent<UnityEngine.EventSystems.EventSystem>().currentSelectedGameObject == null)
+                        {
+                            value += 2;
+                            myName = value.ToString();
+                            nextItem = nextItem = GameObject.Find("All Canvases/Canvas/StorageMenu/Inventory/InventoryList/ScrollRect/Content/" + myName);
+                        }
+                    }
+                }
+                //	print (DataStorage.HGAmmo);
+                break;
 			//dropping shotgnu ammo
 		case InventoryItem.AmmoType.shotgunAmmo:
 			clone = Instantiate (Resources.Load ("DroppedItems/Handgun Ammo", typeof(GameObject))) as GameObject;
@@ -130,9 +149,27 @@ public class InventoryDecisionScript : MonoBehaviour {
 			clone.GetComponent<ItemPickups> ().ammoCount = ammoAmount;
             droppedText.GetComponent<Text>().text = "Dropped " + ammoAmount + " " + "shotgun shells";
                 if (DataStorage.SGAmmo <= 0)
-				Destroy (myItem);
-			//print (DataStorage.SGAmmo);
-			break;
+                {
+                    int value = int.Parse(myItem.name);
+                    Destroy(myItem);
+                    //checking to see if an item is already selected in the event system, if not, we assign to it now
+                    if (myEvent.GetComponent<UnityEngine.EventSystems.EventSystem>().currentSelectedGameObject == null)
+                    {
+                        value -= 1;
+                        string myName = value.ToString();
+                        GameObject nextItem = GameObject.Find("All Canvases/Canvas/StorageMenu/Inventory/InventoryList/ScrollRect/Content/" + myName);
+                        myEvent.GetComponent<UnityEngine.EventSystems.EventSystem>().SetSelectedGameObject(nextItem);
+                        //checking to see if an item is still not selected
+                        if (myEvent.GetComponent<UnityEngine.EventSystems.EventSystem>().currentSelectedGameObject == null)
+                        {
+                            value += 2;
+                            myName = value.ToString();
+                            nextItem = nextItem = GameObject.Find("All Canvases/Canvas/StorageMenu/Inventory/InventoryList/ScrollRect/Content/" + myName);
+                        }
+                    }
+                }
+                //print (DataStorage.SGAmmo);
+                break;
 			//dropping machinegun ammo
 		case InventoryItem.AmmoType.machinegunAmmo:
 			clone = Instantiate (Resources.Load ("DroppedItems/Handgun Ammo", typeof(GameObject))) as GameObject;
@@ -143,8 +180,26 @@ public class InventoryDecisionScript : MonoBehaviour {
 			myItem.GetComponent<InventoryItem>().myAmount.GetComponent<Text> ().text = "Bullets" + "(" + DataStorage.MGAmmo.ToString () + ")";
             droppedText.GetComponent<Text>().text = "Dropped " + ammoAmount + " " + "machinegun bullets";
                 if (DataStorage.MGAmmo <= 0)
-				Destroy (myItem);
-		break;
+                {
+                    int value = int.Parse(myItem.name);
+                    Destroy(myItem);
+                    //checking to see if an item is already selected in the event system, if not, we assign to it now
+                    if (myEvent.GetComponent<UnityEngine.EventSystems.EventSystem>().currentSelectedGameObject == null)
+                    {
+                        value -= 1;
+                        string myName = value.ToString();
+                        GameObject nextItem = GameObject.Find("All Canvases/Canvas/StorageMenu/Inventory/InventoryList/ScrollRect/Content/" + myName);
+                        myEvent.GetComponent<UnityEngine.EventSystems.EventSystem>().SetSelectedGameObject(nextItem);
+                        //checking to see if an item is still not selected
+                        if (myEvent.GetComponent<UnityEngine.EventSystems.EventSystem>().currentSelectedGameObject == null)
+                        {
+                            value += 2;
+                            myName = value.ToString();
+                            nextItem = nextItem = GameObject.Find("All Canvases/Canvas/StorageMenu/Inventory/InventoryList/ScrollRect/Content/" + myName);
+                        }
+                    }
+                }
+                break;
 			//dropping machinegun ammo
 		case InventoryItem.AmmoType.rifleAmmo:
 			clone = Instantiate (Resources.Load ("DroppedItems/Handgun Ammo", typeof(GameObject))) as GameObject;
@@ -155,8 +210,26 @@ public class InventoryDecisionScript : MonoBehaviour {
 			myItem.GetComponent<InventoryItem>().myAmount.GetComponent<Text> ().text = "Bullets" + "(" + DataStorage.rifleAmmo.ToString () + ")";
             droppedText.GetComponent<Text>().text = "Dropped " + ammoAmount + " " + "rifle rounds";
                 if (DataStorage.rifleAmmo <= 0)
-				Destroy (myItem);
-			break;
+                {
+                    int value = int.Parse(myItem.name);
+                    Destroy(myItem);
+                    //checking to see if an item is already selected in the event system, if not, we assign to it now
+                    if (myEvent.GetComponent<UnityEngine.EventSystems.EventSystem>().currentSelectedGameObject == null)
+                    {
+                        value -= 1;
+                        string myName = value.ToString();
+                        GameObject nextItem = GameObject.Find("All Canvases/Canvas/StorageMenu/Inventory/InventoryList/ScrollRect/Content/" + myName);
+                        myEvent.GetComponent<UnityEngine.EventSystems.EventSystem>().SetSelectedGameObject(nextItem);
+                        //checking to see if an item is still not selected
+                        if (myEvent.GetComponent<UnityEngine.EventSystems.EventSystem>().currentSelectedGameObject == null)
+                        {
+                            value += 2;
+                            myName = value.ToString();
+                            nextItem = nextItem = GameObject.Find("All Canvases/Canvas/StorageMenu/Inventory/InventoryList/ScrollRect/Content/" + myName);
+                        }
+                    }
+                }
+                break;
 			//dropping magnum ammo
 		case InventoryItem.AmmoType.magnumAmmo:
 			clone = Instantiate (Resources.Load ("DroppedItems/Handgun Ammo", typeof(GameObject))) as GameObject;
@@ -168,8 +241,26 @@ public class InventoryDecisionScript : MonoBehaviour {
                 //	myItem.GetComponent<InventoryItem>().myWeight.GetComponent<Text>().text = "lbs " + ((float)DataStorage.SGAmmo * .25f).ToString();
             droppedText.GetComponent<Text>().text = "Dropped " + ammoAmount + " " + "magnum rounds";
                 if (DataStorage.magnumAmmo <= 0)
-				Destroy (myItem);
-			break;
+                {
+                    int value = int.Parse(myItem.name);
+                    Destroy(myItem);
+                    //checking to see if an item is already selected in the event system, if not, we assign to it now
+                    if (myEvent.GetComponent<UnityEngine.EventSystems.EventSystem>().currentSelectedGameObject == null)
+                    {
+                        value -= 1;
+                        string myName = value.ToString();
+                        GameObject nextItem = GameObject.Find("All Canvases/Canvas/StorageMenu/Inventory/InventoryList/ScrollRect/Content/" + myName);
+                        myEvent.GetComponent<UnityEngine.EventSystems.EventSystem>().SetSelectedGameObject(nextItem);
+                        //checking to see if an item is still not selected
+                        if (myEvent.GetComponent<UnityEngine.EventSystems.EventSystem>().currentSelectedGameObject == null)
+                        {
+                            value += 2;
+                            myName = value.ToString();
+                            nextItem = nextItem = GameObject.Find("All Canvases/Canvas/StorageMenu/Inventory/InventoryList/ScrollRect/Content/" + myName);
+                        }
+                    }
+                }
+                break;
 			//dropping explosive ammo
 		case InventoryItem.AmmoType.explosiveAmmo:
 			clone = Instantiate (Resources.Load ("DroppedItems/Handgun Ammo", typeof(GameObject))) as GameObject;
@@ -180,8 +271,26 @@ public class InventoryDecisionScript : MonoBehaviour {
 			myItem.GetComponent<InventoryItem>().myAmount.GetComponent<Text> ().text = "Bullets" + "(" + DataStorage.explosiveAmmo.ToString () + ")";
             droppedText.GetComponent<Text>().text = "Dropped " + ammoAmount + " " + "explosive rounds";
                 if (DataStorage.explosiveAmmo <= 0)
-				Destroy (myItem);
-			break;
+                {
+                    int value = int.Parse(myItem.name);
+                    Destroy(myItem);
+                    //checking to see if an item is already selected in the event system, if not, we assign to it now
+                    if (myEvent.GetComponent<UnityEngine.EventSystems.EventSystem>().currentSelectedGameObject == null)
+                    {
+                        value -= 1;
+                        string myName = value.ToString();
+                        GameObject nextItem = GameObject.Find("All Canvases/Canvas/StorageMenu/Inventory/InventoryList/ScrollRect/Content/" + myName);
+                        myEvent.GetComponent<UnityEngine.EventSystems.EventSystem>().SetSelectedGameObject(nextItem);
+                        //checking to see if an item is still not selected
+                        if (myEvent.GetComponent<UnityEngine.EventSystems.EventSystem>().currentSelectedGameObject == null)
+                        {
+                            value += 2;
+                            myName = value.ToString();
+                            nextItem = nextItem = GameObject.Find("All Canvases/Canvas/StorageMenu/Inventory/InventoryList/ScrollRect/Content/" + myName);
+                        }
+                    }
+                }
+                break;
 		}
 
 		clone.GetComponent<ItemPickups> ().thisWeight = myItem.GetComponent<InventoryItem> ().itemWeight;
