@@ -11,9 +11,10 @@ public class MusicScript : MonoBehaviour
     AudioSource[] safeMusic;
     [SerializeField]
     AudioSource[] battleMusic;
-    static public int musicType; //0 is general, 1 is safe room, and 2 is battle.
+    static public int musicType = 2; //0 is general, 1 is safe room, and 2 is battle.
     float musicTimer = 0;
     int curMusic;
+    bool startTrack = true;
 
     // Use this for initialization
     void Start()
@@ -24,14 +25,9 @@ public class MusicScript : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
-        if (Time.time > musicTimer + 5)
+        if (Time.time > 5f + musicTimer && startTrack == true)
         {
             ChangeTrack();
-        }
-        if (Input.GetKeyDown("o"))
-        {
-            StopAllCoroutines();
-            StartCoroutine(TurnOffTrack());
         }
     }
     //*****changing the track
@@ -75,7 +71,6 @@ public class MusicScript : MonoBehaviour
     //playing in game music for a certain length of time
     IEnumerator PlayMusic(float playLength)
     {
-        print(curMusic);
         switch (musicType)
         {
                 //checking to see if the music was general
@@ -148,16 +143,24 @@ public class MusicScript : MonoBehaviour
                 break;
             //checking to see if the music was safe room
             case 1:
-                inGameMusic[curMusic].Stop();
+                safeMusic[curMusic].Stop();
                 break;
             //checking to see if the music was battle
             case 2:
-                inGameMusic[curMusic].Stop();
+                battleMusic[curMusic].Stop();
                 break;
         }
     }
+    //stopping al couritnes and preparing t start the next track
+    static public void PrepareTrack(int nextTrack, float waitTime, bool playTrack)
+    {
+        DataStorage.gameManager.GetComponent<MusicScript>().StopAllCoroutines();
+        DataStorage.gameManager.GetComponent<MusicScript>().startTrack = playTrack;
+        DataStorage.gameManager.GetComponent<MusicScript>().musicTimer = Time.time + waitTime;
+        DataStorage.gameManager.GetComponent<MusicScript>().StartCoroutine(TurnOffTrack(nextTrack));
+    }
 
-    static IEnumerator TurnOffTrack()
+    static IEnumerator TurnOffTrack(int nextTrack)
     {
         DataStorage.gameManager.GetComponent<MusicScript>().musicTimer = Time.time;
         float volume = .4f;
@@ -194,18 +197,13 @@ public class MusicScript : MonoBehaviour
                 break;
             //checking to see if the music was safe room
             case 1:
-                DataStorage.gameManager.GetComponent<MusicScript>().inGameMusic[DataStorage.gameManager.GetComponent<MusicScript>().curMusic].Stop();
+                DataStorage.gameManager.GetComponent<MusicScript>().safeMusic[DataStorage.gameManager.GetComponent<MusicScript>().curMusic].Stop();
                 break;
             //checking to see if the music was battle
             case 2:
-                DataStorage.gameManager.GetComponent<MusicScript>().inGameMusic[DataStorage.gameManager.GetComponent<MusicScript>().curMusic].Stop();
+                DataStorage.gameManager.GetComponent<MusicScript>().battleMusic[DataStorage.gameManager.GetComponent<MusicScript>().curMusic].Stop();
                 break;
         }
-        if (musicType < 2)
-        {
-            musicType++;
-        }
-        else
-            musicType = 0;
+        musicType = nextTrack;
     }
 }

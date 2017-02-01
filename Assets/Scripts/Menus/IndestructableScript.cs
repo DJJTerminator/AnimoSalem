@@ -19,7 +19,7 @@ public class IndestructableScript : MonoBehaviour {
             DataStorage.canvas = canvas;
             DataStorage.battleSystem = battle;
             canvas.SetActive(true);
-            battle.SetActive(false);
+           // battle.SetActive(false);
         }
     }
 	

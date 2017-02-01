@@ -19,7 +19,10 @@ public class EnterDybbukShop : MonoBehaviour {
 			//entering the shop
 		if (!DataStorage.theShop.activeSelf && Input.GetKeyDown ("return") && DataStorage.canDo && !DataStorage.textBox.activeSelf)
 			 {
-			 try 
+            //changing the track for the music
+            //variables that are passed musicType, waitime, and a bool to check if the music can play
+            MusicScript.PrepareTrack(1, 0f, true);
+            try 
 				{
 					DataStorage.HUD.SetActive(false);
 				}
@@ -42,8 +45,12 @@ public class EnterDybbukShop : MonoBehaviour {
 				DataStorage.canDo = false;
 			}
 			//exiting the shop
-			if (DataStorage.theShop.activeSelf && Input.GetKeyDown ("escape")) {
-				DataStorage.exclamation.SetActive (true);
+			if (DataStorage.theShop.activeSelf && Input.GetKeyDown ("escape"))
+        {
+                //changing the track for the music
+                //variables that are passed musicType, waitime, and a bool to check if the music can play
+                MusicScript.PrepareTrack(0, 0f, true);
+                DataStorage.exclamation.SetActive (true);
 				DataStorage.upgrade.SetActive (false);
 				DataStorage.sell.SetActive (false);
 				DataStorage.buy.SetActive (true);

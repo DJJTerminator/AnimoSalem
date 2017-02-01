@@ -268,10 +268,6 @@ public class InventoryListWindow : MonoBehaviour {
             }
         }
 
-
-
-
-
         //handgun ammo
         if (DataStorage.HGAmmo > 0)
         {

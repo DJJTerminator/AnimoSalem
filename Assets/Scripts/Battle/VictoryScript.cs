@@ -83,6 +83,9 @@ public class VictoryScript : MonoBehaviour
 
     public void VictoryScene(float ac, int xp)
     {
+        //changing the track for the music
+        //variables that are passed musicType, waitime, and a bool to check if the music can play
+        MusicScript.PrepareTrack(0, 1000f, false);
         dealt.text = CombatScript.damageGiven.ToString();
         taken.text = CombatScript.damageRecieved.ToString();
         experience.text = CombatScript.xpGained.ToString();
@@ -878,6 +881,9 @@ public class VictoryScript : MonoBehaviour
         gameObject.SetActive(false);
         score.SetActive(false);
         victory.SetActive(false);
+        //changing the track for the music
+        //variables that are passed musicType, waitime, and a bool to check if the music can play
+        MusicScript.PrepareTrack(0, 0f, true);
         DataStorage.battleSystem.SetActive(false);
         DataStorage.UpdateHUD();
     }
