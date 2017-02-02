@@ -64,9 +64,7 @@ public class MusicScript : MonoBehaviour
         }
         curMusic = temp;
         StartCoroutine(PlayMusic(musicTimer - Time.time));
-        print("play: ");
     }
-
 
     //playing in game music for a certain length of time
     IEnumerator PlayMusic(float playLength)
@@ -98,7 +96,6 @@ public class MusicScript : MonoBehaviour
                 //checking to see if the music was general
                 case 0:
                     inGameMusic[curMusic].volume = volume;
-                    print(inGameMusic[curMusic].volume);
                     break;
                 //checking to see if the music was safe room
                 case 1:
@@ -115,7 +112,7 @@ public class MusicScript : MonoBehaviour
         //waiting to turn down the music
         yield return new WaitForSeconds(playLength);
         //turning down the volume
-        while (inGameMusic[curMusic].volume > 0)
+        while (volume > 0)
         {
             volume -= .05f;
             switch (musicType)
@@ -170,13 +167,11 @@ public class MusicScript : MonoBehaviour
             volume -= .05f;
             if (volume < 0)
                 volume = 0;
-            print("printed volume" + volume);
             switch (musicType)
             {
                 //checking to see if the music was general
                 case 0:
                     DataStorage.gameManager.GetComponent<MusicScript>().inGameMusic[DataStorage.gameManager.GetComponent<MusicScript>().curMusic].volume = volume;
-                    print(DataStorage.gameManager.GetComponent<MusicScript>().inGameMusic[DataStorage.gameManager.GetComponent<MusicScript>().curMusic].volume);
                     break;
                 //checking to see if the music was safe room
                 case 1:
