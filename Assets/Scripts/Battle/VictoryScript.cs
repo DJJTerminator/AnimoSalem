@@ -55,7 +55,6 @@ public class VictoryScript : MonoBehaviour
     }
     IEnumerator Awards(string[] name, int type, int amount, int item, int xp, int money)
     {
-        print(name[type] + " " + amount);
         yield return new WaitForSeconds(4f);
         bonusAwards.SetActive(true);
         Text awardedText = GameObject.Find("All Canvases/BattleSystem/Victory/BonusAwards/Award1").GetComponent<Text>();
@@ -112,8 +111,6 @@ public class VictoryScript : MonoBehaviour
             tempScore /= 100;
             tempScore -= ac;
         }
-
-        print(tempScore);
         //assorting the bonus awards (which are based on the grades)
         int awardedMoney;
         int awardedXP;
@@ -881,9 +878,6 @@ public class VictoryScript : MonoBehaviour
         gameObject.SetActive(false);
         score.SetActive(false);
         victory.SetActive(false);
-        //changing the track for the music
-        //variables that are passed musicType, waitime, and a bool to check if the music can play
-        MusicScript.PrepareTrack(0, 0f, true);
         DataStorage.battleSystem.SetActive(false);
         DataStorage.UpdateHUD();
     }

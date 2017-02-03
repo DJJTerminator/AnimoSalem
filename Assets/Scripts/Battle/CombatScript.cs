@@ -366,9 +366,15 @@ public class CombatScript : MonoBehaviour
                 //checking to see how much ammo is left over that last shot that was fired
                 if (DataStorage.holster[DataStorage.curWeapon] == 0)
                     if (DataStorage.SGAmmo > 0)
+                    {
                         NeedToRelad();
+                        print(DataStorage.holster[DataStorage.curWeapon]);
+                    }
                     else
+                    {
                         NoAmmo();
+                        print(DataStorage.holster[DataStorage.curWeapon]);
+                    }
                 //checking to see if any enemies are still alive
                 if (enemyHP[0] > 0 || enemyHP[1] > 0 || enemyHP[2] > 0)
                 {
@@ -1284,6 +1290,9 @@ public class CombatScript : MonoBehaviour
                         //checking to see if all enemies are dead
                         if (enemyHP[0] <= 0 && enemyHP[1] <= 0 && enemyHP[2] <= 0)
                         {
+                            //changing the track for the music
+                            //variables that are passed musicType, waitime, and a bool to check if the music can play
+                            MusicScript.PrepareTrack(0, 0f, true);
                             //resetting the ammo, so the player doesnt have to reload at the beginning of the next round
                             ResetAmmo();
                             fireRate = Time.time + 1f;
@@ -1450,6 +1459,7 @@ public class CombatScript : MonoBehaviour
     void NeedToRelad()
     {
         //asking the player to reload
-     DataStorage.reloadingText.GetComponent<Animator>().Play("Reload", -1, 0f);
+     DataStorage.reloadingText.GetComponent<Animator>().Play("Reload");
+     DataStorage.reloadingText.GetComponent<Text>().text = "Reload";
     }
 }//end of class

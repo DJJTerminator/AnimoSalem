@@ -80,7 +80,6 @@ public class InventoryDecisionScript : MonoBehaviour {
 			ammoAmount--;
 		ammoText.text = ammoAmount.ToString ();
 	}
-
 	public void IncreaseAmmo()
 	{
 		if (ammoAmount < temp)
@@ -126,15 +125,14 @@ public class InventoryDecisionScript : MonoBehaviour {
                     {
                             value -= 1;
                             string myName = value.ToString();
-                            GameObject nextItem = GameObject.Find("All Canvases/Canvas/StorageMenu/Inventory/InventoryList/ScrollRect/Content/"+myName);
-                            myEvent.GetComponent<UnityEngine.EventSystems.EventSystem>().SetSelectedGameObject(nextItem);
                         //checking to see if an item is still not selected
                         if (myEvent.GetComponent<UnityEngine.EventSystems.EventSystem>().currentSelectedGameObject == null)
                         {
                             value += 2;
                             myName = value.ToString();
-                            nextItem = nextItem = GameObject.Find("All Canvases/Canvas/StorageMenu/Inventory/InventoryList/ScrollRect/Content/" + myName);
                         }
+                        GameObject nextItem = GameObject.Find("All Canvases/Canvas/StorageMenu/Inventory/InventoryList/ScrollRect/Content/" + myName);
+                        myEvent.GetComponent<UnityEngine.EventSystems.EventSystem>().SetSelectedGameObject(nextItem);
                     }
                 }
                 //	print (DataStorage.HGAmmo);
@@ -157,15 +155,14 @@ public class InventoryDecisionScript : MonoBehaviour {
                     {
                         value -= 1;
                         string myName = value.ToString();
-                        GameObject nextItem = GameObject.Find("All Canvases/Canvas/StorageMenu/Inventory/InventoryList/ScrollRect/Content/" + myName);
-                        myEvent.GetComponent<UnityEngine.EventSystems.EventSystem>().SetSelectedGameObject(nextItem);
                         //checking to see if an item is still not selected
                         if (myEvent.GetComponent<UnityEngine.EventSystems.EventSystem>().currentSelectedGameObject == null)
                         {
                             value += 2;
                             myName = value.ToString();
-                            nextItem = nextItem = GameObject.Find("All Canvases/Canvas/StorageMenu/Inventory/InventoryList/ScrollRect/Content/" + myName);
                         }
+                        GameObject nextItem = GameObject.Find("All Canvases/Canvas/StorageMenu/Inventory/InventoryList/ScrollRect/Content/" + myName);
+                        myEvent.GetComponent<UnityEngine.EventSystems.EventSystem>().SetSelectedGameObject(nextItem);
                     }
                 }
                 //print (DataStorage.SGAmmo);
@@ -188,15 +185,14 @@ public class InventoryDecisionScript : MonoBehaviour {
                     {
                         value -= 1;
                         string myName = value.ToString();
-                        GameObject nextItem = GameObject.Find("All Canvases/Canvas/StorageMenu/Inventory/InventoryList/ScrollRect/Content/" + myName);
-                        myEvent.GetComponent<UnityEngine.EventSystems.EventSystem>().SetSelectedGameObject(nextItem);
                         //checking to see if an item is still not selected
                         if (myEvent.GetComponent<UnityEngine.EventSystems.EventSystem>().currentSelectedGameObject == null)
                         {
                             value += 2;
                             myName = value.ToString();
-                            nextItem = nextItem = GameObject.Find("All Canvases/Canvas/StorageMenu/Inventory/InventoryList/ScrollRect/Content/" + myName);
                         }
+                        GameObject nextItem = GameObject.Find("All Canvases/Canvas/StorageMenu/Inventory/InventoryList/ScrollRect/Content/" + myName);
+                        myEvent.GetComponent<UnityEngine.EventSystems.EventSystem>().SetSelectedGameObject(nextItem);
                     }
                 }
                 break;
@@ -218,15 +214,14 @@ public class InventoryDecisionScript : MonoBehaviour {
                     {
                         value -= 1;
                         string myName = value.ToString();
-                        GameObject nextItem = GameObject.Find("All Canvases/Canvas/StorageMenu/Inventory/InventoryList/ScrollRect/Content/" + myName);
-                        myEvent.GetComponent<UnityEngine.EventSystems.EventSystem>().SetSelectedGameObject(nextItem);
                         //checking to see if an item is still not selected
                         if (myEvent.GetComponent<UnityEngine.EventSystems.EventSystem>().currentSelectedGameObject == null)
                         {
                             value += 2;
                             myName = value.ToString();
-                            nextItem = nextItem = GameObject.Find("All Canvases/Canvas/StorageMenu/Inventory/InventoryList/ScrollRect/Content/" + myName);
                         }
+                        GameObject nextItem = GameObject.Find("All Canvases/Canvas/StorageMenu/Inventory/InventoryList/ScrollRect/Content/" + myName);
+                        myEvent.GetComponent<UnityEngine.EventSystems.EventSystem>().SetSelectedGameObject(nextItem);
                     }
                 }
                 break;
@@ -249,15 +244,14 @@ public class InventoryDecisionScript : MonoBehaviour {
                     {
                         value -= 1;
                         string myName = value.ToString();
-                        GameObject nextItem = GameObject.Find("All Canvases/Canvas/StorageMenu/Inventory/InventoryList/ScrollRect/Content/" + myName);
-                        myEvent.GetComponent<UnityEngine.EventSystems.EventSystem>().SetSelectedGameObject(nextItem);
                         //checking to see if an item is still not selected
                         if (myEvent.GetComponent<UnityEngine.EventSystems.EventSystem>().currentSelectedGameObject == null)
                         {
                             value += 2;
                             myName = value.ToString();
-                            nextItem = nextItem = GameObject.Find("All Canvases/Canvas/StorageMenu/Inventory/InventoryList/ScrollRect/Content/" + myName);
                         }
+                        GameObject nextItem = GameObject.Find("All Canvases/Canvas/StorageMenu/Inventory/InventoryList/ScrollRect/Content/" + myName);
+                        myEvent.GetComponent<UnityEngine.EventSystems.EventSystem>().SetSelectedGameObject(nextItem);
                     }
                 }
                 break;
@@ -279,15 +273,14 @@ public class InventoryDecisionScript : MonoBehaviour {
                     {
                         value -= 1;
                         string myName = value.ToString();
-                        GameObject nextItem = GameObject.Find("All Canvases/Canvas/StorageMenu/Inventory/InventoryList/ScrollRect/Content/" + myName);
-                        myEvent.GetComponent<UnityEngine.EventSystems.EventSystem>().SetSelectedGameObject(nextItem);
                         //checking to see if an item is still not selected
                         if (myEvent.GetComponent<UnityEngine.EventSystems.EventSystem>().currentSelectedGameObject == null)
                         {
                             value += 2;
                             myName = value.ToString();
-                            nextItem = nextItem = GameObject.Find("All Canvases/Canvas/StorageMenu/Inventory/InventoryList/ScrollRect/Content/" + myName);
                         }
+                        GameObject nextItem = GameObject.Find("All Canvases/Canvas/StorageMenu/Inventory/InventoryList/ScrollRect/Content/" + myName);
+                        myEvent.GetComponent<UnityEngine.EventSystems.EventSystem>().SetSelectedGameObject(nextItem);
                     }
                 }
                 break;

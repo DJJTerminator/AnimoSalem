@@ -186,6 +186,9 @@ public class TakingDamageScript : MonoBehaviour {
         //Player dies
 		if (DataStorage.health <= 0)
 		{
+            //changing the track for the music
+            //variables that are passed musicType, waitime, and a bool to check if the music can play
+            MusicScript.PrepareTrack(1, 0f, false);
             //setting the death animation
             DataStorage.screenFader.Play("Dead");
 			GetComponent<CombatScript>().enabled = false;
