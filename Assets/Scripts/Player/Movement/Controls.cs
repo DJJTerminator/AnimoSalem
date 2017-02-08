@@ -14,12 +14,17 @@ public class Controls : MonoBehaviour {
     AudioSource cycleItems;
     bool canUse = true; //the boolean that allows players to use items
     int addHealth = 0;
+    Animator anim;
+    [SerializeField]
+    Animator reflectionAnim;
+
 
     void Start()
     {
-        healing = GameObject.Find ("GameManager/Sounds/ItemsHUD/Healing").GetComponent<AudioSource>();
-		healed = GameObject.Find ("GameManager/Sounds/ItemsHUD/Healed").GetComponent<AudioSource>();
-	    cycleItems = GameObject.Find ("GameManager/Sounds/ItemsHUD/CycleItems").GetComponent<AudioSource>();
+        healing = GameObject.Find("GameManager/Sounds/ItemsHUD/Healing").GetComponent<AudioSource>();
+        healed = GameObject.Find("GameManager/Sounds/ItemsHUD/Healed").GetComponent<AudioSource>();
+        cycleItems = GameObject.Find("GameManager/Sounds/ItemsHUD/CycleItems").GetComponent<AudioSource>();
+        anim = gameObject.GetComponent<Animator>();
     }
 
     void OnEnable()
@@ -36,14 +41,69 @@ public class Controls : MonoBehaviour {
     void Update()
     {
         Vector3 up = -myBody.velocity;
-        transform.Translate(Input.GetAxis("Horizontal") * Time.deltaTime * speed, Input.GetAxis("Vertical") * Time.deltaTime * speed, 0);
-
-        if (Physics.Raycast(transform.position, up, targetLayer))
+        if (Input.GetAxis("Horizontal") != 0 || Input.GetAxis("Vertical") != 0)
         {
-            print("There is something in front of the object!");
+            transform.Translate(Input.GetAxis("Horizontal") * Time.deltaTime * speed, Input.GetAxis("Vertical") * Time.deltaTime * speed, 0);
+            PlayerAnimation();
+            if (Physics.Raycast(transform.position, up, targetLayer))
+            {
+                print("There is something in front of the object!");
+            }
+            Debug.DrawRay(transform.position, up, Color.white);
         }
-        Debug.DrawRay(transform.position, up, Color.white);
+        else
+        {
+            anim.SetBool("isWalking", false);
+            reflectionAnim.SetBool("isWalking", false);
+        }
 
+
+    }//end of update
+
+    void PlayerAnimation()
+    {
+        int direction;
+
+        if (Input.GetAxis("Horizontal") > 0)
+        {
+            direction = 4;//right
+            anim.SetBool("isWalking", true);
+            anim.SetInteger("direction", direction);
+            reflectionAnim.SetBool("isWalking", true);
+            reflectionAnim.SetInteger("direction", 3);
+        }
+        else if (Input.GetAxis("Horizontal") < 0)
+        {
+            direction = 3;//left
+            anim.SetBool("isWalking", true);
+            anim.SetInteger("direction", direction);
+            reflectionAnim.SetBool("isWalking", true);
+            reflectionAnim.SetInteger("direction", 4);
+        }
+        else if (Input.GetAxis("Vertical") < 0)
+        {
+            direction = 2;//down
+            anim.SetBool("isWalking", true);
+            anim.SetInteger("direction", direction);
+            reflectionAnim.SetBool("isWalking", true);
+            reflectionAnim.SetInteger("direction", 1);
+        }
+        else if (Input.GetAxis("Vertical") > 0)
+        {
+            direction = 1;//ups
+            anim.SetBool("isWalking", true);
+            anim.SetInteger("direction", direction);
+            reflectionAnim.SetBool("isWalking", true);
+            reflectionAnim.SetInteger("direction", 2);
+        }
+    }
+
+    void FixedUpdate()
+    {
+        if (Input.GetAxis("Vertical") == 0 && Input.GetAxis("Horizontal") == 0)
+        {
+            anim.SetBool("isWalking", false);
+        }
         //using hotkeys for items
         if ((Input.GetMouseButton(1) || Input.GetKey("space")) && DataStorage.itemBar.GetComponent<Image>().fillAmount < 1 && canUse == true && int.Parse(DataStorage.itemCount.text) > 0 && !CombatScript.isReloading)
         {
@@ -65,7 +125,9 @@ public class Controls : MonoBehaviour {
         {
             SwitchItemsRight();
         }
-    }//end of update
+    } //end of fixed update
+
+
 
     //switch items left
     void SwitchItemsLeft()
