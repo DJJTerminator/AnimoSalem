@@ -396,7 +396,7 @@ public class InventoryListWindow : MonoBehaviour {
             //itemSlot = Resources.Load("InventorySlots/ItemSlotList");
             //itemSlot = (GameObject)Instantiate(itemSlotPrefab);
 
-            itemSlot = Instantiate(Resources.Load("InvenytorySlots/Potion", typeof(GameObject))) as GameObject;
+            itemSlot = Instantiate(Resources.Load("InventorySlots/Potion", typeof(GameObject))) as GameObject;
             CreateInventorySlotWindow();
             //checking to see if an item is already selected in the event system, if not, we assign to it now
             if (myEvent.GetComponent<UnityEngine.EventSystems.EventSystem>().currentSelectedGameObject == null)
