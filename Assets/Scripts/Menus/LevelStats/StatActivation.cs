@@ -15,22 +15,35 @@ public class StatActivation : MonoBehaviour
 		if (Input.GetKeyDown ("c"))
 		if (!animBool)//accessing the UI (stats) and play the correct animaitons and audio depending upon whether it was enabled or disabled
 			if (!DataStorage.canDo)
-					{
-					animBool = true;
+					{//turning ON
+                    //stopping all current playeranimations
+                    DataStorage.player.GetComponent<Controls>().anim.SetBool("isWalking", false);
+                    DataStorage.player.GetComponent<Controls>().reflectionAnim.SetBool("isWalking", false);
+                    //stopping all current playeranimations
+                    DataStorage.player.GetComponent<Controls>().anim.speed = 1;
+                    DataStorage.player.GetComponent<Controls>().reflectionAnim.speed = 1;
+                    animBool = true;
                     DataStorage.levelStats.GetComponent<Animator>().SetBool ("isOn", false);
 					DataStorage.levelStats.GetComponent<AudioSource> ().pitch = 1.3f;
 					DataStorage.levelStats.GetComponent<AudioSource> ().Play ();
 					StartCoroutine (DisableStats (.5f));
 					} 
-				else 
+				else //turning OFF
 					{
 					try 
 					{
 						DataStorage.HUD.SetActive(false);
-					}
+                        //stopping all current playeranimations
+                        DataStorage.player.GetComponent<Controls>().anim.speed = 0;
+                        DataStorage.player.GetComponent<Controls>().reflectionAnim.speed = 0;
+                    }
 					catch
 					{
-						DataStorage.HUD = GameObject.Find("All Canvases/Canvas/HUD");
+                        DataStorage.player = GameObject.Find("Player");
+                        //stopping all current playeranimations
+                        DataStorage.player.GetComponent<Controls>().anim.speed = 0;
+                        DataStorage.player.GetComponent<Controls>().reflectionAnim.speed = 0;
+                        DataStorage.HUD = GameObject.Find("All Canvases/Canvas/HUD");
 						DataStorage.HUD.SetActive(false);
 					}
                     DataStorage.player.GetComponent<Controls>().healing.Stop();

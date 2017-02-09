@@ -14,9 +14,12 @@ public class Controls : MonoBehaviour {
     AudioSource cycleItems;
     bool canUse = true; //the boolean that allows players to use items
     int addHealth = 0;
-    Animator anim;
-    [SerializeField]
-    Animator reflectionAnim;
+    [HideInInspector]
+    public Animator anim;
+    public Animator reflectionAnim;
+    float horizontal;
+    float vertical;
+    
 
 
     void Start()
@@ -40,10 +43,13 @@ public class Controls : MonoBehaviour {
     // Update is called once per frame
     void Update()
     {
-        Vector3 up = -myBody.velocity;
-        if (Input.GetAxis("Horizontal") != 0 || Input.GetAxis("Vertical") != 0)
+        horizontal = Input.GetAxis("Horizontal");
+        vertical = Input.GetAxis("Vertical");
+
+        if (horizontal != 0 || vertical != 0)
         {
-            transform.Translate(Input.GetAxis("Horizontal") * Time.deltaTime * speed, Input.GetAxis("Vertical") * Time.deltaTime * speed, 0);
+            Vector3 up = -myBody.velocity;
+            transform.Translate(horizontal * Time.deltaTime * speed, vertical * Time.deltaTime * speed, 0);
             PlayerAnimation();
             if (Physics.Raycast(transform.position, up, targetLayer))
             {
@@ -56,54 +62,24 @@ public class Controls : MonoBehaviour {
             anim.SetBool("isWalking", false);
             reflectionAnim.SetBool("isWalking", false);
         }
-
-
     }//end of update
 
     void PlayerAnimation()
-    {
-        int direction;
-
-        if (Input.GetAxis("Horizontal") > 0)
-        {
-            direction = 4;//right
+    {//animating the player's movement and the player's mirror reflection
             anim.SetBool("isWalking", true);
-            anim.SetInteger("direction", direction);
             reflectionAnim.SetBool("isWalking", true);
-            reflectionAnim.SetInteger("direction", 3);
-        }
-        else if (Input.GetAxis("Horizontal") < 0)
-        {
-            direction = 3;//left
-            anim.SetBool("isWalking", true);
-            anim.SetInteger("direction", direction);
-            reflectionAnim.SetBool("isWalking", true);
-            reflectionAnim.SetInteger("direction", 4);
-        }
-        else if (Input.GetAxis("Vertical") < 0)
-        {
-            direction = 2;//down
-            anim.SetBool("isWalking", true);
-            anim.SetInteger("direction", direction);
-            reflectionAnim.SetBool("isWalking", true);
-            reflectionAnim.SetInteger("direction", 1);
-        }
-        else if (Input.GetAxis("Vertical") > 0)
-        {
-            direction = 1;//ups
-            anim.SetBool("isWalking", true);
-            anim.SetInteger("direction", direction);
-            reflectionAnim.SetBool("isWalking", true);
-            reflectionAnim.SetInteger("direction", 2);
-        }
+            anim.SetFloat("vertical", vertical);
+            anim.SetFloat("horizontal", horizontal);
+            anim.SetFloat("lastX", horizontal);
+            anim.SetFloat("lastY", vertical);
+            reflectionAnim.SetFloat("lastX", -horizontal);
+            reflectionAnim.SetFloat("lastY", -vertical);
+            reflectionAnim.SetFloat("horizontal", -horizontal);
+            reflectionAnim.SetFloat("vertical", -vertical);
     }
 
     void FixedUpdate()
     {
-        if (Input.GetAxis("Vertical") == 0 && Input.GetAxis("Horizontal") == 0)
-        {
-            anim.SetBool("isWalking", false);
-        }
         //using hotkeys for items
         if ((Input.GetMouseButton(1) || Input.GetKey("space")) && DataStorage.itemBar.GetComponent<Image>().fillAmount < 1 && canUse == true && int.Parse(DataStorage.itemCount.text) > 0 && !CombatScript.isReloading)
         {
