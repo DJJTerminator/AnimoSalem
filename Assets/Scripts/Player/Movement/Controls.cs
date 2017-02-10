@@ -70,10 +70,6 @@ public class Controls : MonoBehaviour {
             reflectionAnim.SetBool("isWalking", true);
             anim.SetFloat("vertical", vertical);
             anim.SetFloat("horizontal", horizontal);
-            anim.SetFloat("lastX", horizontal);
-            anim.SetFloat("lastY", vertical);
-            reflectionAnim.SetFloat("lastX", -horizontal);
-            reflectionAnim.SetFloat("lastY", -vertical);
             reflectionAnim.SetFloat("horizontal", -horizontal);
             reflectionAnim.SetFloat("vertical", -vertical);
     }

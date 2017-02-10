@@ -82,9 +82,6 @@ public class VictoryScript : MonoBehaviour
 
     public void VictoryScene(float ac, int xp)
     {
-        //changing the track for the music
-        //variables that are passed musicType, waitime, and a bool to check if the music can play
-        MusicScript.PrepareTrack(0, 1000f, false);
         dealt.text = CombatScript.damageGiven.ToString();
         taken.text = CombatScript.damageRecieved.ToString();
         experience.text = CombatScript.xpGained.ToString();
@@ -857,6 +854,9 @@ public class VictoryScript : MonoBehaviour
         pressStart.GetComponent<Animator>().Play("StartWasPressed");
         DataStorage.screenFader.Play("FadeOut", -1, 0);
         yield return new WaitForSeconds(4.5f);
+        //changing the track for the music
+        //variables that are passed musicType, waitime, and a bool to check if the music can play
+        MusicScript.PrepareTrack(0, 0, true);
         DataStorage.gameManager.GetComponent<StatActivation>().enabled = true;
         DataStorage.gameManager.GetComponent<InventoryActivation>().enabled = true;
         DataStorage.pauseMenus.GetComponent<PauseMenu2>().enabled = true;

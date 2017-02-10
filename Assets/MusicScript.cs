@@ -25,7 +25,7 @@ public class MusicScript : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
-        if (Time.time > 5f + musicTimer && startTrack == true)
+        if (Time.time > musicTimer && startTrack == true)
         {
             ChangeTrack();
         }
@@ -58,7 +58,7 @@ public class MusicScript : MonoBehaviour
                 temp = Random.Range(0, battleMusic.Length);//if so, find a new track
                 while (temp == curMusic)//checking to see if the track is already playing
                 {
-                    temp = Random.Range(0, safeMusic.Length);//if so, find a new track
+                    temp = Random.Range(0, battleMusic.Length);//if so, find a new track
                 }
                 break;
         }
@@ -153,13 +153,14 @@ public class MusicScript : MonoBehaviour
     {
         DataStorage.gameManager.GetComponent<MusicScript>().StopAllCoroutines();
         DataStorage.gameManager.GetComponent<MusicScript>().startTrack = playTrack;
-        DataStorage.gameManager.GetComponent<MusicScript>().musicTimer = Time.time + waitTime;
+        DataStorage.gameManager.GetComponent<MusicScript>().musicTimer = Time.time + (Random.Range(45, 65));
         DataStorage.gameManager.GetComponent<MusicScript>().StartCoroutine(TurnOffTrack(nextTrack));
     }
 
     static IEnumerator TurnOffTrack(int nextTrack)
     {
-        DataStorage.gameManager.GetComponent<MusicScript>().musicTimer = Time.time;
+        MusicScript tempScript = DataStorage.gameManager.GetComponent<MusicScript>();
+        //DataStorage.gameManager.GetComponent<MusicScript>().musicTimer = Time.time;
         float volume = .4f;
         //turning down the volume
         while (volume > 0)
@@ -172,33 +173,26 @@ public class MusicScript : MonoBehaviour
                 //checking to see if the music was general
                 case 0:
                     DataStorage.gameManager.GetComponent<MusicScript>().inGameMusic[DataStorage.gameManager.GetComponent<MusicScript>().curMusic].volume = volume;
+                    if (DataStorage.gameManager.GetComponent<MusicScript>().inGameMusic[DataStorage.gameManager.GetComponent<MusicScript>().curMusic].volume == 0)
+                        DataStorage.gameManager.GetComponent<MusicScript>().inGameMusic[DataStorage.gameManager.GetComponent<MusicScript>().curMusic].Stop();
                     break;
                 //checking to see if the music was safe room
                 case 1:
                     DataStorage.gameManager.GetComponent<MusicScript>().safeMusic[DataStorage.gameManager.GetComponent<MusicScript>().curMusic].volume = volume;
+                    if (DataStorage.gameManager.GetComponent<MusicScript>().safeMusic[DataStorage.gameManager.GetComponent<MusicScript>().curMusic].volume == 0)
+                        DataStorage.gameManager.GetComponent<MusicScript>().safeMusic[DataStorage.gameManager.GetComponent<MusicScript>().curMusic].Stop();
                     break;
                 //checking to see if the music was battle
                 case 2:
                     DataStorage.gameManager.GetComponent<MusicScript>().battleMusic[DataStorage.gameManager.GetComponent<MusicScript>().curMusic].volume = volume;
+                    if (DataStorage.gameManager.GetComponent<MusicScript>().battleMusic[DataStorage.gameManager.GetComponent<MusicScript>().curMusic].volume == 0)
+                        DataStorage.gameManager.GetComponent<MusicScript>().battleMusic[DataStorage.gameManager.GetComponent<MusicScript>().curMusic].Stop();
                     break;
             }
             yield return new WaitForSeconds(.2f);
         }
-        switch (musicType)
-        {
-            //checking to see if the music was general
-            case 0:
-                DataStorage.gameManager.GetComponent<MusicScript>().inGameMusic[DataStorage.gameManager.GetComponent<MusicScript>().curMusic].Stop();
-                break;
-            //checking to see if the music was safe room
-            case 1:
-                DataStorage.gameManager.GetComponent<MusicScript>().safeMusic[DataStorage.gameManager.GetComponent<MusicScript>().curMusic].Stop();
-                break;
-            //checking to see if the music was battle
-            case 2:
-                DataStorage.gameManager.GetComponent<MusicScript>().battleMusic[DataStorage.gameManager.GetComponent<MusicScript>().curMusic].Stop();
-                break;
-        }
         musicType = nextTrack;
+        if (tempScript.startTrack)
+            tempScript.ChangeTrack();
     }
 }
