@@ -368,12 +368,10 @@ public class CombatScript : MonoBehaviour
                     if (DataStorage.SGAmmo > 0)
                     {
                         NeedToRelad();
-                        print(DataStorage.holster[DataStorage.curWeapon]);
                     }
                     else
                     {
                         NoAmmo();
-                        print(DataStorage.holster[DataStorage.curWeapon]);
                     }
                 //checking to see if any enemies are still alive
                 if (enemyHP[0] > 0 || enemyHP[1] > 0 || enemyHP[2] > 0)
@@ -868,11 +866,12 @@ public class CombatScript : MonoBehaviour
                 reloadTime += DataStorage.reload[DataStorage.curWeapon] / 8;
             }
         }
-
         //checking to see which gun was equipped before reloading
         switch (DataStorage.weaponType[DataStorage.curWeapon])
         {
             case "Handgun":
+                loadedSounds[0].Play();
+                yield return new WaitForSeconds(1f);
                 if (DataStorage.HGAmmo > DataStorage.capacity[DataStorage.curWeapon])
                 {
                     DataStorage.HGAmmo -= DataStorage.capacity[DataStorage.curWeapon];
@@ -883,9 +882,10 @@ public class CombatScript : MonoBehaviour
                     DataStorage.holster[DataStorage.curWeapon] = DataStorage.HGAmmo;
                     DataStorage.HGAmmo = 0;
                 }
-                    loadedSounds[0].Play();
                 break;
             case "Shotgun":
+                loadedSounds[1].Play();
+                yield return new WaitForSeconds(1f);
                 if (DataStorage.SGAmmo > DataStorage.capacity[DataStorage.curWeapon])
                 {
                     DataStorage.SGAmmo -= DataStorage.capacity[DataStorage.curWeapon];
@@ -896,9 +896,10 @@ public class CombatScript : MonoBehaviour
                     DataStorage.holster[DataStorage.curWeapon] = DataStorage.SGAmmo;
                     DataStorage.SGAmmo = 0;
                 }
-                    loadedSounds[1].Play();
                 break;
             case "Automatic":
+                loadedSounds[2].Play();
+                yield return new WaitForSeconds(1f);
                 if (DataStorage.MGAmmo > DataStorage.capacity[DataStorage.curWeapon])
                 {
                     DataStorage.MGAmmo -= DataStorage.capacity[DataStorage.curWeapon];
@@ -909,9 +910,10 @@ public class CombatScript : MonoBehaviour
                     DataStorage.holster[DataStorage.curWeapon] = DataStorage.MGAmmo;
                     DataStorage.MGAmmo = 0;
                 }
-                    loadedSounds[2].Play();
                 break;
             case "Rifle":
+                loadedSounds[3].Play();
+                yield return new WaitForSeconds(1f);
                 if (DataStorage.rifleAmmo > DataStorage.capacity[DataStorage.curWeapon])
                 {
                     DataStorage.rifleAmmo -= DataStorage.capacity[DataStorage.curWeapon];
@@ -922,9 +924,10 @@ public class CombatScript : MonoBehaviour
                     DataStorage.holster[DataStorage.curWeapon] = DataStorage.rifleAmmo;
                     DataStorage.rifleAmmo = 0;
                 }
-                    loadedSounds[3].Play();
                 break;
             case "Magnum":
+                loadedSounds[4].Play();
+                yield return new WaitForSeconds(1f);
                 if (DataStorage.magnumAmmo > DataStorage.capacity[DataStorage.curWeapon])
                 {
                     DataStorage.magnumAmmo -= DataStorage.capacity[DataStorage.curWeapon];
@@ -935,9 +938,10 @@ public class CombatScript : MonoBehaviour
                     DataStorage.holster[DataStorage.curWeapon] = DataStorage.magnumAmmo;
                     DataStorage.magnumAmmo = 0;
                 }
-                    loadedSounds[4].Play();
                 break;
             case "Explosive":
+                loadedSounds[5].Play();
+                yield return new WaitForSeconds(1f);
                 if (DataStorage.explosiveAmmo > DataStorage.capacity[DataStorage.curWeapon])
                 {
                     DataStorage.explosiveAmmo -= DataStorage.capacity[DataStorage.curWeapon];
@@ -948,7 +952,6 @@ public class CombatScript : MonoBehaviour
                     DataStorage.holster[DataStorage.curWeapon] = DataStorage.explosiveAmmo;
                     DataStorage.explosiveAmmo = 0;
                 }
-                    loadedSounds[5].Play();
                 break;
         }
             DataStorage.reloadingText.GetComponent<Animator>().Play("Reloaded", -1, 0f);

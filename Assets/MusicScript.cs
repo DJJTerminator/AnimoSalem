@@ -15,11 +15,15 @@ public class MusicScript : MonoBehaviour
     float musicTimer = 0;
     int curMusic;
     bool startTrack = true;
+    float curVolume;
+    IEnumerator volumeDown;
+    IEnumerator volumeUp;
 
     // Use this for initialization
     void Start()
     {
-
+        volumeDown = VolumeDown(curVolume);
+        volumeUp = VolumeDown(curVolume);
     }
 
     // Update is called once per frame
@@ -28,12 +32,72 @@ public class MusicScript : MonoBehaviour
         if (Time.time > musicTimer && startTrack == true)
         {
             ChangeTrack();
+            startTrack = false;
         }
     }
+    IEnumerator VolumeUp(float volume)
+    {//turning the volume up
+        while (curVolume < .4f)
+        {
+            curVolume+= .05f;
+            if (curVolume > .4f)
+                curVolume = .4f;
+            switch (musicType)
+            {
+                //checking to see if the music was general
+                case 0:
+                    inGameMusic[curMusic].volume = curVolume;
+                    break;
+                //checking to see if the music was safe room
+                case 1:
+                    safeMusic[curMusic].volume = curVolume;
+                    break;
+                //checking to see if the music was battle
+                case 2:
+                    battleMusic[curMusic].volume = curVolume;
+                    break;
+            }
+            yield return new WaitForSeconds(.2f);
+        }
+        yield return curVolume;
+    }
+    IEnumerator VolumeDown(float volume)
+    {//turning the volume down
+        while (curVolume > 0)
+        {
+            curVolume -= .05f;
+            if (curVolume <= 0)
+                curVolume= 0;
+            switch (musicType)
+            {
+                //checking to see if the music was general
+                case 0:
+                    DataStorage.gameManager.GetComponent<MusicScript>().inGameMusic[DataStorage.gameManager.GetComponent<MusicScript>().curMusic].volume = curVolume;
+                    if (curVolume <= 0)
+                        DataStorage.gameManager.GetComponent<MusicScript>().inGameMusic[DataStorage.gameManager.GetComponent<MusicScript>().curMusic].Stop();
+                    break;
+                //checking to see if the music was safe room
+                case 1:
+                    DataStorage.gameManager.GetComponent<MusicScript>().safeMusic[DataStorage.gameManager.GetComponent<MusicScript>().curMusic].volume = curVolume;
+                    if (curVolume<= 0)
+                        DataStorage.gameManager.GetComponent<MusicScript>().safeMusic[DataStorage.gameManager.GetComponent<MusicScript>().curMusic].Stop();
+                    break;
+                //checking to see if the music was battle
+                case 2:
+                    DataStorage.gameManager.GetComponent<MusicScript>().battleMusic[DataStorage.gameManager.GetComponent<MusicScript>().curMusic].volume = curVolume;
+                    if (curVolume<= 0)
+                        DataStorage.gameManager.GetComponent<MusicScript>().battleMusic[DataStorage.gameManager.GetComponent<MusicScript>().curMusic].Stop();
+                    break;
+            }
+            yield return new WaitForSeconds(.2f);
+        }
+        yield return curVolume;
+    }
+
     //*****changing the track
     void ChangeTrack()
     {
-        musicTimer = Time.time + (Random.Range(45, 65));
+        musicTimer = Time.time + (Random.Range(45, 60));
         int temp = 0;
         switch (musicType)
         {
@@ -62,13 +126,20 @@ public class MusicScript : MonoBehaviour
                 }
                 break;
         }
-        curMusic = temp;
-        StartCoroutine(PlayMusic(musicTimer - Time.time));
+        StartCoroutine(PlayMusic(musicTimer - Time.time, temp));
     }
 
     //playing in game music for a certain length of time
-    IEnumerator PlayMusic(float playLength)
+    IEnumerator PlayMusic(float playLength, int nextTrack)
     {
+        if (curVolume> 0)
+        {
+            //turning down the volume
+            volumeDown = VolumeDown(curVolume);
+            yield return StartCoroutine(volumeDown);
+            yield return new WaitForSeconds((.4f / .05f) * .2f);
+        }
+        curMusic = nextTrack;
         switch (musicType)
         {
                 //checking to see if the music was general
@@ -84,76 +155,19 @@ public class MusicScript : MonoBehaviour
                 battleMusic[curMusic].Play();
                 break;
         }
-        float volume = 0;
         //turning up the volume
-        while (volume < .4f)
-        {
-            volume += .05f;
-            if (volume > .4f)
-                volume = .4f;
-            switch (musicType)
-            {
-                //checking to see if the music was general
-                case 0:
-                    inGameMusic[curMusic].volume = volume;
-                    break;
-                //checking to see if the music was safe room
-                case 1:
-                    safeMusic[curMusic].volume = volume;
-                    break;
-                //checking to see if the music was battle
-                case 2:
-                    battleMusic[curMusic].volume = volume;
-                    break;
-            }
-            yield return new WaitForSeconds(.2f);
-        }
-
+        volumeUp = VolumeUp(curVolume);
+        yield return StartCoroutine(volumeUp);
         //waiting to turn down the music
-        yield return new WaitForSeconds(playLength);
-        //turning down the volume
-        while (volume > 0)
-        {
-            volume -= .05f;
-            switch (musicType)
-            {
-                //checking to see if the music was general
-                case 0:
-                    inGameMusic[curMusic].volume = volume;
-                    break;
-                //checking to see if the music was safe room
-                case 1:
-                    safeMusic[curMusic].volume = volume;
-                    break;
-                //checking to see if the music was battle
-                case 2:
-                    battleMusic[curMusic].volume = volume;
-                    break;
-            }
-            yield return new WaitForSeconds(.2f);
-        }
-        switch (musicType)
-        {
-            //checking to see if the music was general
-            case 0:
-                inGameMusic[curMusic].Stop();
-                break;
-            //checking to see if the music was safe room
-            case 1:
-                safeMusic[curMusic].Stop();
-                break;
-            //checking to see if the music was battle
-            case 2:
-                battleMusic[curMusic].Stop();
-                break;
-        }
+        yield return new WaitForSeconds(playLength -5f);
+        startTrack = true;
     }
     //stopping al couritnes and preparing t start the next track
     static public void PrepareTrack(int nextTrack, float waitTime, bool playTrack)
     {
         DataStorage.gameManager.GetComponent<MusicScript>().StopAllCoroutines();
-        DataStorage.gameManager.GetComponent<MusicScript>().startTrack = playTrack;
         DataStorage.gameManager.GetComponent<MusicScript>().musicTimer = Time.time + (Random.Range(45, 65));
+        DataStorage.gameManager.GetComponent<MusicScript>().startTrack = playTrack;
         DataStorage.gameManager.GetComponent<MusicScript>().StartCoroutine(TurnOffTrack(nextTrack));
     }
 
@@ -161,36 +175,10 @@ public class MusicScript : MonoBehaviour
     {
         MusicScript tempScript = DataStorage.gameManager.GetComponent<MusicScript>();
         //DataStorage.gameManager.GetComponent<MusicScript>().musicTimer = Time.time;
-        float volume = .4f;
         //turning down the volume
-        while (volume > 0)
-        {
-            volume -= .05f;
-            if (volume < 0)
-                volume = 0;
-            switch (musicType)
-            {
-                //checking to see if the music was general
-                case 0:
-                    DataStorage.gameManager.GetComponent<MusicScript>().inGameMusic[DataStorage.gameManager.GetComponent<MusicScript>().curMusic].volume = volume;
-                    if (DataStorage.gameManager.GetComponent<MusicScript>().inGameMusic[DataStorage.gameManager.GetComponent<MusicScript>().curMusic].volume == 0)
-                        DataStorage.gameManager.GetComponent<MusicScript>().inGameMusic[DataStorage.gameManager.GetComponent<MusicScript>().curMusic].Stop();
-                    break;
-                //checking to see if the music was safe room
-                case 1:
-                    DataStorage.gameManager.GetComponent<MusicScript>().safeMusic[DataStorage.gameManager.GetComponent<MusicScript>().curMusic].volume = volume;
-                    if (DataStorage.gameManager.GetComponent<MusicScript>().safeMusic[DataStorage.gameManager.GetComponent<MusicScript>().curMusic].volume == 0)
-                        DataStorage.gameManager.GetComponent<MusicScript>().safeMusic[DataStorage.gameManager.GetComponent<MusicScript>().curMusic].Stop();
-                    break;
-                //checking to see if the music was battle
-                case 2:
-                    DataStorage.gameManager.GetComponent<MusicScript>().battleMusic[DataStorage.gameManager.GetComponent<MusicScript>().curMusic].volume = volume;
-                    if (DataStorage.gameManager.GetComponent<MusicScript>().battleMusic[DataStorage.gameManager.GetComponent<MusicScript>().curMusic].volume == 0)
-                        DataStorage.gameManager.GetComponent<MusicScript>().battleMusic[DataStorage.gameManager.GetComponent<MusicScript>().curMusic].Stop();
-                    break;
-            }
-            yield return new WaitForSeconds(.2f);
-        }
+        tempScript.volumeDown = tempScript.VolumeDown(tempScript.curVolume);
+        yield return tempScript.StartCoroutine(tempScript.volumeDown);
+
         musicType = nextTrack;
         if (tempScript.startTrack)
             tempScript.ChangeTrack();
