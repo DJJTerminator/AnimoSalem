@@ -21,7 +21,7 @@ public class EnterDybbukShop : MonoBehaviour {
 			 {
             //changing the track for the music
             //variables that are passed musicType, waitime, and a bool to check if the music can play
-            MusicScript.PrepareTrack(1, 0f, true);
+            MusicScript.PrepareTrack(3, 0f, true);
             try 
 				{
 					DataStorage.HUD.SetActive(false);

@@ -11,6 +11,16 @@ public class MusicScript : MonoBehaviour
     AudioSource[] safeMusic;
     [SerializeField]
     AudioSource[] battleMusic;
+    [SerializeField]
+    AudioSource[] storageMusic;
+    [SerializeField]
+    AudioSource[] menuMusic;
+    [SerializeField]
+    AudioSource[] battleResults;
+    [SerializeField]
+    AudioSource[] startle;
+    [SerializeField]
+    AudioSource[] extremeBattle;
     static public int musicType = 2; //0 is general, 1 is safe room, and 2 is battle.
     float musicTimer = 0;
     int curMusic;
@@ -56,6 +66,27 @@ public class MusicScript : MonoBehaviour
                 case 2:
                     battleMusic[curMusic].volume = curVolume;
                     break;
+                //checking to see if the music was storage
+                case 3:
+                    storageMusic[curMusic].volume = curVolume;
+                    break;
+                //checking to see if the music was battle results
+                case 4:
+                    battleResults[curMusic].volume = curVolume;
+                    break;
+                //checking to see if the music was menu
+                case 5:
+                    menuMusic[curMusic].volume = curVolume;
+                    break;
+                //checking to see if the music was startle
+                case 6:
+                    startle[curMusic].volume = curVolume;
+                    break;
+                //checking to see if the music was extreme Battle
+                case 7:
+                    extremeBattle[curMusic].volume = curVolume;
+                    break;
+
             }
             yield return new WaitForSeconds(.2f);
         }
@@ -87,6 +118,36 @@ public class MusicScript : MonoBehaviour
                     DataStorage.gameManager.GetComponent<MusicScript>().battleMusic[DataStorage.gameManager.GetComponent<MusicScript>().curMusic].volume = curVolume;
                     if (curVolume<= 0)
                         DataStorage.gameManager.GetComponent<MusicScript>().battleMusic[DataStorage.gameManager.GetComponent<MusicScript>().curMusic].Stop();
+                    break;
+                //checking to see if the music was storage
+                case 3:
+                    DataStorage.gameManager.GetComponent<MusicScript>().storageMusic[DataStorage.gameManager.GetComponent<MusicScript>().curMusic].volume = curVolume;
+                    if (curVolume <= 0)
+                        DataStorage.gameManager.GetComponent<MusicScript>().storageMusic[DataStorage.gameManager.GetComponent<MusicScript>().curMusic].Stop();
+                    break;
+                //checking to see if the music was battle results
+                case 4:
+                    DataStorage.gameManager.GetComponent<MusicScript>().battleResults[DataStorage.gameManager.GetComponent<MusicScript>().curMusic].volume = curVolume;
+                    if (curVolume <= 0)
+                        DataStorage.gameManager.GetComponent<MusicScript>().battleResults[DataStorage.gameManager.GetComponent<MusicScript>().curMusic].Stop();
+                    break;
+                //checking to see if the music was menu
+                case 5:
+                    DataStorage.gameManager.GetComponent<MusicScript>().menuMusic[DataStorage.gameManager.GetComponent<MusicScript>().curMusic].volume = curVolume;
+                    if (curVolume <= 0)
+                        DataStorage.gameManager.GetComponent<MusicScript>().menuMusic[DataStorage.gameManager.GetComponent<MusicScript>().curMusic].Stop();
+                    break;
+                //checking to see if the music was startle
+                case 6:
+                    DataStorage.gameManager.GetComponent<MusicScript>().startle[DataStorage.gameManager.GetComponent<MusicScript>().curMusic].volume = curVolume;
+                    if (curVolume <= 0)
+                        DataStorage.gameManager.GetComponent<MusicScript>().startle[DataStorage.gameManager.GetComponent<MusicScript>().curMusic].Stop();
+                    break;
+                //checking to see if the music was extreme Battle
+                case 7:
+                    DataStorage.gameManager.GetComponent<MusicScript>().extremeBattle[DataStorage.gameManager.GetComponent<MusicScript>().curMusic].volume = curVolume;
+                    if (curVolume <= 0)
+                        DataStorage.gameManager.GetComponent<MusicScript>().extremeBattle[DataStorage.gameManager.GetComponent<MusicScript>().curMusic].Stop();
                     break;
             }
             yield return new WaitForSeconds(.2f);
@@ -125,6 +186,22 @@ public class MusicScript : MonoBehaviour
                     temp = Random.Range(0, battleMusic.Length);//if so, find a new track
                 }
                 break;
+            //checking to see if the music was battle results
+            case 4:
+                temp = Random.Range(0, battleResults.Length);//if so, find a new track
+                break;
+            //checking to see if the music was menu
+            case 5:
+                temp = Random.Range(0, menuMusic.Length);//if so, find a new track
+                break;
+            //checking to see if the music was startle
+            case 6:
+                temp = Random.Range(0, startle.Length);//if so, find a new track
+                break;
+            //checking to see if the music was extreme
+            case 7:
+                temp = Random.Range(0, extremeBattle.Length);//if so, find a new track
+                break;
         }
         StartCoroutine(PlayMusic(musicTimer - Time.time, temp));
     }
@@ -153,6 +230,26 @@ public class MusicScript : MonoBehaviour
                 //checking to see if the music was battle
                 case 2:
                 battleMusic[curMusic].Play();
+                break;
+            //checking to see if the music was storage
+            case 3:
+                storageMusic[curMusic].Play();
+                break;
+            //checking to see if the music was battle results
+            case 4:
+                battleResults[curMusic].Play();
+                break;
+            //checking to see if the music was menu
+            case 5:
+                menuMusic[curMusic].Play();
+                break;
+            //checking to see if the music was startle
+            case 6:
+                startle[curMusic].Play();
+                break;
+            //checking to see if the music was extreme Battle
+            case 7:
+                extremeBattle[curMusic].Play();
                 break;
         }
         //turning up the volume

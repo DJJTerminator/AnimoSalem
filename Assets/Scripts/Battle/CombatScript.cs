@@ -1295,7 +1295,7 @@ public class CombatScript : MonoBehaviour
                         {
                             //changing the track for the music
                             //variables that are passed musicType, waitime, and a bool to check if the music can play
-                            MusicScript.PrepareTrack(0, 0f, false);
+                            MusicScript.PrepareTrack(4, 0f, true);
                             //resetting the ammo, so the player doesnt have to reload at the beginning of the next round
                             ResetAmmo();
                             fireRate = Time.time + 1f;
