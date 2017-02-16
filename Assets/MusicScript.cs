@@ -72,6 +72,9 @@ public class MusicScript : MonoBehaviour
                     break;
                 //checking to see if the music was battle results
                 case 4:
+                    curVolume += .05f;
+                    if (curVolume > .4f)
+                        curVolume = .4f;
                     battleResults[curMusic].volume = curVolume;
                     break;
                 //checking to see if the music was menu
@@ -127,6 +130,7 @@ public class MusicScript : MonoBehaviour
                     break;
                 //checking to see if the music was battle results
                 case 4:
+                    curVolume -= .05f;
                     DataStorage.gameManager.GetComponent<MusicScript>().battleResults[DataStorage.gameManager.GetComponent<MusicScript>().curMusic].volume = curVolume;
                     if (curVolume <= 0)
                         DataStorage.gameManager.GetComponent<MusicScript>().battleResults[DataStorage.gameManager.GetComponent<MusicScript>().curMusic].Stop();

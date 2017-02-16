@@ -853,6 +853,7 @@ public class VictoryScript : MonoBehaviour
     {
         pressStart.GetComponent<Animator>().Play("StartWasPressed");
         DataStorage.screenFader.Play("FadeOut", -1, 0);
+        MusicScript.PrepareTrack(0, 0, false);
         yield return new WaitForSeconds(4.5f);
         //changing the track for the music
         //variables that are passed musicType, waitime, and a bool to check if the music can play

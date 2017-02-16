@@ -53,7 +53,7 @@ public class CombatScript : MonoBehaviour
     static public float damageGiven;
     static public float damageRecieved;
     static public int xpGained;
-
+    IEnumerator slowMo;
 
 
     public int myXP; //the amount of xp that is gained after a battle is won.
@@ -728,8 +728,8 @@ public class CombatScript : MonoBehaviour
             mgFire = false;
         }
         isSlow = false;
-
     }
+
 	//this function prevents the target from moving
     IEnumerator StopWatch(float waitTime)
     {
@@ -866,12 +866,16 @@ public class CombatScript : MonoBehaviour
                 reloadTime += DataStorage.reload[DataStorage.curWeapon] / 8;
             }
         }
+        DataStorage.reloadingText.GetComponent<Animator>().Play("Reloaded", -1, 0f);
+        DataStorage.reloadingText.GetComponent<Text>().text = "Reloaded";
+        //DataStorage.reloadBar.GetComponent<Image>().fillAmount = 1f;
+        DataStorage.reloadPiBar.GetComponent<Animator>().Play("ReloadBar", -1, 0f);
         //checking to see which gun was equipped before reloading
         switch (DataStorage.weaponType[DataStorage.curWeapon])
         {
             case "Handgun":
                 loadedSounds[0].Play();
-                yield return new WaitForSeconds(1f);
+                yield return new WaitForSeconds(loadedSounds[0].clip.length);
                 if (DataStorage.HGAmmo > DataStorage.capacity[DataStorage.curWeapon])
                 {
                     DataStorage.HGAmmo -= DataStorage.capacity[DataStorage.curWeapon];
@@ -885,7 +889,7 @@ public class CombatScript : MonoBehaviour
                 break;
             case "Shotgun":
                 loadedSounds[1].Play();
-                yield return new WaitForSeconds(1f);
+                yield return new WaitForSeconds(loadedSounds[1].clip.length);
                 if (DataStorage.SGAmmo > DataStorage.capacity[DataStorage.curWeapon])
                 {
                     DataStorage.SGAmmo -= DataStorage.capacity[DataStorage.curWeapon];
@@ -899,7 +903,7 @@ public class CombatScript : MonoBehaviour
                 break;
             case "Automatic":
                 loadedSounds[2].Play();
-                yield return new WaitForSeconds(1f);
+                yield return new WaitForSeconds(loadedSounds[2].clip.length);
                 if (DataStorage.MGAmmo > DataStorage.capacity[DataStorage.curWeapon])
                 {
                     DataStorage.MGAmmo -= DataStorage.capacity[DataStorage.curWeapon];
@@ -913,7 +917,7 @@ public class CombatScript : MonoBehaviour
                 break;
             case "Rifle":
                 loadedSounds[3].Play();
-                yield return new WaitForSeconds(1f);
+                yield return new WaitForSeconds(loadedSounds[3].clip.length);
                 if (DataStorage.rifleAmmo > DataStorage.capacity[DataStorage.curWeapon])
                 {
                     DataStorage.rifleAmmo -= DataStorage.capacity[DataStorage.curWeapon];
@@ -927,7 +931,7 @@ public class CombatScript : MonoBehaviour
                 break;
             case "Magnum":
                 loadedSounds[4].Play();
-                yield return new WaitForSeconds(1f);
+                yield return new WaitForSeconds(loadedSounds[4].clip.length);
                 if (DataStorage.magnumAmmo > DataStorage.capacity[DataStorage.curWeapon])
                 {
                     DataStorage.magnumAmmo -= DataStorage.capacity[DataStorage.curWeapon];
@@ -941,7 +945,7 @@ public class CombatScript : MonoBehaviour
                 break;
             case "Explosive":
                 loadedSounds[5].Play();
-                yield return new WaitForSeconds(1f);
+                yield return new WaitForSeconds(loadedSounds[5].clip.length);
                 if (DataStorage.explosiveAmmo > DataStorage.capacity[DataStorage.curWeapon])
                 {
                     DataStorage.explosiveAmmo -= DataStorage.capacity[DataStorage.curWeapon];
@@ -954,10 +958,6 @@ public class CombatScript : MonoBehaviour
                 }
                 break;
         }
-            DataStorage.reloadingText.GetComponent<Animator>().Play("Reloaded", -1, 0f);
-            DataStorage.reloadingText.GetComponent<Text>().text = "Reloaded";
-            //DataStorage.reloadBar.GetComponent<Image>().fillAmount = 1f;
-            DataStorage.reloadPiBar.GetComponent<Animator>().Play("ReloadBar", -1, 0f);
          isReloading = false;
          DataStorage.UpdateHolster();
     }
@@ -1208,16 +1208,18 @@ public class CombatScript : MonoBehaviour
         dmg = 0f;
         float temp;
 		int totalXP = 0;//this is used to tally up the xp in case of double kills
-
+        int maxHits = 0; //this is the maximum allowed hits for any gun. In otherwords, this prevents the accuracy from going
+                     //above 100
         for (int i = 0; i < enemyTarget.Length; i++)
         {
             //getting the critical chances
             float crit = Mathf.Round(Random.Range(0.0f, 1) * 100) / 100;
-
+  
             if (enemyTarget[i].activeSelf)
             {
                 if (DataStorage.crosshair.transform.position.x >= enemyTarget[i].transform.position.x - (enemyTarget[i].transform.localScale.x / 4) && DataStorage.crosshair.transform.position.x < enemyTarget[i].transform.position.x + (enemyTarget[i].transform.localScale.x/4))
                 {
+                    maxHits += 1;
                     //calling the blood
                     StartCoroutine(Blood(i, 1f));
                     //finding the accuracy
@@ -1245,7 +1247,7 @@ public class CombatScript : MonoBehaviour
                         shotsHit = 0;
                     }//counting the shots that were hit
                     else
-                    {
+                    {   if (maxHits == 1)
                         DataStorage.targetsHit++;
                     }
                     dmg -= temp;
