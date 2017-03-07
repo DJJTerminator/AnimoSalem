@@ -193,7 +193,9 @@ public class TakingDamageScript : MonoBehaviour {
             DataStorage.screenFader.Play("Dead");
 			GetComponent<CombatScript>().enabled = false;
 			DataStorage.HUD.SetActive(false);
-			yield return new WaitForSeconds(15f);
+            DataStorage.health = DataStorage.maxHealth;
+            DataStorage.UpdateHUDHealth();
+            yield return new WaitForSeconds(15f);
 			DataStorage.screenFader.Play("Default");
 		//	GetComponent<CombatScript>().enabled = true;
 			DataStorage.HUD.SetActive(true);
