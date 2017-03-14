@@ -38,7 +38,6 @@ public class CombatScript : MonoBehaviour
     GameObject[] blood3;
     public int[] xp;//the amount of xp per enemy
     float dmg = 0f;
-    public GameObject Backgrounds;
     public GameObject reloadBar;
     public GameObject reloadText;
 	public GameObject textXP;//this is used for the text that displays the amount of xp gained
@@ -53,7 +52,10 @@ public class CombatScript : MonoBehaviour
     static public float damageGiven;
     static public float damageRecieved;
     static public int xpGained;
-    IEnumerator slowMo;
+    //IEnumerator slowMo;
+    Animator targetSpeed;
+    Animator crosshair;
+    Animator background;
 
 
     public int myXP; //the amount of xp that is gained after a battle is won.
@@ -68,10 +70,16 @@ public class CombatScript : MonoBehaviour
         acHit = DataStorage.targetsHit;
         battleTime = Time.time;
         allottedTime = 15;
-	//getting the camera and turning off the follow script
+        //getting the camera and turning off the follow script
         Camera myCamera = GameObject.Find("Main Camera").GetComponent<Camera>();
         myCamera.GetComponent<CameraFollow>().enabled = false;
-     
+        if (targetSpeed == null)//getting the animator
+        {
+            targetSpeed = GameObject.Find("All Canvases/BattleSystem/Combat").GetComponent<Animator>();
+            crosshair = GameObject.Find("All Canvases/BattleSystem/Combat/HandleSlideArea/Crosshair").GetComponent<Animator>();
+            background = GameObject.Find("All Canvases/BattleSystem/Backgrounds").GetComponent<Animator>();
+        }
+
         //inceasing the alpha color of the target images for each that that is active in battle
         for (int i = 0; i < enemyTarget.Length; i++)
         {
@@ -218,11 +226,11 @@ public class CombatScript : MonoBehaviour
                 }
                 gunShots[2].Play();
                 DataStorage.UpdateHolster();
-                DataStorage.crosshair.GetComponent<Animator>().Play("Hit", -1, 0f);
-                DataStorage.combat.GetComponent<Animator>().speed = 0f;
+                crosshair.Play("Hit", -1, 0f);
+                targetSpeed.speed = 0f;
                 StartCoroutine(StopWatch(DataStorage.fireRate[DataStorage.curWeapon] / 2));
                 DataStorage.shotsFired++; 
-                Backgrounds.GetComponent<Animator>().Play("ShootingSmall", -1, 0f);
+                background.Play("ShootingSmall", -1, 0f);
                 break;
             case "Oppressor":
                 DataStorage.holster[DataStorage.curWeapon] -= 1;
@@ -239,11 +247,11 @@ public class CombatScript : MonoBehaviour
                 }
                 gunShots[3].Play();
                 DataStorage.UpdateHolster();
-                DataStorage.crosshair.GetComponent<Animator>().Play("Hit", -1, 0f);
-                DataStorage.combat.GetComponent<Animator>().speed = 0f;
+                crosshair.Play("Hit", -1, 0f);
+                targetSpeed.speed = 0f;
                 StartCoroutine(StopWatch(DataStorage.fireRate[DataStorage.curWeapon] / 2));
                 DataStorage.shotsFired++; 
-                Backgrounds.GetComponent<Animator>().Play("ShootingSmall", -1, 0f);
+                background.Play("ShootingSmall", -1, 0f);
                 break;
             case "The Blacklist":
                 DataStorage.holster[DataStorage.curWeapon] -= 1;
@@ -260,20 +268,20 @@ public class CombatScript : MonoBehaviour
                 }
                 gunShots[4].Play();
                 DataStorage.UpdateHolster();
-                DataStorage.crosshair.GetComponent<Animator>().Play("Hit", -1, 0f);
-                DataStorage.combat.GetComponent<Animator>().speed = 0f;
+                crosshair.Play("Hit", -1, 0f);
+                targetSpeed.speed = 0f;
                 StartCoroutine(StopWatch(DataStorage.fireRate[DataStorage.curWeapon] / 2));
                 DataStorage.shotsFired++;
-                Backgrounds.GetComponent<Animator>().Play("ShootingSmall", -1, 0f);
+                background.Play("ShootingSmall", -1, 0f);
                 break;
             case "Trident":
                 StartCoroutine(TrippleShot(.1f));
-                DataStorage.combat.GetComponent<Animator>().speed = 0f;
+                targetSpeed.speed = 0f;
                 if (DataStorage.holster[DataStorage.curWeapon] > 3)
                     StartCoroutine(StopWatch(DataStorage.fireRate[DataStorage.curWeapon] / 2));
                 else
                     StartCoroutine(StopWatch(2f));
-                Backgrounds.GetComponent<Animator>().Play("ShootingSmall", -1, 0f);
+                background.Play("ShootingSmall", -1, 0f);
                 break;
             case "Silencer":
                 DataStorage.holster[DataStorage.curWeapon] -= 1;
@@ -290,14 +298,14 @@ public class CombatScript : MonoBehaviour
                 }
                 gunShots[6].Play();
                 DataStorage.UpdateHolster();
-                DataStorage.crosshair.GetComponent<Animator>().Play("Hit", -1, 0f);
-                DataStorage.combat.GetComponent<Animator>().speed = 0f;
+                crosshair.Play("Hit", -1, 0f);
+                targetSpeed.speed = 0f;
                 if (DataStorage.holster[DataStorage.curWeapon] > 2)
                     StartCoroutine(StopWatch(DataStorage.fireRate[DataStorage.curWeapon] / 2));
                 else
                     StartCoroutine(StopWatch(1f));
                 DataStorage.shotsFired++; 
-                Backgrounds.GetComponent<Animator>().Play("ShootingSmall", -1, 0f);
+                background.Play("ShootingSmall", -1, 0f);
                 break;
             case "Seeker":
                 DataStorage.holster[DataStorage.curWeapon] -= 1;
@@ -313,11 +321,11 @@ public class CombatScript : MonoBehaviour
                     Damage();
                 }
                 gunShots[5].Play();
-                DataStorage.crosshair.GetComponent<Animator>().Play("Hit", -1, 0f);
-                DataStorage.combat.GetComponent<Animator>().speed = 0f;
+                crosshair.Play("Hit", -1, 0f);
+                targetSpeed.speed = 0f;
                 StartCoroutine(StopWatch(DataStorage.fireRate[DataStorage.curWeapon] / 2));  
                 DataStorage.shotsFired++;
-                Backgrounds.GetComponent<Animator>().Play("ShootingSmall", -1, 0f);
+                background.Play("ShootingSmall", -1, 0f);
                 break;
             case "Hunter Killer":
                 DataStorage.holster[DataStorage.curWeapon] -= 1;
@@ -334,11 +342,11 @@ public class CombatScript : MonoBehaviour
                 }
                 gunShots[7].Play();
                 DataStorage.UpdateHolster();
-                DataStorage.crosshair.GetComponent<Animator>().Play("Hit", -1, 0f);
-                DataStorage.combat.GetComponent<Animator>().speed = 0f;
+                crosshair.Play("Hit", -1, 0f);
+                targetSpeed.speed = 0f;
                 StartCoroutine(StopWatch(DataStorage.fireRate[DataStorage.curWeapon] / 2)); 
                 DataStorage.shotsFired++;
-                Backgrounds.GetComponent<Animator>().Play("ShootingSmall", -1, 0f);
+                background.Play("ShootingSmall", -1, 0f);
                 break;
             case "Crow's Nest":
                 DataStorage.holster[DataStorage.curWeapon] -= 1;
@@ -355,11 +363,11 @@ public class CombatScript : MonoBehaviour
                 }
                 gunShots[8].Play();
                 DataStorage.UpdateHolster();
-                DataStorage.crosshair.GetComponent<Animator>().Play("Hit", -1, 0f);
-                DataStorage.combat.GetComponent<Animator>().speed = 0f;
+                crosshair.Play("Hit", -1, 0f);
+                targetSpeed.speed = 0f;
                 StartCoroutine(StopWatch(DataStorage.fireRate[DataStorage.curWeapon] / 2));
                 DataStorage.shotsFired++;
-                Backgrounds.GetComponent<Animator>().Play("ShootingSmall", -1, 0f);
+                background.Play("ShootingSmall", -1, 0f);
                 break;
             case "12 Gauge":
                 DataStorage.holster[DataStorage.curWeapon] -= 1;
@@ -380,11 +388,11 @@ public class CombatScript : MonoBehaviour
                 }
                 gunShots[12].Play();
                 DataStorage.UpdateHolster();
-                DataStorage.crosshair.GetComponent<Animator>().Play("Hit", -1, 0f);
-                DataStorage.combat.GetComponent<Animator>().speed = 0f;
+                crosshair.Play("Hit", -1, 0f);
+                targetSpeed.speed = 0f;
                 StartCoroutine(StopWatch(DataStorage.fireRate[DataStorage.curWeapon] / 2));
                 DataStorage.shotsFired++;
-                Backgrounds.GetComponent<Animator>().Play("Shooting", -1, 0f);
+                background.Play("Shooting", -1, 0f);
                 break;
             case "Orthrus":
                 DataStorage.holster[DataStorage.curWeapon] -= 1;
@@ -400,11 +408,11 @@ public class CombatScript : MonoBehaviour
                     Damage();
                 }
                 gunShots[9].Play();
-                DataStorage.crosshair.GetComponent<Animator>().Play("Hit", -1, 0f);
-                DataStorage.combat.GetComponent<Animator>().speed = 0f;
+                crosshair.Play("Hit", -1, 0f);
+                targetSpeed.speed = 0f;
                 StartCoroutine(StopWatch(DataStorage.fireRate[DataStorage.curWeapon] / 2));
                 DataStorage.shotsFired++;
-                Backgrounds.GetComponent<Animator>().Play("Shooting", -1, 0f);
+                background.Play("Shooting", -1, 0f);
                 break;
             case "Cerberus":
                 DataStorage.holster[DataStorage.curWeapon] -= 1;
@@ -421,11 +429,11 @@ public class CombatScript : MonoBehaviour
                 }
                 gunShots[10].Play();
                 DataStorage.UpdateHolster();
-                DataStorage.crosshair.GetComponent<Animator>().Play("Hit", -1, 0f);
-                DataStorage.combat.GetComponent<Animator>().speed = 0f;
+                crosshair.Play("Hit", -1, 0f);
+                targetSpeed.speed = 0f;
                 StartCoroutine(StopWatch(DataStorage.fireRate[DataStorage.curWeapon] / 2));
                 DataStorage.shotsFired++;
-                Backgrounds.GetComponent<Animator>().Play("Shooting", -1, 0f);
+                background.Play("Shooting", -1, 0f);
                 break;
             case "Devestator":
                 DataStorage.holster[DataStorage.curWeapon] -= 1;
@@ -441,11 +449,11 @@ public class CombatScript : MonoBehaviour
                     Damage();
                 }
                 gunShots[11].Play();
-                DataStorage.crosshair.GetComponent<Animator>().Play("Hit", -1, 0f);
-                DataStorage.combat.GetComponent<Animator>().speed = 0f;
+                crosshair.Play("Hit", -1, 0f);
+                targetSpeed.speed = 0f;
                 StartCoroutine(StopWatch(DataStorage.fireRate[DataStorage.curWeapon] / 2));
                 DataStorage.shotsFired++;
-                Backgrounds.GetComponent<Animator>().Play("Shooting", -1, 0f);
+                background.Play("Shooting", -1, 0f);
                 break;
             case "Savage One":
                 DataStorage.holster[DataStorage.curWeapon] -= 1;
@@ -462,11 +470,11 @@ public class CombatScript : MonoBehaviour
                 }
                 gunShots[12].Play();
                 DataStorage.UpdateHolster();
-                DataStorage.crosshair.GetComponent<Animator>().Play("Hit", -1, 0f);
-                DataStorage.combat.GetComponent<Animator>().speed = 0f;
+                crosshair.Play("Hit", -1, 0f);
+                targetSpeed.speed = 0f;
                 StartCoroutine(StopWatch(DataStorage.fireRate[DataStorage.curWeapon] / 2));
                 DataStorage.shotsFired++;
-                Backgrounds.GetComponent<Animator>().Play("Shooting", -1, 0f);
+                background.Play("Shooting", -1, 0f);
                 break;
             case "Diminisher":
                 DataStorage.holster[DataStorage.curWeapon] -= 1;
@@ -483,13 +491,13 @@ public class CombatScript : MonoBehaviour
                 }
                 gunShots[16].Play();
                 DataStorage.UpdateHolster();
-                DataStorage.crosshair.GetComponent<Animator>().Play("Hit", -1, 0f);
-                Backgrounds.GetComponent<Animator>().Play("ShootingSmall", -1, 0f);
+                crosshair.Play("Hit", -1, 0f);
+                background.Play("ShootingSmall", -1, 0f);
                 if (!mgFire)
                 {
                     if (!isSlow)
                     {
-                        DataStorage.combat.GetComponent<Animator>().speed = 0f;
+                        targetSpeed.speed = 0f;
                         StartCoroutine(StopWatch(.5f));
                         isSlow = true;
                     }
@@ -500,7 +508,7 @@ public class CombatScript : MonoBehaviour
 					{
                         if (!isSlow)
                         {
-                            DataStorage.combat.GetComponent<Animator>().speed = .1f;
+                            targetSpeed.speed = .1f;
                             StartCoroutine(SlowMo(1f));
                         }
 					}
@@ -508,7 +516,7 @@ public class CombatScript : MonoBehaviour
 					{
                         if (!isSlow)
                         {
-                            DataStorage.combat.GetComponent<Animator>().speed = 0f;
+                            targetSpeed.speed = 0f;
                             StartCoroutine(SlowMo(1f));
                         }
 					}
@@ -530,11 +538,11 @@ public class CombatScript : MonoBehaviour
                 }
                 gunShots[13].Play();
                 DataStorage.UpdateHolster();
-                DataStorage.crosshair.GetComponent<Animator>().Play("Hit", -1, 0f);
-                DataStorage.combat.GetComponent<Animator>().speed = 0f;
+                crosshair.Play("Hit", -1, 0f);
+                targetSpeed.speed = 0f;
                 StartCoroutine(StopWatch(DataStorage.fireRate[DataStorage.curWeapon] / 2));
                 DataStorage.shotsFired++;
-                Backgrounds.GetComponent<Animator>().Play("ShootingSmall", -1, 0f);
+                background.Play("ShootingSmall", -1, 0f);
                 break;
             case "Scylla":
                 DataStorage.holster[DataStorage.curWeapon] -= 1;
@@ -551,11 +559,11 @@ public class CombatScript : MonoBehaviour
                 }
                 gunShots[13].Play();
                 DataStorage.UpdateHolster();
-                DataStorage.crosshair.GetComponent<Animator>().Play("Hit", -1, 0f);
-                DataStorage.combat.GetComponent<Animator>().speed = 0f;
+                crosshair.Play("Hit", -1, 0f);
+                targetSpeed.speed = 0f;
                 StartCoroutine(StopWatch(DataStorage.fireRate[DataStorage.curWeapon] / 2));
                 DataStorage.shotsFired++;
-                Backgrounds.GetComponent<Animator>().Play("ShootingSmall", -1, 0f);
+                background.Play("ShootingSmall", -1, 0f);
                 break;
             case "Day Ender":
                 DataStorage.holster[DataStorage.curWeapon] -= 1;
@@ -572,11 +580,11 @@ public class CombatScript : MonoBehaviour
                 }
                 gunShots[13].Play();
                 DataStorage.UpdateHolster();
-                DataStorage.crosshair.GetComponent<Animator>().Play("Hit", -1, 0f);
-                DataStorage.combat.GetComponent<Animator>().speed = 0f;
+                crosshair.Play("Hit", -1, 0f);
+                targetSpeed.speed = 0f;
                 StartCoroutine(StopWatch(DataStorage.fireRate[DataStorage.curWeapon] / 2));
-                DataStorage.shotsFired++;  
-                Backgrounds.GetComponent<Animator>().Play("ShootingSmall", -1, 0f);
+                DataStorage.shotsFired++;
+                background.Play("ShootingSmall", -1, 0f);
                 break;
             case "Redeemer":
                 DataStorage.holster[DataStorage.curWeapon] -= 1;
@@ -593,11 +601,11 @@ public class CombatScript : MonoBehaviour
                 }
                 gunShots[12].Play();
                 DataStorage.UpdateHolster();
-                DataStorage.crosshair.GetComponent<Animator>().Play("Hit", -1, 0f);
-                DataStorage.combat.GetComponent<Animator>().speed = 0f;
+                crosshair.Play("Hit", -1, 0f);
+                targetSpeed.speed = 0f;
                 StartCoroutine(StopWatch(DataStorage.fireRate[DataStorage.curWeapon] / 2));
                 DataStorage.shotsFired++;
-                Backgrounds.GetComponent<Animator>().Play("Shooting", -1, 0f);
+                background.Play("Shooting", -1, 0f);
                 break;
             case "Hellfire":
                 DataStorage.holster[DataStorage.curWeapon] -= 1;
@@ -614,23 +622,23 @@ public class CombatScript : MonoBehaviour
                 }
                 gunShots[2].Play();
                 DataStorage.UpdateHolster();
-                DataStorage.crosshair.GetComponent<Animator>().Play("Hit", -1, 0f);
-                Backgrounds.GetComponent<Animator>().Play("ShootingSmall", -1, 0f);
+                crosshair.Play("Hit", -1, 0f);
+                background.Play("ShootingSmall", -1, 0f);
                 if (!mgFire)
                 {
-                    DataStorage.combat.GetComponent<Animator>().speed = 0f;
+                    targetSpeed.speed = 0f;
                     StartCoroutine(StopWatch(.5f));
                 }
                 else
                 {
 					if (DataStorage.holster[DataStorage.curWeapon] > 1)
 					{
-						DataStorage.combat.GetComponent<Animator>().speed = .1f;
+						targetSpeed.speed = .1f;
 						StartCoroutine(SlowMo(1f));
 					}
 					else
 					{
-						DataStorage.combat.GetComponent<Animator>().speed = 0f;
+						targetSpeed.speed = 0f;
 						StartCoroutine(SlowMo(1f));
 					}
 				}
@@ -651,11 +659,11 @@ public class CombatScript : MonoBehaviour
                 }
                 gunShots[14].Play();
                 DataStorage.UpdateHolster();
-                DataStorage.crosshair.GetComponent<Animator>().Play("Hit", -1, 0f);
-                DataStorage.combat.GetComponent<Animator>().speed = 0f;
+                crosshair.Play("Hit", -1, 0f);
+                targetSpeed.speed = 0f;
                 StartCoroutine(StopWatch(DataStorage.fireRate[DataStorage.curWeapon] / 2));
                 DataStorage.shotsFired++;
-                Backgrounds.GetComponent<Animator>().Play("ShootingSmall", -1, 0f);
+                background.Play("ShootingSmall", -1, 0f);
                 break;
             case "Eradicator":
                 DataStorage.holster[DataStorage.curWeapon] -= 1;
@@ -672,11 +680,11 @@ public class CombatScript : MonoBehaviour
                 }
                 gunShots[15].Play();
                 DataStorage.UpdateHolster();
-                DataStorage.crosshair.GetComponent<Animator>().Play("Hit", -1, 0f);
-                DataStorage.combat.GetComponent<Animator>().speed = 0f;
+                crosshair.Play("Hit", -1, 0f);
+                targetSpeed.speed = 0f;
                 StartCoroutine(StopWatch(DataStorage.fireRate[DataStorage.curWeapon] / 2));
                 DataStorage.shotsFired++;
-                Backgrounds.GetComponent<Animator>().Play("Shooting", -1, 0f);
+                background.Play("Shooting", -1, 0f);
                 break;
         }
     }
@@ -698,13 +706,13 @@ public class CombatScript : MonoBehaviour
                     else
                         NoAmmo();
                 DataStorage.UpdateHolster();
-                DataStorage.crosshair.GetComponent<Animator>().Play("Hit", -1, 0f);
+                crosshair.Play("Hit", -1, 0f);
                 yield return new WaitForSeconds(waitTime);//if gun is still firing, play animation
             }
             else
             {
                 gunShots[0].Play();
-                DataStorage.crosshair.GetComponent<Animator>().Play("Hit", -1, 0f);
+                crosshair.Play("Hit", -1, 0f);
                 yield return new WaitForSeconds(waitTime);//if gun is still firing, play animation
             }
         }
@@ -721,10 +729,10 @@ public class CombatScript : MonoBehaviour
         {
             if (DataStorage.holster[DataStorage.curWeapon] == 0)
             {
-                DataStorage.combat.GetComponent<Animator>().speed = 0f;
+                targetSpeed.speed = 0f;
                 yield return new WaitForSeconds(waitTime);
             }
-            DataStorage.combat.GetComponent<Animator>().speed = 1f;
+            targetSpeed.speed = 1f;
             mgFire = false;
         }
         isSlow = false;
@@ -735,7 +743,7 @@ public class CombatScript : MonoBehaviour
     {
         yield return new WaitForSeconds(waitTime);
         if (DataStorage.weaponType[DataStorage.curWeapon] != "Automatic")
-            DataStorage.combat.GetComponent<Animator>().speed = 1f;
+            targetSpeed.speed = 1f;
         else
         {
             if (!mgFire)
@@ -743,7 +751,7 @@ public class CombatScript : MonoBehaviour
                 StartCoroutine(SlowMo(DataStorage.fireRate[DataStorage.curWeapon]));
                 if (!isSlow)
                 {
-                    DataStorage.combat.GetComponent<Animator>().speed = .1f;
+                    targetSpeed.speed = .1f;
                 }
                 mgFire = true;
             }

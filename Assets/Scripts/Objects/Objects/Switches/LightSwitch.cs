@@ -9,6 +9,7 @@ public class LightSwitch : MonoBehaviour {
 	GameObject exclamation;
     GameObject shadow1;
     GameObject shadow2;
+    float switchTime; //the time before the last switch was hit
 
     void Start()
     {
@@ -17,22 +18,23 @@ public class LightSwitch : MonoBehaviour {
         shadow2 = GameObject.Find("Player/Shadows/ShadowPivotPoint2/myShadow2");
 
     }
-
- 
-
-
 	public void LightsOnOff()
 	{
-		if (_light.activeSelf) {
-			gameObject.GetComponent<SpriteRenderer> ().flipY = false;
+		if (_light.activeSelf)
+        {
+            gameObject.GetComponent<SpriteRenderer> ().flipY = false;
 			_light.SetActive (false);
             switchSound.Play();
             shadow1.GetComponent<SpriteRenderer>().enabled = false;
             shadow2.GetComponent<SpriteRenderer>().enabled = false;
-		} else {
-			gameObject.GetComponent<SpriteRenderer> ().flipY = true;
+        }
+        else
+        {
+            gameObject.GetComponent<SpriteRenderer> ().flipY = true;
             if (isBroken)
+            {
                 StartCoroutine(LightsOn(.08f));
+            }
             else
             {
                 shadow1.GetComponent<SpriteRenderer>().enabled = true;
@@ -41,53 +43,25 @@ public class LightSwitch : MonoBehaviour {
                 switchSound.Play();
             }
 		}
-
 	}
-
 	IEnumerator LightsOn (float waitTime)
 	{
         dyingLight.Play();
-		_light.SetActive(true);
-        shadow1.GetComponent<SpriteRenderer>().enabled = true;
-        shadow2.GetComponent<SpriteRenderer>().enabled = true;
-		yield return new WaitForSeconds(Random.Range(.02f,waitTime));
-		_light.SetActive(false);
-        shadow1.GetComponent<SpriteRenderer>().enabled = false;
-        shadow2.GetComponent<SpriteRenderer>().enabled = false;
-		yield return new WaitForSeconds(Random.Range(.02f,waitTime));
-		_light.SetActive(true);
-        shadow1.GetComponent<SpriteRenderer>().enabled = true;
-        shadow2.GetComponent<SpriteRenderer>().enabled = true;
-		yield return new WaitForSeconds(Random.Range(.02f,waitTime));
-		_light.SetActive(false);
-        shadow1.GetComponent<SpriteRenderer>().enabled = false;
-        shadow2.GetComponent<SpriteRenderer>().enabled = false;
-		yield return new WaitForSeconds(Random.Range(.02f,waitTime));
-		_light.SetActive(true);
-        shadow1.GetComponent<SpriteRenderer>().enabled = true;
-        shadow2.GetComponent<SpriteRenderer>().enabled = true;
-		yield return new WaitForSeconds(Random.Range(.02f,waitTime));
-		_light.SetActive(false);
-        shadow1.GetComponent<SpriteRenderer>().enabled = false;
-        shadow2.GetComponent<SpriteRenderer>().enabled = false;
-		yield return new WaitForSeconds(Random.Range(.02f,waitTime));
-		_light.SetActive(true);
-        shadow1.GetComponent<SpriteRenderer>().enabled = true;
-        shadow2.GetComponent<SpriteRenderer>().enabled = true;
-		yield return new WaitForSeconds(Random.Range(.02f,waitTime));
-		_light.SetActive(false);
-        shadow1.GetComponent<SpriteRenderer>().enabled = false;
-        shadow2.GetComponent<SpriteRenderer>().enabled = false;
-		yield return new WaitForSeconds(Random.Range(.02f,waitTime));
-		_light.SetActive(true);
-        shadow1.GetComponent<SpriteRenderer>().enabled = true;
-        shadow2.GetComponent<SpriteRenderer>().enabled = true;
-
-	}
+        switchTime += .02f * 8;
+        for (int i = 0; i < 7;i ++)
+        {//flickering the light eight times
+             _light.SetActive(!_light.activeSelf);
+             shadow1.GetComponent<SpriteRenderer>().enabled = !shadow1.GetComponent<SpriteRenderer>().enabled;
+             shadow2.GetComponent<SpriteRenderer>().enabled = !shadow1.GetComponent<SpriteRenderer>().enabled;
+             yield return new WaitForSeconds(Random.Range(.02f, waitTime));
+        }
+    }
 		void OnTriggerEnter(Collider other)
 		{
-			if (other.tag =="Player")
-				exclamation.SetActive (true);
+        if (other.tag == "Player")
+        {
+            exclamation.SetActive(true);
+        }
 		}
 		void OnTriggerExit(Collider other)
 		{
@@ -97,12 +71,11 @@ public class LightSwitch : MonoBehaviour {
 
 	void OnTriggerStay (Collider other)
 	{
-		if (other.tag =="Player")
-		if (Input.GetKeyDown ("return")) 
+		if (Input.GetKeyDown("return") && other.tag == "Player" && Time.time > switchTime)
 		{
-			LightsOnOff ();
-
+                switchTime = Time.time + .4f;
+                StopAllCoroutines();
+                LightsOnOff ();
 		}
-
 	}
 }
