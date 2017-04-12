@@ -8301,7 +8301,6 @@ MonoBehaviour:
   - {fileID: 1428658588}
   - {fileID: 1982998879}
   xp: 000000000000000000000000
-  Backgrounds: {fileID: 988434166}
   reloadBar: {fileID: 1877018859}
   reloadText: {fileID: 1108326252}
   textXP: {fileID: 1888702068}
@@ -33240,8 +33239,8 @@ RectTransform:
   m_Father: {fileID: 2094631682}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0}
-  m_AnchorMax: {x: 0.5, y: 1}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 50, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -37194,9 +37193,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: '
-
-'
+  m_Text: 
 --- !u!222 &1108326259
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -40992,7 +40989,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1237614620
 RectTransform:
   m_ObjectHideFlags: 0

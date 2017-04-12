@@ -134,7 +134,7 @@ public class CombatScript : MonoBehaviour
     }
 
     // Update is called once per frame
-    void FixedUpdate()
+    void Update()
     {
         //firing the gun
         if (Input.GetKeyDown(KeyCode.Mouse0) && DataStorage.weaponType[DataStorage.curWeapon] != "Automatic" && DataStorage.itemBar.GetComponent<Image>().fillAmount == 0)
@@ -180,7 +180,8 @@ public class CombatScript : MonoBehaviour
         }
         //Reloading your weapon
         if (Input.GetKeyDown("r") && DataStorage.holster[DataStorage.curWeapon] < DataStorage.capacity[DataStorage.curWeapon] && !isReloading && DataStorage.itemBar.GetComponent<Image>().fillAmount <= 0)
-            Reload();
+             Reload();
+       
 
         //using hotkeys for items
         if ((Input.GetMouseButton(1) || Input.GetKey("space")) && DataStorage.itemBar.GetComponent<Image>().fillAmount < 1 && canUse == true && int.Parse(DataStorage.itemCount.text) > 0 && !CombatScript.isReloading)
@@ -202,6 +203,42 @@ public class CombatScript : MonoBehaviour
         if ((Input.GetKeyDown(KeyCode.Keypad2) || Input.GetKeyDown(KeyCode.Alpha2)) && DataStorage.itemBar.GetComponent<Image>().fillAmount == 0)
         {
             SwitchItemsRight();
+            print(DataStorage.curWeapon);
+        }
+
+        if (Input.GetKeyDown ("a") && !isReloading && DataStorage.itemBar.GetComponent<Image>().fillAmount == 0)
+        {
+            DataStorage.curWeapon--;
+            if (DataStorage.curWeapon <= 0)
+                DataStorage.curWeapon = DataStorage.weaponName.Length - 1;
+            while (DataStorage.curWeapon > 0 && DataStorage.obtainedWeapons[DataStorage.curWeapon] != 1)
+            {
+                DataStorage.curWeapon--;
+                if (DataStorage.curWeapon <= 0)
+                    DataStorage.curWeapon = DataStorage.weaponName.Length - 1;
+            }
+            DataStorage.UpdateHolster();
+            isReloading = true;
+            targetSpeed.speed = 0f;
+            StartCoroutine(Switching());
+            print(DataStorage.curWeapon);
+        }
+        if (Input.GetKeyDown("d") && !isReloading && DataStorage.itemBar.GetComponent<Image>().fillAmount == 0)
+        {
+            DataStorage.curWeapon++;
+            if (DataStorage.curWeapon >= DataStorage.obtainedWeapons.Length)
+                DataStorage.curWeapon = 0;
+            while (DataStorage.curWeapon < DataStorage.obtainedWeapons.Length && DataStorage.obtainedWeapons[DataStorage.curWeapon] != 1)
+            {
+                DataStorage.curWeapon++;
+                if (DataStorage.curWeapon >= DataStorage.obtainedWeapons.Length)
+                    DataStorage.curWeapon = 0;
+            }
+            DataStorage.UpdateHolster();
+            isReloading = true;
+            targetSpeed.speed = 0f;
+            StartCoroutine(Switching());
+            print(DataStorage.curWeapon);
         }
 
     }//end of fixed update
@@ -841,6 +878,7 @@ public class CombatScript : MonoBehaviour
     //reloading the weapon
     IEnumerator Reload(float reloadTime)
     {//setting the reload text so that it animates
+        targetSpeed.speed = 0;
         DataStorage.reloadingText.SetActive(true);
         DataStorage.reloadingText.GetComponent<Animator>().Play("Reloading", -1, 0f);
         DataStorage.reloadingText.GetComponent<Text>().text = "Reloading";
@@ -966,8 +1004,13 @@ public class CombatScript : MonoBehaviour
                 }
                 break;
         }
-         isReloading = false;
-         DataStorage.UpdateHolster();
+        while (targetSpeed.speed < 1f)
+        {
+            targetSpeed.speed += .1f;
+            yield return new WaitForSeconds(.1f);
+        }
+        DataStorage.UpdateHolster();
+        isReloading = false;
     }
 
     public void ResetAmmo()
@@ -1474,5 +1517,18 @@ public class CombatScript : MonoBehaviour
         //asking the player to reload
      DataStorage.reloadingText.GetComponent<Animator>().Play("Reload");
      DataStorage.reloadingText.GetComponent<Text>().text = "Reload";
+    }
+    //switch weapons
+    IEnumerator Switching()
+    {
+        DataStorage.reloadingText.GetComponent<Animator>().Play("WeaponSwap",0,0);
+        DataStorage.reloadingText.GetComponent<Text>().text = "Swapping";
+        yield return new WaitForSeconds(1);
+        while (targetSpeed.speed < 1f)
+        {
+            targetSpeed.speed += .1f;
+            yield return new WaitForSeconds(.1f);
+        }
+        isReloading = false;
     }
 }//end of class
