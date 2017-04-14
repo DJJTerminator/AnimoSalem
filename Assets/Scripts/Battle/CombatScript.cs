@@ -8,6 +8,7 @@ public class CombatScript : MonoBehaviour
     public static float fireRate;
     bool mgFire = false;
     public static bool isReloading;
+    public static bool isSwitching;
     [Tooltip("These are the reload sounds for the weapons")]
     public AudioSource[] reloadSounds;
     [Tooltip("The sound that plays when a gun is loaded")]
@@ -143,7 +144,7 @@ public class CombatScript : MonoBehaviour
     void Update()
     {
         //firing the gun
-        if (Input.GetKeyDown(KeyCode.Mouse0) && DataStorage.weaponType[DataStorage.curWeapon] != "Automatic" && DataStorage.itemBar.GetComponent<Image>().fillAmount == 0)
+        if (Input.GetKeyDown(KeyCode.Mouse0) && DataStorage.weaponType[DataStorage.curWeapon] != "Automatic" && DataStorage.itemBar.GetComponent<Image>().fillAmount == 0 && !isSwitching)
             if (DataStorage.holster[DataStorage.curWeapon] > 0)
             {
                 if (Time.time > fireRate)
@@ -157,7 +158,7 @@ public class CombatScript : MonoBehaviour
             else
                 gunShots[0].Play();
 
-        if (Input.GetKey(KeyCode.Mouse0) && DataStorage.weaponType[DataStorage.curWeapon] == "Automatic" && DataStorage.itemBar.GetComponent<Image>().fillAmount == 0)
+        if (Input.GetKey(KeyCode.Mouse0) && DataStorage.weaponType[DataStorage.curWeapon] == "Automatic" && DataStorage.itemBar.GetComponent<Image>().fillAmount == 0 && !isSwitching)
             if (DataStorage.holster[DataStorage.curWeapon] > 0)
             {
                 if (Time.time > fireRate)
@@ -182,6 +183,7 @@ public class CombatScript : MonoBehaviour
             }
         if (Input.GetKeyUp(KeyCode.Mouse0) && mgFire && !isReloading)
         {
+            mgFire = false;
             StopCoroutine(slowMo);
             unSlowMo = UnSlowMo();
             StartCoroutine (unSlowMo);
@@ -191,12 +193,12 @@ public class CombatScript : MonoBehaviour
             InitCBT(0, lastHit, "-" + totalDamage.ToString());
         }
         //Reloading your weapon
-        if (Input.GetKeyDown("r") && DataStorage.holster[DataStorage.curWeapon] < DataStorage.capacity[DataStorage.curWeapon] && !isReloading && DataStorage.itemBar.GetComponent<Image>().fillAmount <= 0)
-             Reload();
+        if (Input.GetKeyDown("r") && DataStorage.holster[DataStorage.curWeapon] < DataStorage.capacity[DataStorage.curWeapon] && !isReloading && DataStorage.itemBar.GetComponent<Image>().fillAmount <= 0 && !isSwitching)
+            Reload();
        
 
         //using hotkeys for items
-        if ((Input.GetMouseButton(1) || Input.GetKey("space")) && DataStorage.itemBar.GetComponent<Image>().fillAmount < 1 && canUse == true && int.Parse(DataStorage.itemCount.text) > 0 && !CombatScript.isReloading)
+        if ((Input.GetMouseButton(1) || Input.GetKey("space")) && DataStorage.itemBar.GetComponent<Image>().fillAmount < 1 && canUse == true && int.Parse(DataStorage.itemCount.text) > 0 && !CombatScript.isReloading && !isSwitching)
         {
             UseItems();
         }
@@ -215,7 +217,6 @@ public class CombatScript : MonoBehaviour
         if ((Input.GetKeyDown(KeyCode.Keypad2) || Input.GetKeyDown(KeyCode.Alpha2)) && DataStorage.itemBar.GetComponent<Image>().fillAmount == 0)
         {
             SwitchItemsRight();
-            print(DataStorage.curWeapon);
         }
 
         if (Input.GetKeyDown ("a") && !isReloading && DataStorage.itemBar.GetComponent<Image>().fillAmount == 0)
@@ -230,11 +231,17 @@ public class CombatScript : MonoBehaviour
                     DataStorage.curWeapon = DataStorage.weaponName.Length - 1;
             }
             DataStorage.UpdateHolster();
-            isReloading = true;
+            mgFire = false;
             targetSpeed.speed = 0f;
             //playsound
             loadedSounds[1].Play();
-            StartCoroutine(Switching());
+            if (mgFire)
+            {
+                StopCoroutine(slowMo);
+                unSlowMo = UnSlowMo();
+                StartCoroutine(unSlowMo);
+            }
+            StartCoroutine(Switching(1));
         }
         if (Input.GetKeyDown("d") && !isReloading && DataStorage.itemBar.GetComponent<Image>().fillAmount == 0)
         {
@@ -248,11 +255,17 @@ public class CombatScript : MonoBehaviour
                     DataStorage.curWeapon = 0;
             }
             DataStorage.UpdateHolster();
-            isReloading = true;
+            mgFire = false;
             targetSpeed.speed = 0f;
             //playsound
             loadedSounds[1].Play();
-            StartCoroutine(Switching());
+            if (mgFire)
+            {
+                StopCoroutine(slowMo);
+                unSlowMo = UnSlowMo();
+                StartCoroutine(unSlowMo);
+            }
+            StartCoroutine(Switching(1));
         }
     }//end of fixed update
 
@@ -280,7 +293,8 @@ public class CombatScript : MonoBehaviour
                 DataStorage.UpdateHolster();
                 crosshair.Play("Hit", -1, 0f);
                 targetSpeed.speed = 0f;
-                StopCoroutine("stopWatch");
+                StopCoroutine(unSlowMo);
+                StopCoroutine(stopWatch);
                 stopWatch = StopWatch(DataStorage.fireRate[DataStorage.curWeapon]);
                 StartCoroutine(stopWatch);
                 DataStorage.shotsFired++; 
@@ -302,6 +316,9 @@ public class CombatScript : MonoBehaviour
                 gunShots[3].Play();
                 DataStorage.UpdateHolster();
                 crosshair.Play("Hit", -1, 0f);
+                StopCoroutine(unSlowMo);
+                StopCoroutine(stopWatch);
+                stopWatch = StopWatch(DataStorage.fireRate[DataStorage.curWeapon]);
                 StartCoroutine(stopWatch);
                 DataStorage.shotsFired++; 
                 background.Play("ShootingSmall", -1, 0f);
@@ -323,6 +340,9 @@ public class CombatScript : MonoBehaviour
                 DataStorage.UpdateHolster();
                 crosshair.Play("Hit", -1, 0f);
                 targetSpeed.speed = 0f;
+                StopCoroutine(unSlowMo);
+                StopCoroutine(stopWatch);
+                stopWatch = StopWatch(DataStorage.fireRate[DataStorage.curWeapon]);
                 StartCoroutine(stopWatch);
                 DataStorage.shotsFired++;
                 background.Play("ShootingSmall", -1, 0f);
@@ -330,10 +350,10 @@ public class CombatScript : MonoBehaviour
             case "Trident":
                 StartCoroutine(TrippleShot(.1f));
                 targetSpeed.speed = 0f;
-                if (DataStorage.holster[DataStorage.curWeapon] > 3)
-                    StartCoroutine(stopWatch);
-                else
-                    StartCoroutine(StopWatch(2f));
+                StopCoroutine(unSlowMo);
+                StopCoroutine(stopWatch);
+                stopWatch = StopWatch(DataStorage.fireRate[DataStorage.curWeapon]);
+                StartCoroutine(stopWatch);
                 background.Play("ShootingSmall", -1, 0f);
                 break;
             case "Silencer":
@@ -353,10 +373,10 @@ public class CombatScript : MonoBehaviour
                 DataStorage.UpdateHolster();
                 crosshair.Play("Hit", -1, 0f);
                 targetSpeed.speed = 0f;
-                if (DataStorage.holster[DataStorage.curWeapon] > 2)
-                    StartCoroutine(stopWatch);
-                else
-                    StartCoroutine(StopWatch(1f));
+                StopCoroutine(unSlowMo);
+                StopCoroutine(stopWatch);
+                stopWatch = StopWatch(DataStorage.fireRate[DataStorage.curWeapon]);
+                StartCoroutine(stopWatch);
                 DataStorage.shotsFired++; 
                 background.Play("ShootingSmall", -1, 0f);
                 break;
@@ -376,7 +396,10 @@ public class CombatScript : MonoBehaviour
                 gunShots[5].Play();
                 crosshair.Play("Hit", -1, 0f);
                 targetSpeed.speed = 0f;
-                StartCoroutine(stopWatch);  
+                StopCoroutine(unSlowMo);
+                StopCoroutine(stopWatch);
+                stopWatch = StopWatch(DataStorage.fireRate[DataStorage.curWeapon]);
+                StartCoroutine(stopWatch);
                 DataStorage.shotsFired++;
                 background.Play("ShootingSmall", -1, 0f);
                 break;
@@ -397,7 +420,10 @@ public class CombatScript : MonoBehaviour
                 DataStorage.UpdateHolster();
                 crosshair.Play("Hit", -1, 0f);
                 targetSpeed.speed = 0f;
-                StartCoroutine(stopWatch); 
+                StopCoroutine(unSlowMo);
+                StopCoroutine(stopWatch);
+                stopWatch = StopWatch(DataStorage.fireRate[DataStorage.curWeapon]);
+                StartCoroutine(stopWatch);
                 DataStorage.shotsFired++;
                 background.Play("ShootingSmall", -1, 0f);
                 break;
@@ -418,6 +444,9 @@ public class CombatScript : MonoBehaviour
                 DataStorage.UpdateHolster();
                 crosshair.Play("Hit", -1, 0f);
                 targetSpeed.speed = 0f;
+                StopCoroutine(unSlowMo);
+                StopCoroutine(stopWatch);
+                stopWatch = StopWatch(DataStorage.fireRate[DataStorage.curWeapon]);
                 StartCoroutine(stopWatch);
                 DataStorage.shotsFired++;
                 background.Play("ShootingSmall", -1, 0f);
@@ -443,6 +472,9 @@ public class CombatScript : MonoBehaviour
                 DataStorage.UpdateHolster();
                 crosshair.Play("Hit", -1, 0f);
                 targetSpeed.speed = 0f;
+                StopCoroutine(unSlowMo);
+                StopCoroutine(stopWatch);
+                stopWatch = StopWatch(DataStorage.fireRate[DataStorage.curWeapon]);
                 StartCoroutine(stopWatch);
                 DataStorage.shotsFired++;
                 background.Play("Shooting", -1, 0f);
@@ -464,6 +496,9 @@ public class CombatScript : MonoBehaviour
                 DataStorage.UpdateHolster();
                 crosshair.Play("Hit", -1, 0f);
                 targetSpeed.speed = 0f;
+                StopCoroutine(unSlowMo);
+                StopCoroutine(stopWatch);
+                stopWatch = StopWatch(DataStorage.fireRate[DataStorage.curWeapon]);
                 StartCoroutine(stopWatch);
                 DataStorage.shotsFired++;
                 background.Play("Shooting", -1, 0f);
@@ -485,6 +520,9 @@ public class CombatScript : MonoBehaviour
                 DataStorage.UpdateHolster();
                 crosshair.Play("Hit", -1, 0f);
                 targetSpeed.speed = 0f;
+                StopCoroutine(unSlowMo);
+                StopCoroutine(stopWatch);
+                stopWatch = StopWatch(DataStorage.fireRate[DataStorage.curWeapon]);
                 StartCoroutine(stopWatch);
                 DataStorage.shotsFired++;
                 background.Play("Shooting", -1, 0f);
@@ -506,6 +544,9 @@ public class CombatScript : MonoBehaviour
                 DataStorage.UpdateHolster();
                 crosshair.Play("Hit", -1, 0f);
                 targetSpeed.speed = 0f;
+                StopCoroutine(unSlowMo);
+                StopCoroutine(stopWatch);
+                stopWatch = StopWatch(DataStorage.fireRate[DataStorage.curWeapon]);
                 StartCoroutine(stopWatch);
                 DataStorage.shotsFired++;
                 background.Play("Shooting", -1, 0f);
@@ -527,6 +568,9 @@ public class CombatScript : MonoBehaviour
                 DataStorage.UpdateHolster();
                 crosshair.Play("Hit", -1, 0f);
                 targetSpeed.speed = 0f;
+                StopCoroutine(unSlowMo);
+                StopCoroutine(stopWatch);
+                stopWatch = StopWatch(DataStorage.fireRate[DataStorage.curWeapon]);
                 StartCoroutine(stopWatch);
                 DataStorage.shotsFired++;
                 background.Play("Shooting", -1, 0f);
@@ -548,12 +592,21 @@ public class CombatScript : MonoBehaviour
                 DataStorage.UpdateHolster();
                 crosshair.Play("Hit", -1, 0f);
                 background.Play("ShootingSmall", -1, 0f);
-                if (!mgFire)
-                {//NOTE I think the reload is setting the speed of the animator to go up, while this is sending it down, which is causing a conflict
+                if (!mgFire && DataStorage.holster[DataStorage.curWeapon] > 1)
+                {
+                    mgFire = true;
                     StopCoroutine(slowMo);
                     StopCoroutine(unSlowMo);
                     slowMo = SlowMo(1f);
                     StartCoroutine(slowMo);
+                }
+                else if (DataStorage.holster[DataStorage.curWeapon] <= 1)
+                {
+                    mgFire = false;
+                    StopCoroutine(slowMo);
+                    StopCoroutine(unSlowMo);
+                    stopWatch = StopWatch(4f);
+                    StartCoroutine(stopWatch);
                 }
                 DataStorage.shotsFired++;  
                 break;
@@ -574,6 +627,8 @@ public class CombatScript : MonoBehaviour
                 DataStorage.UpdateHolster();
                 crosshair.Play("Hit", -1, 0f);
                 targetSpeed.speed = 0f;
+                StopCoroutine(stopWatch);
+                stopWatch = StopWatch(DataStorage.fireRate[DataStorage.curWeapon]);
                 StartCoroutine(stopWatch);
                 DataStorage.shotsFired++;
                 background.Play("ShootingSmall", -1, 0f);
@@ -595,6 +650,9 @@ public class CombatScript : MonoBehaviour
                 DataStorage.UpdateHolster();
                 crosshair.Play("Hit", -1, 0f);
                 targetSpeed.speed = 0f;
+                StopCoroutine(unSlowMo);
+                StopCoroutine(stopWatch);
+                stopWatch = StopWatch(DataStorage.fireRate[DataStorage.curWeapon]);
                 StartCoroutine(stopWatch);
                 DataStorage.shotsFired++;
                 background.Play("ShootingSmall", -1, 0f);
@@ -616,6 +674,9 @@ public class CombatScript : MonoBehaviour
                 DataStorage.UpdateHolster();
                 crosshair.Play("Hit", -1, 0f);
                 targetSpeed.speed = 0f;
+                StopCoroutine(unSlowMo);
+                StopCoroutine(stopWatch);
+                stopWatch = StopWatch(DataStorage.fireRate[DataStorage.curWeapon]);
                 StartCoroutine(stopWatch);
                 DataStorage.shotsFired++;
                 background.Play("ShootingSmall", -1, 0f);
@@ -637,6 +698,9 @@ public class CombatScript : MonoBehaviour
                 DataStorage.UpdateHolster();
                 crosshair.Play("Hit", -1, 0f);
                 targetSpeed.speed = 0f;
+                StopCoroutine(unSlowMo);
+                StopCoroutine(stopWatch);
+                stopWatch = StopWatch(DataStorage.fireRate[DataStorage.curWeapon]);
                 StartCoroutine(stopWatch);
                 DataStorage.shotsFired++;
                 background.Play("Shooting", -1, 0f);
@@ -658,24 +722,22 @@ public class CombatScript : MonoBehaviour
                 DataStorage.UpdateHolster();
                 crosshair.Play("Hit", -1, 0f);
                 background.Play("ShootingSmall", -1, 0f);
-                if (!mgFire)
+                if (!mgFire && DataStorage.holster[DataStorage.curWeapon] > 1)
                 {
-                    targetSpeed.speed = 0f;
-                    StartCoroutine(StopWatch(.5f));
+                    mgFire = true;
+                    StopCoroutine(slowMo);
+                    StopCoroutine(unSlowMo);
+                    slowMo = SlowMo(1f);
+                    StartCoroutine(slowMo);
                 }
-                else
+                else if (DataStorage.holster[DataStorage.curWeapon] <= 1)
                 {
-					if (DataStorage.holster[DataStorage.curWeapon] > 1)
-					{
-						targetSpeed.speed = .1f;
-						StartCoroutine(SlowMo(1f));
-					}
-					else
-					{
-						targetSpeed.speed = 0f;
-						StartCoroutine(SlowMo(1f));
-					}
-				}
+                    mgFire = false;
+                    StopCoroutine(slowMo);
+                    StopCoroutine(unSlowMo);
+                    stopWatch = StopWatch(4f);
+                    StartCoroutine(stopWatch);
+                }
                 DataStorage.shotsFired++;
                 break;
             case "Energy Rifle":
@@ -695,6 +757,9 @@ public class CombatScript : MonoBehaviour
                 DataStorage.UpdateHolster();
                 crosshair.Play("Hit", -1, 0f);
                 targetSpeed.speed = 0f;
+                StopCoroutine(unSlowMo);
+                StopCoroutine(stopWatch);
+                stopWatch = StopWatch(DataStorage.fireRate[DataStorage.curWeapon]);
                 StartCoroutine(stopWatch);
                 DataStorage.shotsFired++;
                 background.Play("ShootingSmall", -1, 0f);
@@ -716,6 +781,9 @@ public class CombatScript : MonoBehaviour
                 DataStorage.UpdateHolster();
                 crosshair.Play("Hit", -1, 0f);
                 targetSpeed.speed = 0f;
+                StopCoroutine(unSlowMo);
+                StopCoroutine(stopWatch);
+                stopWatch = StopWatch(DataStorage.fireRate[DataStorage.curWeapon]);
                 StartCoroutine(stopWatch);
                 DataStorage.shotsFired++;
                 background.Play("Shooting", -1, 0f);
@@ -759,8 +827,22 @@ public class CombatScript : MonoBehaviour
     IEnumerator StopWatch(float waitTime)
     {
             targetSpeed.speed = 0f;
-            yield return new WaitForSeconds(waitTime/2);
-            while (targetSpeed.speed < 1f)
+        if (DataStorage.weaponName[DataStorage.curWeapon] != "Trident")
+        {
+            if (DataStorage.holster[DataStorage.curWeapon] > 0)
+                yield return new WaitForSeconds(waitTime / 2);
+            else
+                yield return new WaitForSeconds(1f);
+        }
+        else
+        {
+            if (DataStorage.holster[DataStorage.curWeapon] > 2)
+                yield return new WaitForSeconds(waitTime / 2);
+            else
+                yield return new WaitForSeconds(1f);
+        }
+
+        while (targetSpeed.speed < 1f)
             {
                 targetSpeed.speed += .02f;
                 yield return new WaitForSeconds (.02f);
@@ -771,8 +853,6 @@ public class CombatScript : MonoBehaviour
     //this function prevents the target from moving
     IEnumerator SlowMo(float waitTime)
     {
-        print ("yes");
-        mgFire = true;
         targetSpeed.speed = 0f;
         yield return new WaitForSeconds(.25f);
         while (targetSpeed.speed < .1f)
@@ -786,7 +866,6 @@ public class CombatScript : MonoBehaviour
     //this function prevents the target from moving
     IEnumerator UnSlowMo()
     {
-        mgFire = false;
         while (targetSpeed.speed < 1f)
         {
             targetSpeed.speed += .02f;
@@ -799,6 +878,7 @@ public class CombatScript : MonoBehaviour
     //start reloading
     void Reload()
     {
+        mgFire = false;
         switch (DataStorage.weaponType[DataStorage.curWeapon])
         {
             case "Handgun":
@@ -882,8 +962,9 @@ public class CombatScript : MonoBehaviour
         StopCoroutine(slowMo);
         StopCoroutine(unSlowMo);
         StopCoroutine(stopWatch);
-        mgFire = false;
         targetSpeed.speed = 0;
+        // StartCoroutine(SpeedUp());
+        mgFire = false;
         DataStorage.reloadingText.SetActive(true);
         DataStorage.reloadingText.GetComponent<Animator>().Play("Reloading", -1, 0f);
         DataStorage.reloadingText.GetComponent<Text>().text = "Reloading";
@@ -917,6 +998,8 @@ public class CombatScript : MonoBehaviour
                 reloadTime += DataStorage.reload[DataStorage.curWeapon] / 8;
             }
         }
+        unSlowMo = UnSlowMo();
+        StartCoroutine(unSlowMo);
         DataStorage.reloadingText.GetComponent<Animator>().Play("Reloaded", -1, 0f);
         DataStorage.reloadingText.GetComponent<Text>().text = "Reloaded";
         //DataStorage.reloadBar.GetComponent<Image>().fillAmount = 1f;
@@ -1009,16 +1092,10 @@ public class CombatScript : MonoBehaviour
                 }
                 break;
         }
-        while (targetSpeed.speed < 1f)
-        {
-            targetSpeed.speed += .1f;
-            yield return new WaitForSeconds(.1f);
-        }
         DataStorage.UpdateHolster();
-        mgFire = false;
+        //targetSpeed.speed = 1f;
         isReloading = false;
     }
-
     public void ResetAmmo()
     {
         //setting the ammo after the battle is over, so the player doesn't have to do it during the beginning
@@ -1525,20 +1602,20 @@ public class CombatScript : MonoBehaviour
      DataStorage.reloadingText.GetComponent<Text>().text = "Reload";
     }
     //switch weapons
-    IEnumerator Switching()
+    IEnumerator Switching(float wait)
     {
-        StopCoroutine("slowMo");
-        StopCoroutine("stopWatch");
+        //reloadText.GetComponent<Animator>().speed = wait;
+        isSwitching = true;
+        StopCoroutine(slowMo);
+        StopCoroutine(stopWatch);
         StartCoroutine(LerpAC());
         DataStorage.reloadingText.GetComponent<Animator>().Play("WeaponSwap",0,0);
         DataStorage.reloadingText.GetComponent<Text>().text = "Swapping";
-        yield return new WaitForSeconds(1);
-        while (targetSpeed.speed < 1f)
-        {
-            targetSpeed.speed += .1f;
-            yield return new WaitForSeconds(.1f);
-        }
-        isReloading = false;
+        unSlowMo = UnSlowMo();
+        StartCoroutine(unSlowMo);
+        mgFire = false;
+        yield return new WaitForSeconds(wait);
+        isSwitching = false;
     }
     IEnumerator LerpAC()
     {
