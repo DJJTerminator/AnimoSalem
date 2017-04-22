@@ -1355,7 +1355,7 @@ public class CombatScript : MonoBehaviour
                 {
                     maxHits += 1;
                     //calling the blood
-                    StartCoroutine(Blood(i, 1f));
+                   // StartCoroutine(Blood(i, 1f));
                     //finding the accuracy
                     if (DataStorage.crosshair.transform.position.x <= enemyTarget[i].transform.position.x)
                         temp = DataStorage.crosshair.transform.position.x / enemyTarget[i].transform.position.x;
@@ -1535,28 +1535,28 @@ public class CombatScript : MonoBehaviour
         Destroy(temp.gameObject, 10f);
     }
     //randomizing the area of blood spatter depending upon which enemy was struck
-    IEnumerator Blood(int i, float waitTime)
-    {
-        int temp = Random.Range(0, blood1.Length);
-        switch (i)
-        {
-            default:
-                blood1[temp].SetActive(true);
-                yield return new WaitForSeconds(waitTime);
-                blood1[temp].SetActive(false);
-                break;
-            case 1:
-                blood2[temp].SetActive(true);
-                yield return new WaitForSeconds(waitTime);
-                blood2[temp].SetActive(false);
-                break;
-            case 2:
-                blood3[temp].SetActive(true);
-                yield return new WaitForSeconds(waitTime);
-                blood3[temp].SetActive(false);
-                break;
-        }
-    }
+    //IEnumerator Blood(int i, float waitTime)
+    //{
+    //    int temp = Random.Range(0, blood1.Length);
+    //    switch (i)
+    //    {
+    //        default:
+    //            blood1[temp].SetActive(true);
+    //            yield return new WaitForSeconds(waitTime);
+    //            blood1[temp].SetActive(false);
+    //            break;
+    //        case 1:
+    //            blood2[temp].SetActive(true);
+    //            yield return new WaitForSeconds(waitTime);
+    //            blood2[temp].SetActive(false);
+    //            break;
+    //        case 2:
+    //            blood3[temp].SetActive(true);
+    //            yield return new WaitForSeconds(waitTime);
+    //            blood3[temp].SetActive(false);
+    //            break;
+    //    }
+    //}
     //waiting before the victory occurs
     IEnumerator GoToVictory(float waitTime)
     {
